@@ -1,0 +1,425 @@
+syntax = "proto3";
+
+package mapgoo.paas.dap.sims;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.simcard.proto";
+import public "mapgoo.paas.simcache.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+message QuerySimCardTypeReq
+{
+    // 查询字段 iccid,iccid19,imei,imsi
+    string query_field = 1;
+    // 查询的字段值
+    string field_value = 2;
+}
+
+message QuerySimCardTypeResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡类型
+    uint32 simFromType = 2;
+}
+
+message QuerySimBaseReq
+{
+    // 卡id
+    uint32 simid = 1;
+}
+
+message QuerySimBaseResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡表
+    SimInfo_Table simInfo = 2;
+}
+
+message SimInfo_Table
+{
+    uint32 recID = 1;
+    string guid = 2;
+    string sim = 3;
+    string imei = 4;
+    string imsi = 5;
+    string iccid19 = 6;
+    uint32 simState = 7;
+    uint32 simFromType = 9;
+    float amountUsageData = 10;
+    float monthUsageData = 11;
+    float totalMonthUsage = 12;
+    bool isDeleted = 13;
+    string vexpireTime = 14;
+    string firstActiveTime = 15;
+    string lastActiveTime = 16;
+    string deactivatedTime = 17;
+    uint32 surplusPeriod = 18;
+    uint32 packageID = 19;
+    PackageType_Table packageType = 20;
+    string createTime = 21;
+}
+
+message PackageType_Table
+{
+    uint32 recID = 1;
+    string packageName = 2;
+    string packageSn = 3;
+    string contractType = 4;
+    bool isUsageReset = 5;
+    float usageToPeriod = 6;
+    uint32 periodDays = 7;
+    bool isDeleted = 8;
+}
+
+message QueryBatchSimInfoReq
+{
+    // 查询的字段
+    string queryField = 1;
+    // 查询的字段值
+    repeated string fieldValues = 2;
+}
+
+message QueryBatchSimInfoResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡基础信息实体
+    repeated mapgoo.paas.simcard.SimBaseInfo baseInfo = 2;
+}
+
+// 套餐列表请求
+message QueryRenewPackageListReq
+{
+    // sim基础信息, 先从缓存取出来
+    mapgoo.paas.simcard.SimBaseInfo simBase = 1;
+}
+message QueryRenewPackageListResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 套餐信息实体
+    repeated mapgoo.paas.simcard.RenewPackageInfo package_list = 2;
+}
+
+// 用户可续费套餐列表请求
+message QueryUserRenewPackageListReq
+{
+    // 用户/渠道ID
+    uint32 hold_id = 1;
+}
+message QueryUserRenewPackageListResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 用户可续套餐列表结果
+    repeated mapgoo.paas.simcard.UserPackageList list = 2;
+}
+
+// 续费订单状态查询请求
+message QueryRenewalsOrderStatusReq
+{
+    string orderSn = 1;
+    string userOrdersn = 2;
+}
+message QueryRenewalsOrderStatusResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 续费状态,1代表成功,0代表失败
+    uint32 renewals_status = 2;
+    // 续费时间,格式yyyy-MM-dd HH:mm:ss
+    uint64 renewals_time = 3;
+}
+
+// 查询卡续费记录请求
+message QueryRenewalRecordsReq
+{
+    uint32 simid = 1;
+    // 查询月份，格式：201605，不填默认当月
+    string query_month = 2;
+}
+message QueryRenewalRecordsResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 续费记录信息
+    repeated mapgoo.paas.simcard.RenewalRecordsInfo renewal_records = 2;
+}
+
+// 微信端查卡初步信息
+message QueryWxCardStartInfoReq
+{
+    // 查询字段 iccid,iccid19,imei,imsi
+    string query_field = 1;
+    // 查询的字段值
+    string field_value = 2;
+}
+message QueryWxCardStartInfoResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 数据库返回字段
+    QueryWxCardStartInfo_Table info = 2;
+}
+message QueryWxCardStartInfo_Table
+{
+    uint32 recID = 1;
+    uint32 simFromType = 2;
+    string guid = 3;
+    string sim = 4;
+    uint32 simState = 5;
+    uint32 holdID = 6;
+    string apiCode = 7;
+    uint32 sourceType = 8;
+    bool isAuthIdentity = 9;
+    string realMobile = 10;
+    string aliBindingIMEI = 11;
+    uint32 realStateByAli = 12;
+    bool isInitPackage = 13;
+    uint32 activeState = 14;
+    uint32 defaultRealNameLevel = 15;
+    uint32 sourceRealNameLevel = 16;
+}
+
+// 导入联通卡账单请求参数
+message ImportLtMonthBillReq
+{
+    // 账单表导入数组
+    repeated mapgoo.paas.simcard.BillLtMonth_Table bills = 1;
+}
+message ImportLtMonthBillResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// 查询联通卡账单请求
+message QueryLtMonthBillReq
+{
+    // iccid号
+    string iccid = 1;
+    // 卡id，参数两者任其一
+    uint32 simid = 2;
+}
+message QueryLtMonthBillResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 账单数组
+    repeated mapgoo.paas.simcard.BillLtMonth_Table bills = 2;
+}
+
+message ImportBillDataFromOldDBReq
+{
+    string queryMonth = 1;
+}
+
+message ImportBillDataFromOldDBResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// 卡基本信息
+service SimsBaseDbProxy
+{
+    // 查询卡类型
+    rpc querySimCardType (QuerySimCardTypeReq) returns (QuerySimCardTypeResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/querySimCardType"
+        };
+    };
+
+    // 查询卡基础信息
+    rpc querySimBaseInfo (QuerySimBaseReq) returns (QuerySimBaseResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/querySimBaseInfo"
+        };
+    };
+
+    // 批量查询卡基础信息
+    rpc queryBatchSimInfo (QueryBatchSimInfoReq) returns (QueryBatchSimInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryBatchSimInfo"
+        };
+    };
+
+    // 获取续费套餐列表
+    rpc queryRenewPackageList(QueryRenewPackageListReq) returns (QueryRenewPackageListResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryRenewPackageList"
+        };
+    };
+
+    // 获取用户续费套餐列表
+    rpc queryUserRenewPackageList(QueryUserRenewPackageListReq) returns (QueryUserRenewPackageListResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryUserRenewPackageList"
+        };
+    };
+
+    // 续费订单状态查询
+    rpc queryRenewalsOrderStatus(QueryRenewalsOrderStatusReq) returns (QueryRenewalsOrderStatusResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryRenewalsOrderStatus"
+        };
+    };
+
+    // 查询卡续费记录
+    rpc queryRenewalRecords(QueryRenewalRecordsReq) returns (QueryRenewalRecordsResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryRenewalRecords"
+        };
+    };
+
+    // 微信端查卡初步信息
+    rpc QueryWxCardStartInfo(QueryWxCardStartInfoReq) returns (QueryWxCardStartInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryWxCardStartInfo"
+        };
+    };
+
+    // 导入联通卡账单
+    rpc ImportLtMonthBill(ImportLtMonthBillReq) returns (ImportLtMonthBillResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/importLtMonthBill"
+        };
+    };
+
+    // 查询联通卡账单
+    rpc QueryLtMonthBill(QueryLtMonthBillReq) returns (QueryLtMonthBillResp) {
+        option (google.api.http) = {
+            get:"/dap/sims/queryLtMonthBill"
+        };
+    };
+
+    // 查询旧数据库的数据导入到新库
+    rpc ImportBillDataFromOldDB(ImportBillDataFromOldDBReq) returns (ImportBillDataFromOldDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/importBillDataFromOldDB"
+        };
+    };
+
+    //////////////////////////////////////////////////缓存相关接口//////////////////////////////////////////
+
+    // 获取卡基础信息
+    rpc GetSimCardBaseInfoDB(mapgoo.paas.simcache.data.GetSimCardBaseInfoDBReq) returns (mapgoo.paas.simcache.data.GetSimCardBaseInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimCardBaseInfoDB"
+        };
+    };
+
+
+    //卡用量
+    rpc GetSimCardusageInfoDB(mapgoo.paas.simcache.data.GetSimCardusageInfoDBReq) returns (mapgoo.paas.simcache.data.GetSimCardusageInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimCardusageInfoDB"
+        };
+    };
+
+    //卡类型
+    rpc GetSimCardTypeDB(mapgoo.paas.simcache.data.GetSimCardTypeDBReq) returns (mapgoo.paas.simcache.data.GetSimCardTypeDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimCardTypeDB"
+        };
+    };
+
+    rpc GetSimCardTypeDelDB(mapgoo.paas.simcache.data.GetSimCardTypeDelDBReq) returns (mapgoo.paas.simcache.data.GetSimCardTypeDelDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimCardTypeDelDB"
+        };
+    };
+
+    //渠道信息
+    rpc GetHoldInfoListDB(mapgoo.paas.simcache.data.GetHoldInfoListDBReq) returns (mapgoo.paas.simcache.data.GetHoldInfoListDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetHoldInfoListDB"
+        };
+    };
+
+
+    //获取套餐列表
+    rpc GetSimPackageListDB(mapgoo.paas.simcache.data.GetSimPackageListDBReq) returns (mapgoo.paas.simcache.data.GetSimPackageListDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimPackageListDB"
+        };
+    };
+
+
+    //卡类型
+    rpc GetPlaformSimCardTypeDB(mapgoo.paas.simcache.data.GetPlaformSimCardTypeDBReq) returns (mapgoo.paas.simcache.data.GetPlaformSimCardTypeDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetPlaformSimCardTypeDB"
+        };
+    };
+
+
+    //实名信息
+    rpc GetSimCardRealNameDB(mapgoo.paas.simcache.data.GetSimCardRealNameDBReq) returns (mapgoo.paas.simcache.data.GetSimCardRealNameDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimCardRealNameDB"
+        };
+    };
+
+
+    //根据imei sim imei 获取iccid
+    rpc GetICCIDByGrobalMappingDB(mapgoo.paas.simcache.data.GetICCIDByGrobalMappingDBReq) returns (mapgoo.paas.simcache.data.GetICCIDByGrobalMappingDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetICCIDByGrobalMappingDB"
+        };
+    };
+
+    //获取高德用量数据
+    rpc GetGDDTUsageValueKBDB(mapgoo.paas.simcache.data.GetGDDTUsageValueKBDBReq) returns (mapgoo.paas.simcache.data.GetGDDTUsageValueKBDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetGDDTUsageValueKBDB"
+        };
+    };
+
+
+    //非高德续费包
+    rpc GetPackageExpUsageNotGDDTDB(mapgoo.paas.simcache.data.GetPackageExpUsageNotGDDTDBReq) returns (mapgoo.paas.simcache.data.GetPackageExpUsageNotGDDTDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetPackageExpUsageNotGDDTDB"
+        };
+    };
+
+    //设置卡的更新时间
+    rpc SetSimCardUpdatetimeDB(mapgoo.paas.simcache.data.SetSimCardUpdatetimeDBReq) returns (mapgoo.paas.simcache.data.SetSimCardUpdatetimeDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/SetSimCardUpdatetimeDB"
+        };
+    };
+
+
+    //对比版本号获取最新的卡信息
+    rpc RefreshSimCardAllCacheDB(mapgoo.paas.simcache.data.RefreshSimCardAllCacheDBReq) returns (mapgoo.paas.simcache.data.RefreshSimCardAllCacheDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/RefreshSimCardAllCacheDB"
+        };
+    };
+
+    //获取渠道信息
+    rpc GetHoldInfoByHoldIdDB(mapgoo.paas.simcache.data.GetHoldInfoByHoldIdDBReq) returns (mapgoo.paas.simcache.data.GetHoldInfoByHoldIdDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetHoldInfoByHoldIdDB"
+        };
+    };
+
+
+    //获取套餐信息
+    rpc GetSimPackageByIDDB(mapgoo.paas.simcache.data.GetSimPackageByIDDBReq) returns (mapgoo.paas.simcache.data.GetSimPackageByIDDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimPackageByIDDB"
+        };
+    };
+
+
+    rpc GetSimCardDetailDB(mapgoo.paas.simcache.data.GetSimCardDetailDBReq) returns (mapgoo.paas.simcache.data.GetSimCardDetailDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSimCardDetailDB"
+        };
+    };
+
+
+    rpc GetSurplusUsageDB(mapgoo.paas.simcache.data.GetSurplusUsageDBReq) returns (mapgoo.paas.simcache.data.GetSurplusUsageDBResp) {
+        option (google.api.http) = {
+            post:"/dap/sims/GetSurplusUsageDB"
+        };
+    };
+}
+

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package mapgoo.paas.vms;
+
+option go_package = "api";
+
+import "google/api/annotations.proto";
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.vehicle.data.proto";
+
+service VMS {
+	//获取车辆信息
+	rpc getVehicleInfo(mapgoo.paas.vehicle.data.GetVehicleInfoReq) returns (mapgoo.paas.vehicle.data.GetVehicleInfoResp) {
+		option (google.api.http) = {
+			post:"/vms/getVehicleInfo"
+		};
+	};
+}

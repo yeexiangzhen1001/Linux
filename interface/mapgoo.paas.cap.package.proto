@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.package;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//设置设备当前的套餐参数
+message AcitvePackageStatementInfo {
+  //套餐过期时间;
+  uint32 expired_time = 1[  (gogoproto.moretags) = 'redis:"state:expired_time"'];
+  //自增ID;
+  uint32 package_id = 2[  (gogoproto.moretags) = 'redis:"state:package_id"'];
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 3[  (gogoproto.moretags) = 'redis:"state:user_package_id"'];
+  //云记录仪视频观看时长;
+  uint32 total_play_duration = 4[  (gogoproto.moretags) = 'redis:"state:total_play_duration"'];
+  //购买套餐时的初始里程;
+  uint32 init_mileage = 5[  (gogoproto.moretags) = 'redis:"state:init_mileage"'];
+  //总里程;
+  uint32 total_mileage = 6[  (gogoproto.moretags) = 'redis:"state:total_mileage"'];
+  //当前车辆行驶总里程;
+  uint32 current_mileage = 7[  (gogoproto.moretags) = 'redis:"state:current_mileage"'];
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 8[  (gogoproto.moretags) = 'redis:"state:state"'];
+  //云记录仪视频空间使用量;
+  uint64 space_used = 9[  (gogoproto.moretags) = 'redis:"state:space_used"'];
+  //云记录仪视频观看时长;
+  uint32 play_duration_used = 10[  (gogoproto.moretags) = 'redis:"state:play_duration_used"'];
+  //更新时间;
+  uint32 first_file_begin_time = 11[  (gogoproto.moretags) = 'redis:"state:first_file_begin_time"'];
+  //最后处理时间;
+  uint32 last_process_time = 12[  (gogoproto.moretags) = 'redis:"state:last_process_time"'];
+  //购买方式：0赠送，1购买;
+  uint32 buy_type = 13[  (gogoproto.moretags) = 'redis:"state:buy_type"'];
+  //套餐使用优先级，0-为最高优先级，同一个设备的套餐优先级依次递减，优先使用高优先级的套餐容量;
+  uint32 priority = 14[  (gogoproto.moretags) = 'redis:"state:priority"'];
+  //超出有效观看时间需要删除的时间，单位：天;
+  uint32 delete_file_time = 15[  (gogoproto.moretags) = 'redis:"state:delete_file_time"'];
+  //云记录仪视频空间已删除量;
+  uint64 space_released = 16[  (gogoproto.moretags) = 'redis:"state:space_released"'];
+  //已经使用里程
+  uint32 used_mileage=17[(gogoproto.moretags)='redis:"state:used_mileage"'];
+}
+
+//设置设备当前的套餐参数
+message SetAcitvePackageStatementCacheReq {
+  //套餐信息
+  AcitvePackageStatementInfo info = 1;
+  //设备ID、目标ID;
+  uint32 objectid = 2;
+  //是否全部更新;
+  bool update_all = 3;
+}
+
+//设置设备当前的套餐结果
+message SetAcitvePackageStatementCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //套餐信息
+  AcitvePackageStatementInfo info = 2;
+}
+
+//获取设备当前的套餐参数
+message GetAcitvePackageStatementCacheReq {
+  //设备ID、目标ID;
+  uint32 objectid = 1;
+}
+
+//获取设备当前的套餐结果
+message GetAcitvePackageStatementCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //套餐信息
+  AcitvePackageStatementInfo info = 2;
+}
+
+service PackageCapProxy {
+
+  //设置设备当前的套餐
+  rpc SetAcitvePackageStatementCache(SetAcitvePackageStatementCacheReq)
+      returns (SetAcitvePackageStatementCacheResp) {
+    option (google.api.http) = {
+      post : "/cap/api/setAcitvePackageStatementCache"
+    };
+  }
+
+  //获取设备当前的套餐
+  rpc GetAcitvePackageStatementCache(GetAcitvePackageStatementCacheReq)
+      returns (GetAcitvePackageStatementCacheResp) {
+    option (google.api.http) = {
+      post : "/cap/api/getAcitvePackageStatementCache"
+    };
+  }
+}

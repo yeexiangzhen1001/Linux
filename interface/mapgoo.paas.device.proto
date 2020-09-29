@@ -1,0 +1,1090 @@
+syntax = "proto3";
+
+import public "mapgoo.paas.base.proto";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.device;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+enum DeviceSearchType {
+  SEARCH_TYPE_OBJECT_NAME = 0;
+  SEARCH_TYPE_IMEI = 1;
+  SEARCH_TYPE_SIM = 2;
+  SEARCH_TYPE_IN_DISTRICT = 3;
+  SEARCH_TYPE_OUT_DISTRICT = 4;
+  SEARCH_TYPE_ACCOUT = 5;
+  SEARCH_TYPE_OBJECT_ID = 6;
+  SEARCH_TYPE_RISK_LEVEL = 7;
+  SEARCH_TYPE_CONTACT = 8;
+  SEARCH_TYPE_VEHICLE = 9;
+  SEARCH_TYPE_USER_LABEL = 10;
+  SEARCH_TYPE_OPERATION_LABEL = 11;
+}
+
+message DeviceSelfRegisterInfo {
+  string imei = 1;
+  uint32 holdid = 2;
+  string originalImei = 3;
+  string appKey = 4;
+  string iccid = 5;
+  string lincese = 6;
+  uint32 expiredDay = 7;
+  uint32 tryTimes = 8;
+  int32 objectid = 9;
+  int32 mdtTypeID = 10;
+  string productBatch = 11;
+}
+
+//设备信息请求参数
+message DeviceInfoReq {
+  mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+}
+
+//设备信息请求参数
+message OriginalIMEIInfoReq {
+  string original_imei = 1 [ (gogoproto.jsontag) = 'OriginalIMEI' ];
+}
+
+//设备信息请求响应
+message OriginalIMEIInfoResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  map<string, mapgoo.paas.base.DeviceBaseInfo> info_map = 2
+  [ (gogoproto.jsontag) = 'info_map' ];
+}
+
+//设备基本信息请求响应
+message DeviceBaseInfoResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  mapgoo.paas.base.DeviceBaseInfo base_info = 2 [ (gogoproto.jsontag) = 'base_info' ];
+}
+
+//设备全部信息请求响应
+message DeviceInfoResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  mapgoo.paas.base.DeviceInfo device_info = 2
+  [ (gogoproto.jsontag) = 'device_info' ];
+}
+
+//设备参数请求响应
+message DeviceParamResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.DeviceParam dev_params = 2
+      [ (gogoproto.jsontag) = 'dev_params' ];
+}
+
+//设备Socol信息请求
+message DeviceSocolReq {
+    mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+}
+
+//设备Socol信息请求响应
+message DeviceSocolResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  mapgoo.paas.base.DeviceSocolInfo socol_info = 2 [ (gogoproto.jsontag) = 'socol_info' ];
+}
+
+//设备自注册检查请求
+message DeviceSelfRegisterCheckoutReq {
+  uint32 holdid = 1;
+  string app_key = 2;
+  string imei = 3;
+}
+
+//设备自注册检查响应
+message DeviceSelfRegisterCheckoutResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  uint32 register_state = 2 [ (gogoproto.jsontag) = 'register_state' ];
+  string register_desc = 3 [ (gogoproto.jsontag) = 'register_desc' ];
+}
+
+//旧版自注册请求
+message DeviceSelfRegisterOldReq {
+  uint32 mdt_type_id = 1 [ (gogoproto.jsontag) = 'mdt_type_id' ];
+  string imei = 2 [ (gogoproto.jsontag) = 'imei' ];
+  bool is_modify = 3 [ (gogoproto.jsontag) = 'is_modify' ];
+  string iccid = 4 [ (gogoproto.jsontag) = 'iccid' ];
+  uint32 holdid = 5 [ (gogoproto.jsontag) = 'holdid' ];
+  string apk_ver = 6 [ (gogoproto.jsontag) = 'apk_ver' ];
+}
+
+//旧版自注册响应
+message DeviceSelfRegisterOldResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  uint32 register_state = 2 [ (gogoproto.jsontag) = 'register_state' ];
+  string register_desc = 3 [ (gogoproto.jsontag) = 'register_desc' ];
+  mapgoo.paas.base.DeviceBaseInfo device_base_info = 4
+      [ (gogoproto.jsontag) = 'device_base_info' ];
+}
+
+//新版自注册请求
+message DeviceSelfRegisterReq {
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+  string original_imei = 2 [ (gogoproto.jsontag) = 'original_imei' ];
+  string app_key = 3 [ (gogoproto.jsontag) = 'app_key' ];
+  string iccid = 4 [ (gogoproto.jsontag) = 'iccid' ];
+  string apk_ver = 5 [ (gogoproto.jsontag) = 'apk_ver' ];
+  // http头版本
+  string agent_version = 6;
+}
+
+//新版自注册响应
+message DeviceSelfRegisterResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  uint32 reg_result = 2 [ (gogoproto.jsontag) = 'reg_result' ];
+  mapgoo.paas.base.DeviceBaseInfo device_base_info = 3 [ (gogoproto.jsontag) = 'device_base_info' ];
+}
+
+//获取设备参数请求
+message GetDeviceParamsReq {
+  mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //参数类型
+  string param_type=2;
+}
+
+//获取设备参数响应
+message GetDeviceParamsResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.DeviceParam dev_params = 2 [ (gogoproto.jsontag) = 'dev_params' ];
+}
+
+//设置设备参数请求
+message SetDeviceParamsReq {
+  mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  repeated mapgoo.paas.base.DeviceParam dev_params = 2 [ (gogoproto.jsontag) = 'dev_params' ];
+  repeated mapgoo.paas.base.DeviceParam update_params = 3 [ (gogoproto.jsontag) = 'update_params' ];
+  repeated mapgoo.paas.base.DeviceParam add_params = 4 [ (gogoproto.jsontag) = 'add_params' ];
+}
+
+//删除设备参数请求
+message DelDeviceParamReq {
+  mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  repeated string param_key = 2 [ (gogoproto.jsontag) = 'param_key' ];
+}
+
+//删除设备参数响应
+message DelDeviceParamResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//设置设备参数响应
+message SetDeviceParamsResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//设置设备socol信息
+message SetDeviceSocolReq {
+  mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  mapgoo.paas.base.DeviceSocolInfo device_socol = 2[ (gogoproto.jsontag) = 'device_socol' ];
+}
+
+//设置设备socol信息响应
+message SetDeviceSocolResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//保存的设备基本信息
+message SaveDeviceBaseInfo {
+  //设备IMEI
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+  //设备渠道ID
+  uint32 holdid = 2 [ (gogoproto.jsontag) = 'holdid' ];
+  //设备objectid
+  uint32 object_id = 3 [ (gogoproto.jsontag) = 'object_id' ];
+  //设备objectname
+  string object_name = 4 [ (gogoproto.jsontag) = 'object_name' ];
+  //设备Objectcode
+  uint32 object_code = 5 [ (gogoproto.jsontag) = 'object_code' ];
+  //设备类型ID
+  uint32 mdt_type_id = 6 [ (gogoproto.jsontag) = 'mdt_type_id' ];
+  //设备卡sim
+  string sim = 7 [ (gogoproto.jsontag) = 'sim' ];
+  //是否允许设备号登录
+  bool is_device_login = 8 [ (gogoproto.jsontag) = 'is_device_login' ];
+  //设备号登录密码
+  string query_passwd = 9 [ (gogoproto.jsontag) = 'query_passwd' ];
+  //产品批次
+  string product_batch = 10 [ (gogoproto.jsontag) = 'product_batch' ];
+  //设备备注
+  string remark = 11 [ (gogoproto.jsontag) = 'remark' ];
+  //设备是否上报里程
+  bool has_mileage = 13 [ (gogoproto.jsontag) = 'has_mileage' ];
+  //是否接线ACC
+  bool is_acc = 14 [ (gogoproto.jsontag) = 'is_acc' ];
+  //设备联系人
+  string contactor = 15 [ (gogoproto.jsontag) = 'contactor' ];
+  //设备联系电话
+  string contactor_tel = 16 [ (gogoproto.jsontag) = 'contactor_tel' ];
+  //设备发货地址
+  string ship = 17 [ (gogoproto.jsontag) = 'ship' ];
+  //设备
+  uint32 object_type = 19 [ (gogoproto.jsontag) = 'object_type' ];
+  // sim停机时间
+  uint32 sim_stop_time = 20 [ (gogoproto.jsontag) = 'sim_stop_time' ];
+  //设备标签
+  uint32 label = 21 [ (gogoproto.jsontag) = 'label' ];
+  //设备运营状态
+  string object_state = 22 [ (gogoproto.jsontag) = 'object_state' ];
+  uint32 device_state = 23 [ (gogoproto.jsontag) = 'device_state' ];
+  string operat = 24 [ (gogoproto.jsontag) = 'operat' ];
+  //设备appkey
+  string app_key = 25 [ (gogoproto.jsontag) = 'app_key' ];
+  // can总线状态
+  int32 can_state = 26 [ (gogoproto.jsontag) = 'can_state' ];
+  // string pruchaseOrderSN = 11;
+  // string supplierCode = 12;
+  // bool isRelay = 15;
+  // string holdName = 26;
+  // uint32 simExpire = 27;
+  // string ativeTime = 28;
+  // string expireTime = 29;
+  // string fittings = 30;
+  // string acc = 31;
+}
+
+message SaveDeviceInfoReq {
+  repeated SaveDeviceBaseInfo device_info_list = 1
+      [ (gogoproto.jsontag) = 'device_info_list' ];
+}
+
+message SaveDeviceInfoResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.DeviceInfo device_info_list = 2
+      [ (gogoproto.jsontag) = 'device_info_list' ];
+}
+
+message SaveVehicleInfo {
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+  string car_num = 2 [ (gogoproto.jsontag) = 'car_num' ];
+  uint32 brand_code = 3 [ (gogoproto.jsontag) = 'brand_code' ];
+  uint32 series_code = 4 [ (gogoproto.jsontag) = 'series_code' ];
+  uint32 veh_type_code = 5 [ (gogoproto.jsontag) = 'veh_type_code' ];
+  string vin = 6 [ (gogoproto.jsontag) = 'vin' ];
+  string engine_code = 7 [ (gogoproto.jsontag) = 'engine_code' ];
+  string veh_reg_cert = 8 [ (gogoproto.jsontag) = 'veh_reg_cert' ];
+  string veh_driving_license = 9
+      [ (gogoproto.jsontag) = 'veh_driving_license' ];
+  uint32 buy_time = 10 [ (gogoproto.jsontag) = 'buy_time' ];
+  uint32 device_install_time = 11
+      [ (gogoproto.jsontag) = 'device_install_time' ];
+  string province = 12 [ (gogoproto.jsontag) = 'province' ];
+  string city = 13 [ (gogoproto.jsontag) = 'city' ];
+}
+
+message DeleteDeviceReq {
+  uint32 holdid = 1 [ (gogoproto.jsontag) = 'holdid' ];
+  repeated uint32 object_id_list = 2 [ (gogoproto.jsontag) = 'object_id_list' ];
+  repeated string imei_list = 3 [ (gogoproto.jsontag) = 'imei_list' ];
+}
+
+message DeleteDeviceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  uint32 hoidid = 2 [ (gogoproto.jsontag) = 'hoidid' ];
+  repeated uint32 success_object_list = 3
+      [ (gogoproto.jsontag) = 'success_object_list' ];
+  repeated uint32 failed_object_list = 4
+      [ (gogoproto.jsontag) = 'failed_object_list' ];
+  repeated string success_imei_list = 5
+      [ (gogoproto.jsontag) = 'success_imei_list' ];
+  repeated string failed_imei_list = 6
+      [ (gogoproto.jsontag) = 'failed_imei_list' ];
+}
+
+message BindVehicleReq {
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+  uint32 new_vehicle_id = 2 [ (gogoproto.jsontag) = 'new_vehicle_id' ];
+  uint32 old_vehicle_id = 3 [ (gogoproto.jsontag) = 'old_vehicle_id' ];
+  string install_man = 4 [ (gogoproto.jsontag) = 'install_man' ];
+  string image_list = 5 [ (gogoproto.jsontag) = 'image_list' ];
+  string install_position = 6 [ (gogoproto.jsontag) = 'install_position' ];
+  uint32 holdid = 7 [ (gogoproto.jsontag) = 'holdid' ];
+  mapgoo.paas.base.RequestUserInfo user_info = 8
+      [ (gogoproto.jsontag) = 'user_info' ];
+}
+
+/*
+message ReleaseBindReq
+{
+    uint32 objectID = 1;
+    uint32 vehicleID = 2;
+    uint32 operateUserID = 3;
+    string operateTime = 4;
+    string operateReason = 5;
+    uint32 objectHoldID = 6;
+    uint32 holdid = 7;
+    mapgoo.paas.base.RequestUserInfo userinfo = 8;
+}
+
+message BindVehicleResp
+{
+    uint32 objectID = 1;
+    uint32 newVehicleID = 2;
+    uint32 oldVehicleID = 3;
+}
+*/
+
+message MoveDeviceReq {
+  uint32 old_hold_id = 1 [ (gogoproto.jsontag) = 'old_hold_id' ];
+  uint32 new_hold_id = 2 [ (gogoproto.jsontag) = 'new_hold_id' ];
+  repeated uint32 object_list = 3 [ (gogoproto.jsontag) = 'object_list' ];
+}
+
+message MoveDeviceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  uint32 old_hold_id = 2 [ (gogoproto.jsontag) = 'old_hold_id' ];
+  uint32 new_hold_id = 3 [ (gogoproto.jsontag) = 'new_hold_id' ];
+  repeated uint32 success_object_list = 4
+      [ (gogoproto.jsontag) = 'success_object_list' ];
+  repeated uint32 failed_object_list = 5
+      [ (gogoproto.jsontag) = 'failed_object_list' ];
+}
+
+message MoveHoldDeviceReq {
+  uint32 holdid = 1 [ (gogoproto.jsontag) = 'holdid' ];
+  uint32 old_parent_holdId = 2 [ (gogoproto.jsontag) = 'old_parent_holdId' ];
+  uint32 new_parent_holdId = 3 [ (gogoproto.jsontag) = 'new_parent_holdId' ];
+}
+
+message MoveHoldDeviceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+message SearchDeviceReq {
+  DeviceSearchType search_type = 1 [ (gogoproto.jsontag) = 'search_type' ];
+  uint32 holdid = 2 [ (gogoproto.jsontag) = 'holdid' ];
+  string keywords = 3 [ (gogoproto.jsontag) = 'keywords' ];
+  uint32 keyvalues = 4 [ (gogoproto.jsontag) = 'keyvalues' ];
+  mapgoo.paas.base.PageBaseInfo page_info = 5;
+}
+
+message SearchDeviceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  uint32 total = 2 [ (gogoproto.jsontag) = 'total' ];
+  uint32 pageNo = 3 [ (gogoproto.jsontag) = 'pageNo' ];
+  uint32 pageSize = 4 [ (gogoproto.jsontag) = 'pageSize' ];
+  repeated mapgoo.paas.base.DeviceInfo device_info_list = 5
+      [ (gogoproto.jsontag) = 'device_info_list' ];
+}
+
+enum DeviceLogOperate {
+  LoginUnkown = 0;
+  LoginWeb = 1001;
+  LoginApp = 1002;
+  AddObject = 1101;
+  DelObject = 1102;
+  UpdateObject = 1103;
+  ImportObject = 1105;
+  SignObject = 1106;
+  SendCommond = 1107;
+  ActiveObject = 1108;
+  AddHold = 1201;
+  DelHold = 1202;
+  UpdateHold = 1203;
+  MoveHold = 1205;
+  BindVehicle = 1301;
+  ReleaseBind = 1302;
+  MoveObject = 1303;
+  AddGroup = 1401;
+  DeleteGroup = 1402;
+  EditGroup = 1403;
+  ManageGroup = 1404;
+  RemoveAlarm = 1501;
+  EditVehicle = 1502;
+}
+
+message GetDeviceImeiByIdsReq {
+  repeated uint32 object_id_list = 1 [ (gogoproto.jsontag) = 'object_id_list' ];
+}
+
+message GetDeviceImeiByIdsResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  map<uint32, string> mapId4imei = 2 [ (gogoproto.jsontag) = 'mapId4imei' ];
+}
+
+message GetDeviceIdByImeisReq {
+  repeated string iemi_list = 1 [ (gogoproto.jsontag) = 'iemi_list' ];
+}
+
+message GetDeviceIdByImeisResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  map<string, uint32> mapImei4Id = 2 [ (gogoproto.jsontag) = 'mapImei4Id' ];
+}
+
+message DeviceWebUserLog {
+  uint32 user_id = 1 [ (gogoproto.jsontag) = 'user_id' ];
+  uint32 holdid = 2 [ (gogoproto.jsontag) = 'holdid' ];
+  DeviceLogOperate operate = 3 [ (gogoproto.jsontag) = 'operate' ];
+  uint32 param = 4 [ (gogoproto.jsontag) = 'param' ];
+  string operate_desc = 5 [ (gogoproto.jsontag) = 'operate_desc' ];
+  string ip = 6 [ (gogoproto.jsontag) = 'ip' ];
+}
+
+message DeviceUserLog {
+  uint32 user_id = 1 [ (gogoproto.jsontag) = 'user_id' ];
+  string operate_desc = 2 [ (gogoproto.jsontag) = 'operate_desc' ];
+  uint32 app_type = 3 [ (gogoproto.jsontag) = 'app_type' ];
+  string ip = 4 [ (gogoproto.jsontag) = 'ip' ];
+  string version = 5 [ (gogoproto.jsontag) = 'version' ];
+  string browse_version = 6 [ (gogoproto.jsontag) = 'browse_version' ];
+}
+
+message DeviceOptionInfo {
+  uint32 object_id = 1;
+  string imei = 2;
+  bool is_acc = 3;  //是否接ACC线
+  int32 is_obd = 4; //是否为OBD设备
+  bool has_mileage = 5;
+  mapgoo.paas.base.DeviceOpState opState = 6; //设备运营状态
+  string baiduDevNo = 7;                      //百度ID
+  string baiduServerId = 8;                   //百度注册服务ID
+  string tencentDevNo = 9;                    //腾讯ID
+  string tencentServerId = 10;                //腾讯注册服务ID
+}
+
+message DeviceProtocol {
+  string imei = 1;
+  uint32 object_id = 2;
+  string protocol = 3;
+}
+
+message RenewDeviceReq {
+  repeated uint32 objectids = 1; //续费的设备ID列表
+  uint32 unit = 2;               //续费的时间单位
+  uint32 count = 3;              //续费的单位时间
+}
+
+message SocolImei {
+  uint32 source = 1;
+  string imei = 2;
+}
+
+message AddDeviceEfenceReq {
+  repeated mapgoo.paas.base.EfenceInfo efence_info_list = 1;
+}
+
+message AddDeviceEfenceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.EfenceInfo efence_info_list = 2;
+}
+
+message DelDeviceEfenceReq {
+  repeated mapgoo.paas.base.EfenceInfo efence_info_list = 1;
+}
+
+message DelDeviceEfenceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.EfenceInfo efence_info_list = 2;
+}
+
+message UpdateDeviceEfenceReq {
+  repeated mapgoo.paas.base.EfenceInfo efence_info_list = 1;
+}
+
+message UpdateDeviceEfenceResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.EfenceInfo efence_info_list = 2;
+}
+
+message UpdateDeviceSettingReq {
+  mapgoo.paas.base.DeviceSettingInfo setting_info = 1;
+}
+
+message UpdateDeviceSettingResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+message GetDeviceSettingReq {
+  repeated mapgoo.paas.base.DeviceId device_id = 1;
+}
+
+message GetDeviceSettingResp {
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated mapgoo.paas.base.DeviceSettingInfo setting_info_list = 2;
+}
+
+// 上传视频设备信息请求
+message UploadDeviceVedioInfoData {
+  // IMEI号
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+  // SSVID
+  string ssvid = 2 [ (gogoproto.jsontag) = 'ssvid' ];
+  // 状态,1.在线,0.离线
+  uint32 status = 3 [ (gogoproto.jsontag) = 'status' ];
+  // 设备类型,1.大屏机,2.后视镜,3.其他类型
+  uint32 device_type = 4 [ (gogoproto.jsontag) = 'device_type' ];
+  // Token
+  string token = 5 [ (gogoproto.jsontag) = 'token' ];
+  // SSVID数量
+  uint32 ssvid_count = 6 [ (gogoproto.jsontag) = 'ssvid_count' ];
+}
+
+// 设备IMEI参数通用请求实体
+message DeviceIMEIFieldReq {
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+}
+
+// 更新设备原始IMEI接口请求
+message SyncOriginalImeiReq {
+  // IMEI号
+  string imei = 1;
+}
+
+// 更新设备原始IMEI接口请求
+message SyncOriginalImeiResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//激活状态实体
+message DeviceActiveStateData {
+  // can状态
+  uint32 can_state = 1 [ (gogoproto.jsontag) = 'CanState' ];
+
+  //设备所属渠道ID
+  uint32 hold_id = 2 [ (gogoproto.jsontag) = 'HoldID' ];
+
+  //设备ID
+  uint32 object_id = 3 [ (gogoproto.jsontag) = 'objectID' ];
+
+  //设备上卡的iccid
+  string iccid = 4 [ (gogoproto.jsontag) = 'iccid' ];
+
+  //激活的流量卡套餐名称
+  string active_pg_name = 5 [ (gogoproto.jsontag) = 'active_pg_name' ];
+}
+
+//上传设备APK应用信息参数
+message UploadDeviceAppInfoReq {
+  //车辆设备的IMEI
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+
+  //设备ID、目标ID
+  uint32 object_id = 2 [ (gogoproto.jsontag) = 'objectID' ];
+
+  //固件代码
+  string firmware_code = 3 [ (gogoproto.jsontag) = 'firmwareCode' ];
+
+  //应用程序版本
+  string app_version = 4 [ (gogoproto.jsontag) = 'app_version' ];
+
+  //安卓用户ID
+  uint32 android_user_id = 5 [ (gogoproto.jsontag) = 'android_user_id' ];
+
+  //应用程序包名称
+  string app_package_name = 6 [ (gogoproto.jsontag) = 'app_package_name' ];
+
+  //版本代码
+  string version_code = 7 [ (gogoproto.jsontag) = 'version_code' ];
+
+  //安装路径
+  string install_path = 8 [ (gogoproto.jsontag) = 'install_path' ];
+
+  //应用程序名称
+  string app_name = 9 [ (gogoproto.jsontag) = 'app_name' ];
+
+  //固件版本代码
+  string fireware_code = 10 [ (gogoproto.jsontag) = 'firewareCode' ];
+
+  //操作系统类型
+  string os_type = 11 [ (gogoproto.jsontag) = 'os_type' ];
+
+  //系统版本号
+  string os_ver = 12 [ (gogoproto.jsontag) = 'os_ver' ];
+
+  //设备清晰度
+  string device_dpi = 13 [ (gogoproto.jsontag) = 'device_dpi' ];
+
+  //方案商
+  string sys_maker = 14 [ (gogoproto.jsontag) = 'sys_maker' ];
+
+  //中央处理器指令集
+  string cpu = 15 [ (gogoproto.jsontag) = 'cpu' ];
+
+  //频率,单位MHZ
+  string cpuz = 16 [ (gogoproto.jsontag) = 'cpuz' ];
+
+  // T卡总空间，MB
+  string total_space = 17 [ (gogoproto.jsontag) = 'total_space' ];
+
+  //剩余空间，MB
+  string free_space = 18 [ (gogoproto.jsontag) = 'free_space' ];
+
+  // ICCID号
+  string iccid = 19 [ (gogoproto.jsontag) = 'iccid' ];
+
+  //硬件厂商
+  string hard_maker = 20 [ (gogoproto.jsontag) = 'hard_maker' ];
+
+  //产品编号
+  string product = 21 [ (gogoproto.jsontag) = 'product' ];
+
+  //更新时间
+  string updated_time = 22;
+
+  //SD卡状态：0正常，1异常
+  uint32 sd_state = 23 [ (gogoproto.jsontag) = 'sd_state' ];
+
+  //lock文件总量（单位kb）
+  string sd_lock_folder = 24 [ (gogoproto.jsontag) = 'sd_lock_folder' ];
+
+  //总容量（单位kb）
+  string sd_total_space = 25 [ (gogoproto.jsontag) = 'sd_total_space' ];
+
+  //剩余容量（单位kb）
+  string sd_free_space = 26 [ (gogoproto.jsontag) = 'sd_free_space' ];
+
+  //内置总容量（单位kb）
+  string device_total_space = 27 [ (gogoproto.jsontag) = 'device_total_space' ];
+
+  //内置剩余容量（单位kb）
+  string device_free_space = 28 [ (gogoproto.jsontag) = 'device_free_space' ];
+
+  // 是否有剩余空间 1 有 0 没有
+  uint32 is_surplus_space = 29 [ (gogoproto.jsontag) = 'is_surplus_space' ];
+}
+
+//上传摄像头通道参数
+message UploadDeviceCameraInfoReq {
+  //车辆设备的IMEI
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+
+  //摄像头通道号
+  repeated int32 channel = 2 [ (gogoproto.jsontag) = 'channel' ];
+}
+
+// 设备自注册新增保存数据方法请求
+message SaveDeviceSelfRegInfoReq {
+  //设备IMEI
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+  //卡iccid
+  string iccid = 2 [ (gogoproto.jsontag) = 'iccid' ];
+  //设备类型id
+  uint32 mdt_type_id = 3 [ (gogoproto.jsontag) = 'mdttypeid' ];
+  //渠道ID
+  uint32 hold_id = 4 [ (gogoproto.jsontag) = 'holdid' ];
+  //产品批次
+  string lincese = 5 [ (gogoproto.jsontag) = 'lincese' ];
+  //设备机身IMEI
+  string original_imei = 6 [ (gogoproto.jsontag) = 'original_imei' ];
+  //agent版本号
+  string agent_version = 7 [ (gogoproto.jsontag) = 'agent_version' ];
+  //渠道key
+  string app_key = 8 [ (gogoproto.jsontag) = 'app_key' ];
+}
+// 设备自注册新增保存数据方法返回
+message SaveDeviceSelfRegInfoResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  uint32 object_id = 2 [ (gogoproto.jsontag) = 'ObjectID' ];
+}
+
+// 修改设备自注册信息请求
+message UpdateDeviceSelfRegInfoReq {
+  string imei = 1 [ (gogoproto.jsontag) = 'IMEI' ];
+  string sim = 2 [ (gogoproto.jsontag) = 'SIM' ];
+  uint32 mdt_type_id = 3 [ (gogoproto.jsontag) = 'MdtTypeID' ];
+  string app_key = 4 [ (gogoproto.jsontag) = 'app_key' ];
+  uint32 hold_id = 5 [ (gogoproto.jsontag) = 'HoldID' ];
+  string lincese = 6 [ (gogoproto.jsontag) = 'Lincese' ];
+  string original_imei = 7 [ (gogoproto.jsontag) = 'OriginalIMEI' ];
+  // http头版本号
+  string agent_version = 8 [ (gogoproto.jsontag) = 'AgentVersion' ];
+  string product_batch = 9 [ (gogoproto.jsontag) = 'ProductBatch' ];
+}
+// 修改设备自注册方法返回
+message UpdateDeviceSelfRegInfoResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  string imei = 2 [ (gogoproto.jsontag) = 'IMEI' ];
+  string app_key = 3 [ (gogoproto.jsontag) = 'app_key' ];
+}
+
+// 设备自注册请求字段
+message DeviceSelfRegFields {
+  string imei = 1 [ (gogoproto.jsontag) = 'imei' ];
+  string original_imei = 2 [ (gogoproto.jsontag) = 'original_imei' ];
+  uint32 hold_id = 3 [ (gogoproto.jsontag) = 'HoldID' ];
+  uint32 object_id = 4 [ (gogoproto.jsontag) = 'ObjectID' ];
+  uint32 mdt_type_id = 5 [ (gogoproto.jsontag) = 'MdtTypeID' ];
+  string app_key = 6 [ (gogoproto.jsontag) = 'app_key' ];
+  string iccid = 7 [ (gogoproto.jsontag) = 'iccid' ];
+  string product_batch = 8 [ (gogoproto.jsontag) = 'ProductBatch' ];
+}
+
+//设备视频信息参数
+message DeviceVideoInfo {
+  //设备ssvid
+  uint32 carmera_id = 1;
+
+  //设备imei
+  string imei = 2;
+
+  //摄像头个数
+  uint32 camera_count = 3;
+}
+
+//获取设备摄像头信息参数
+message GetDeviceVideoInfoReq {
+  mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+}
+
+//获取设备摄像头信息结果
+message GetDeviceVideoInfoResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  // IMEI对象的设备摄像头信息
+  DeviceVideoInfo video_info = 2;
+}
+
+// 根据IMEI获取objectId请求
+message GetObjectIdByImeiReq {
+  // IMEI号
+  string imei = 1;
+}
+// 根据IMEI获取objectId返回
+message GetObjectIdByImeiResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 设备id
+    uint32 object_id = 2;
+}
+
+// 设备APP版本信息
+message DeviceAppVerInfo
+{
+    //设备ID、目标ID
+	uint32 object_id = 1 [(gogoproto.jsontag) = 'ObjectID'];
+	//应用程序名称
+	string app_name = 2 [(gogoproto.jsontag) = 'app_name'];
+	//应用程序版本
+	string app_version = 3 [(gogoproto.jsontag) = 'app_version'];
+	//应用程序包名称
+	string app_package_name = 4 [(gogoproto.jsontag) = 'app_package_name'];
+	//版本代码
+	string version_code = 6 [(gogoproto.jsontag) = 'version_code'];
+	//固件代码
+	string firmware_code = 7 [(gogoproto.jsontag) = 'firmwareCode'];
+	//操作系统类型
+	string os_type = 8 [(gogoproto.jsontag) = 'os_type'];
+	//系统版本号
+	string os_ver = 9 [(gogoproto.jsontag) = 'os_ver'];
+	//设备清晰度
+	string device_dpi = 10 [(gogoproto.jsontag) = 'device_dpi'];
+	//方案商
+	string sys_maker = 11 [(gogoproto.jsontag) = 'sys_maker'];
+	//硬件厂商
+    string hard_maker = 12 [(gogoproto.jsontag) = 'hard_maker'];
+    //中央处理器指令集
+    string cpu = 13 [(gogoproto.jsontag) = 'cpu'];
+    //频率,单位MHZ
+    string cpuz = 14 [(gogoproto.jsontag) = 'cpuz'];
+    // T卡总空间，MB
+    uint32 total_space = 15 [(gogoproto.jsontag) = 'total_space'];
+    //剩余空间，MB
+    uint32 free_space = 16 [(gogoproto.jsontag) = 'free_space'];
+    //SD卡状态：0正常，1异常
+    uint32 sd_state = 17 [(gogoproto.jsontag) = 'sd_state'];
+    //lock文件总量（单位kb）
+    string sd_lock_folder = 18 [(gogoproto.jsontag) = 'sd_lock_folder'];
+    //总容量（单位kb）
+    string sd_total_space = 19 [(gogoproto.jsontag) = 'sd_total_space'];
+    //剩余容量（单位kb）
+    string sd_free_space = 20 [(gogoproto.jsontag) = 'sd_free_space'];
+    //内置总容量（单位kb）
+    string device_total_space = 21 [(gogoproto.jsontag) = 'device_total_space'];
+    //内置剩余容量（单位kb）
+    string device_free_space = 22 [(gogoproto.jsontag) = 'device_free_space'];
+    // 是否有剩余空间 1 有 0 没有
+    uint32 is_surplus_space = 23 [(gogoproto.jsontag) = 'is_surplus_space'];
+
+}
+
+// openApi设备基本信息参数
+message GetDeviceBaseInfoApiReq {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.moretags) = 'form:"device_id"' ];
+  //应用KEY
+  string app_key = 2 [ (gogoproto.moretags) = 'form:"appkey"' ];
+}
+
+// openApi设备基本信息结果
+message GetDeviceBaseInfoEntity {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+
+  //设备名称
+  string device_name = 2 [ (gogoproto.jsontag) = 'device_name' ];
+
+  // ICCID
+  string iccid = 3 [ (gogoproto.jsontag) = 'iccid' ];
+
+  //设备类型ID
+  uint32 type_id = 4 [ (gogoproto.jsontag) = 'typeid' ];
+
+  //设备型号
+  string brand = 5 [ (gogoproto.jsontag) = 'brand' ];
+
+  //设备厂家
+  string factory = 6 [ (gogoproto.jsontag) = 'factory' ];
+
+  //设备运营状态
+  uint32 ops_state = 7 [ (gogoproto.jsontag) = 'ops_state' ];
+
+  //设备摄像头状态
+  uint32 camera_count = 8 [ (gogoproto.jsontag) = 'camera_count' ];
+
+  //设备创建时间
+  string create_time = 9 [ (gogoproto.jsontag) = 'create_time' ];
+
+  //设备修改时间
+  string update_time = 10 [ (gogoproto.jsontag) = 'update_time' ];
+
+  //设备激活时间
+  string active_time = 11 [ (gogoproto.jsontag) = 'active_time' ];
+  //已经启用的通道号列表
+  repeated uint32 camera_channel = 12[ (gogoproto.jsontag) = 'camera_channel' ];
+}
+
+// openApi设备基本信息结果
+message GetDeviceBaseInfoApiResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //设备基本信息
+  GetDeviceBaseInfoEntity base_info = 2;
+}
+
+//设备摄像头信息
+message DeviceCameraInfo {
+  //设备Id
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+  //摄像头通道号
+  int32 channel = 2 [ (gogoproto.jsontag) = 'channel' ];
+  //摄像头通道名称
+  string channel_name = 3 [ (gogoproto.jsontag) = 'channel_name' ];
+  //摄像头类型
+  int32 channel_type = 4 [ (gogoproto.jsontag) = 'channel_type' ];
+  //摄像头类型id
+  int32 channel_typeid = 5 [ (gogoproto.jsontag) = 'channel_typeid' ];
+  //是否默认通道
+  bool is_default = 6 [ (gogoproto.jsontag) = 'is_default' ];
+  //状态
+  uint32 state = 7 [ (gogoproto.jsontag) = 'state' ];
+  //创建时间
+  uint64 create_time = 8 [ (gogoproto.jsontag) = 'create_time' ];
+  //更新时间
+  uint64 update_time = 9 [ (gogoproto.jsontag) = 'update_time' ];
+}
+
+//获取摄像头信息请求
+message GetDeviceCameraInfoReq {
+  //设备ID
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+}
+
+//获取摄像头信息响应
+message GetDeviceCameraInfoResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //摄像头信息
+  repeated DeviceCameraInfo camera_info_list = 2 [ (gogoproto.jsontag) = 'camera_info_list' ];
+}
+
+message UpdateDeviceCameraInfoReq {
+  //设备ID
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+
+  //无效的通道的通道号
+  repeated int32 disable_channels = 2 [ (gogoproto.jsontag) = 'disable_channels' ];
+
+  //有效的通道号
+  repeated int32 enable_channels = 3 [ (gogoproto.jsontag) = 'enable_channels' ];
+
+  //新增的通道号
+  repeated DeviceCameraInfo add_channels = 4 [ (gogoproto.jsontag) = 'add_channels' ];
+
+  //默认通道号（大于-1代表需要修改，值为修改的后的通道号，小于等于-1代表不需要修改）
+  sint32 default_channel = 5 [ (gogoproto.jsontag) = 'default_channel' ];
+}
+
+message UpdateDeviceCameraInfoResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//平台设备自注册信息参数
+message ThirdPlatformDeviceSelfRegReq {
+  //组织ID;
+  uint32 hold_id = 1;
+  //设备类型ID;
+  uint32 mdttype_id = 2;
+  //车辆设备的IMEI;
+  string imei = 3;
+  // ICCID号;
+  string iccid = 4;
+  //IMSI
+  string imsi=5;
+  //原始imei
+  string original_imei=6;
+}
+
+//平台设备自注册信息结果
+message ThirdPlatformDeviceSelfRegResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //设备ID、目标ID;
+  uint32 object_id = 2;
+}
+
+//配置参数
+message DeviceConfigParam {
+    //配置ID
+    uint64 config_id = 1 [ (gogoproto.jsontag) = 'config_id' ];
+
+    //设置ID
+    uint32 setting_id = 2 [ (gogoproto.jsontag) = 'setting_id' ];
+
+    //配置名称
+    string setting_name = 3 [ (gogoproto.jsontag) = 'setting_name' ];
+
+    //配置值
+    string setting_value = 4 [ (gogoproto.jsontag) = 'setting_value' ];
+
+    //状态 默认值或者1：启用 2：废弃
+    uint32 state = 5 [ (gogoproto.jsontag) = 'state' ];
+}
+
+//配置参数和版本信息
+message DeviceConfigInfo {
+    //设备ID
+    uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+
+    //更新时间
+    uint64 update_time = 2 [ (gogoproto.jsontag) = 'update_time' ];
+
+    //参数列表
+    repeated DeviceConfigParam param_list = 3 [ (gogoproto.jsontag) = 'param_list' ];
+}
+
+//保存和更新设备配置参数
+message SaveDeviceConfigReq {
+    //设备id
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+    //参数列表
+    repeated DeviceConfigParam param_list = 2;
+}
+
+message SaveDeviceConfigResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除设备配置参数
+message DelDeviceConfigReq {
+    //设备id
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+    //参数列表
+    repeated string setting_name_list = 2;
+}
+
+message DelDeviceConfigResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取设备配置参数
+message GetDeviceConfigReq {
+    //设备id
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+    //配置名称 默认:所有参数
+    string setting_name = 2;
+}
+
+message GetDeviceConfigResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //更新时间
+    uint64 update_time = 2;
+
+    //参数列表
+    repeated DeviceConfigParam param_list = 3;
+}
+
+//获取设备摄像头信息缓存参数结构
+message GetObjectCameraInfoCacheReq {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+}
+
+//获取设备摄像头信息缓存返回缓存结构
+message GetObjectCameraInfoInfo {
+  //禁用的摄像头通道号;
+  repeated int32 disable_channel = 1
+      [ (gogoproto.moretags) = 'redis:"camera:disable_channel"' ];
+  //启用的摄像头通道号;
+  repeated int32 enable_channel = 2
+      [ (gogoproto.moretags) = 'redis:"camera:enable_channel"' ];
+  //默认的摄像头通道号;
+  int32 default_channel = 3
+      [ (gogoproto.moretags) = 'redis:"camera:default_channel"' ];
+}
+
+//获取设备摄像头信息缓存缓存结果
+message GetObjectCameraInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //缓存信息
+  GetObjectCameraInfoInfo info = 2;
+}
+
+//设置设备摄像头信息缓存参数结构
+message SetObjectCameraInfoCacheReq {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //缓存参数信息
+  GetObjectCameraInfoInfo info = 2;
+}
+
+//设置设备摄像头信息缓存缓存结果
+message SetObjectCameraInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// dms获取摄像头信息请求
+message GetDeviceCameraListReq {
+  //设备ID
+  uint32 object_id = 1 [ (gogoproto.moretags) = 'form:"object_id"' ];
+  //状态
+  int32 state = 2 [ (gogoproto.moretags) = 'form:"state"' ];
+}
+
+// dms获取摄像头信息响应
+message GetDeviceCameraListResp {
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //摄像头通道信息
+  repeated CameraChannel camera_channel_list = 2
+      [ (gogoproto.jsontag) = 'camera_channel_list' ];
+}
+
+//摄像头通道信息
+message CameraChannel {
+  //摄像头通道号
+  int32 channel = 1 [ (gogoproto.jsontag) = 'channel' ];
+  //是否默认通道
+  bool is_default = 2 [ (gogoproto.jsontag) = 'is_default' ];
+  //状态
+  uint32 state = 3 [ (gogoproto.jsontag) = 'state' ];
+  //创建时间
+}

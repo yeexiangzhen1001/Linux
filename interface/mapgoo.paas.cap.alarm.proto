@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.alarm;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.alarm.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//获取设备实时告警
+message GetCacheDeviceAlarmReq
+{
+	//设备id
+    uint32 object_id = 1;
+
+	//告警标识id
+    uint32 alarm_type_id = 2;
+
+	//告警区域id
+	int64 polygon_id = 3;
+}
+
+message GetCacheDeviceAlarmResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//实时告警信息
+    mapgoo.paas.alarm.CurrAlarm alarm = 2;
+}
+
+//告警
+service DeviceAlarmCacheProxy
+{
+    //获取设备实时告警
+	rpc getDeviceAlarm(GetCacheDeviceAlarmReq) returns (GetCacheDeviceAlarmResp) {
+        option (google.api.http) = {
+            get:"/cap/alarm/getDeviceAlarm"
+        };
+    };                              
+}
+

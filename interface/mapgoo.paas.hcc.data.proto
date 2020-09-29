@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package mapgoo.paas.hcc.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+
+//获取设备号
+message GetSocolDeviceNoReq
+{
+	//源类型
+	uint32 source = 1;
+
+	//设备imei
+	string imei = 2;
+}
+
+message GetSocolDeviceNoResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+
+	//设备号
+	string device_no = 2;
+}

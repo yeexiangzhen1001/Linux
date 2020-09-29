@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+import public "mapgoo.base.info.proto";
+import public "mapgoo.device.proto";
+import public "mapgoo.simcard.proto";
+import public "mapgoo.user.proto";
+import public "mapgoo.product.proto";
+import public "mapgoo.alarm.proto";
+import public "mapgoo.travel.proto";
+import public "mapgoo.status.proto";
+
+package mapgoo.cap;
+
+//更新设备实时状态信息
+message updateDeviceStatusReq
+{
+    mapgoo.status.OriginalTrackInfo track_info = 1;
+}
+
+message updateDeviceStatusResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+}
+
+//更新设备实时轨迹信息（gps、wifi、基站等）
+message updateDeviceTrackReq
+{
+    uint32 objectid = 1;
+    mapgoo.status.GPSInfo track_info = 2;
+}
+
+message updateDeviceTrackResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+}
+
+//更新设备实时告警结果
+message updateDeviceAlarmResultReq
+{
+    uint32 objectid = 1;
+    mapgoo.status.AlarmResult alarm_info = 2;
+}
+
+message updateDeviceAlarmResultResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+}
+
+//获取设备实时轨迹、状态信息
+message getDeviceTrackReq
+{
+    uint32 objectid = 1;
+}
+
+message getDeviceTrackResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+    mapgoo.status.TrackInfo track = 2;
+}
+
+//更新设备实时行政区
+message updateDeviceRegionReq
+{
+    uint32 objectid = 1;
+    mapgoo.status.AdminRegion region_info = 2;
+}
+
+message updateDeviceRegionResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+}
+
+//更新设备实时路由信息
+message updateDeviceRouterReq
+{
+    mapgoo.status.RouterInfo router = 1;
+}
+
+message updateDeviceRouterResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+}
+
+//获取设备实时路由信息
+message getDeviceRouterReq
+{
+    uint32 objectid = 1;
+}
+
+message getDeviceRouterResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+    mapgoo.status.RouterInfo router = 2;
+}
+
+//更新设备实时行程
+message updateDeviceTravelReq
+{
+    uint32 objectid = 1;
+    mapgoo.travel.TravelInfo travel = 2;
+}
+
+message updateDeviceTravelResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+}
+
+//获取设备实时行程
+message getDeviceTravelReq
+{
+    uint32 objectid = 1;
+}
+
+message getDeviceTravelResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+    uint32 objectid = 2;
+    mapgoo.travel.TravelInfo travel = 3;
+}
+
+//获取设备实时告警
+message getDeviceAlarmReq
+{
+    uint32 objectid = 1;
+    uint32 alarm_typeid = 2;
+	uint32 polygonid = 3;
+}
+
+message getDeviceAlarmResp
+{
+    mapgoo.base.info.BaseRespInfo rnt = 1;
+    mapgoo.alarm.CurrAlarm alarm = 2;
+}
+
+//轨迹、状态、告警、路由
+service DeviceTrackCache
+{
+    //轨迹
+    rpc getDeviceTrackInfo(getDeviceTrackReq) returns (getDeviceTrackResp);                         //获取设备实时轨迹、状态信息
+	rpc updateDeviceStatus(updateDeviceStatusReq) returns (updateDeviceStatusResp);                 //更新设备实时状态信息
+    rpc updateDeviceTrack(updateDeviceTrackReq) returns (updateDeviceTrackResp);                    //更新设备实时轨迹信息（gps、wifi、基站等）
+
+	//告警结果
+    rpc updateDeviceAlarmResult(updateDeviceAlarmResultReq) returns (updateDeviceAlarmResultResp);  //更新设备实时告警结果
+
+    //路由
+    rpc updateDeviceRouter(updateDeviceRouterReq) returns (updateDeviceRouterResp);                 //更新设备实时路由信息
+    rpc getDeviceRouter(getDeviceRouterReq) returns (getDeviceRouterResp);                          //获取设备实时路由信息
+
+    //行政区
+    rpc updateDeviceRegion(updateDeviceRegionReq) returns (updateDeviceRegionResp);                 //更新设备实时行政区
+
+}
+
+//行程
+service DeviceTravelCache
+{
+	rpc updateDeviceTravel(updateDeviceTravelReq) returns (updateDeviceTravelResp);                 //更新设备实时行程
+    rpc getDeviceTravel(getDeviceTravelReq) returns (getDeviceTravelResp);                          //获取设备实时行程
+}
+
+//告警
+service DeviceAlarmCache
+{
+    rpc getDeviceAlarm(getDeviceAlarmReq) returns (getDeviceAlarmResp);                             //获取设备实时告警
+}
+

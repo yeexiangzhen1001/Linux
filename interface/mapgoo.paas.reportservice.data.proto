@@ -1,0 +1,2975 @@
+syntax = "proto3";
+
+import "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.reportservice.data;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+//查询报警明细记录参数结构
+message SearchAlarmDetailParam {
+  //告警ID;
+  repeated uint64 alarm_id = 1;
+  //停止状态;
+  string stop_status_des = 2;
+  //报警类型ID;
+  repeated uint32 alarm_type_id = 3;
+  //设备ID、目标ID;
+  repeated uint32 object_id = 4;
+  //目标设备名称(如:车牌号码);
+  string object_name = 5;
+  //开始接收时间;
+  uint32 begin_rcv_time = 6;
+  //结束接收时间;
+  uint32 end_rcv_time = 7;
+  //处理状态;
+  string disp_state = 8;
+  //定位时间;
+  uint32 gpstime = 9;
+  //事件或报警发生时间;
+  uint32 rcv_time = 10;
+  //开始定位时间;
+  uint32 begin_gpstime = 11;
+  //结束定位时间;
+  uint32 end_gpstime = 12;
+  //处警状态(关联处理表);
+  bool handle_alarm_status = 13;
+  //报警描述;
+  repeated string alarm_desc = 14;
+  //排除忽略状态记录;
+  bool without_ignore_state = 15;
+  //不存在的报警ID;
+  repeated uint32 no_alarm_type_id = 16;
+  //查询直属渠道ID列表;
+  repeated uint32 hold_id_list = 17;
+  //组织ID(包含子级）;
+  uint32 hold_id = 18;
+  //渠道级别;
+  uint32 hold_level = 19;
+  //大于等于报警时差秒数(overtime-starttime);
+  uint32 begin_alarm_period = 20;
+  //设备类型ID;
+  repeated  uint32 mdttype_id=21;
+  //小于等于报警时差秒数(overtime-starttime);
+  uint32 end_alarm_period = 22;
+  //已读状态，0：忽略 1：为未读 2：已读
+  uint32 is_read = 23;
+  //最近多少米
+  uint32 distance = 24;
+  //经度;!!!参数需要乘以1000000
+  int32 lon = 25;
+  //纬度;!!!参数需要乘以1000000
+  int32 lat = 26;
+}
+
+//分页查询查询报警明细记录参数
+message SearchAlarmDetailDBReq {
+  //查询参数
+  SearchAlarmDetailParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询报警明细记录返回结果结构
+message SearchAlarmDetailEntity {
+  //告警ID;
+  uint64 alarm_id = 1;
+  //设备ID、目标ID;
+  uint32 object_id = 2;
+  //报警类型ID;
+  uint32 alarm_type_id = 3;
+  //报警描述;
+  string alarm_desc = 4;
+  //目标设备名称(如:车牌号码);
+  string object_name = 5;
+  //车辆设备的IMEI;
+  string imei = 6;
+  //全天联系人;
+  string allday_contacter = 7;
+  //已读状态;
+  bool is_read = 8;
+  //围栏ID;
+  uint32 polygon_id = 9;
+  //当前位置;
+  string cur_location = 10;
+  //状态描述;
+  string status_des = 11;
+  //速度;!!!注意结果需要除以100
+  uint32 speed = 12;
+  //方向;
+  uint32 direct = 13;
+  //持续时间;
+  uint32 over_time = 14;
+  //通知用户;
+  uint32 notice_user_id = 15;
+  //处理时间;
+  uint32 process_time = 16;
+  //停止接收时间;
+  uint32 stop_rcv_time = 17;
+  //停止GPS时间;
+  uint32 stop_gpstime = 18;
+  //结束纬度;!!!注意结果需要除以1000000
+  int32 stop_lat = 19;
+  //结束经度;!!!注意结果需要除以1000000
+  int32 stop_lon = 20;
+  //停止当前位置;
+  string stop_cur_location = 21;
+  //原始纬度;!!!注意结果需要除以1000000
+  int32 lat = 22;
+  //原始经度;!!!注意结果需要除以1000000
+  int32 lon = 23;
+  //报警类型;
+  string alarm_type = 24;
+  //事件或报警发生时间;
+  uint32 rcv_time = 25;
+  //定位模式;
+  uint32 gpsflag = 26;
+  //查询日期;
+  uint32 the_day = 27;
+  //警报确认;
+  bool alarm_confirm = 28;
+  //处理状态;
+  uint32 disp_state = 29;
+  //设备类型ID;
+  uint32 mdttype_id = 30;
+  //组织ID;
+  uint32 hold_id = 31;
+  //定位时间;
+  uint32 gpstime = 32;
+}
+
+//查询报警明细记录结果
+message SearchAlarmDetailDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchAlarmDetailEntity record_list = 3;
+}
+
+//查询行程明细参数结构
+message SearchTravelInfoParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //行程时长大于秒;
+  uint32 travel_period = 2;
+  //开始时间;
+  uint32 begin_start_time = 3;
+  //车辆设备的IMEI;
+  string imei = 4;
+  //结束时间;
+  uint32 end_start_time = 5;
+  //渠道ID;
+  uint32 hold_id = 6;
+  //渠道级别;
+  uint32 hold_level = 7;
+  //开始查询时间;
+  uint32 begin_the_day = 8;
+  //结束查询时间;
+  uint32 end_the_day = 9;
+  //开始结束时间;
+  uint32 begin_stop_time = 10;
+  //结束结束时间;
+  uint32 end_stop_time = 11;
+  //行程时长小于秒;
+  uint32 less_travel_period = 12;
+  //开始和结束在同个月内;
+  bool in_every_month = 13;
+  //行程油量;!!!参数需要乘以100
+  int32 travel_oil = 14;
+  //行程里程;!!!参数需要乘以100
+  int32 travel_mileage = 15;
+  //是否需要查询设备信息
+  bool need_search_object_info = 16;
+  //是否隐藏,传递-1条件不启用。
+  int32 is_hide = 17;
+  //是否查询有评分的记录,true启用条件
+  bool has_score = 18;
+}
+
+//分页查询查询行程明细参数
+message SearchTravelInfoDBReq {
+  //查询参数
+  SearchTravelInfoParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询行程明细返回结果结构
+message SearchTravelInfoEntity {
+  //记录ID;
+  uint64 rec_id = 1;
+  //开始时间;
+  uint32 start_time = 2;
+  //开始经度;!!!注意结果需要除以1000000
+  int32 start_lon = 3;
+  //开始纬度;!!!注意结果需要除以1000000
+  int32 start_lat = 4;
+  //结束经度;!!!注意结果需要除以1000000
+  int32 stop_lon = 5;
+  //结束纬度;!!!注意结果需要除以1000000
+  int32 stop_lat = 6;
+  //停止位置;
+  string stop_pos = 7;
+  //结束时间;
+  uint32 stop_time = 8;
+  //启用;
+  uint32 enabled = 9;
+  //超速次数;
+  uint32 over_speed_count = 10;
+  //行程里程;!!!注意结果需要除以100
+  uint64 travel_mileage = 11;
+  //行程油量;!!!注意结果需要除以100
+  uint64 travel_oil = 12;
+  //行程时长;
+  uint32 travel_period = 13;
+  //加速数;
+  uint32 celerate_count = 14;
+  //减速数;
+  uint32 decelerate_count = 15;
+  //停车Acc开关次数;
+  uint32 stop_accon_count = 16;
+  //评分;
+  uint32 score = 17;
+  //急转弯次数;
+  uint32 sharp_turn_count = 18;
+  //开始位置;
+  string start_pos = 19;
+  //设备ID、目标ID;
+  uint32 object_id = 20;
+  //故障数;
+  uint32 bdcount = 21;
+  //故障代码;
+  string bdcode = 22;
+  //起始里程;!!!注意结果需要除以1000
+  uint64 start_mileage = 23;
+  //备注;
+  string remark = 24;
+  //查询日期;
+  uint32 the_day = 25;
+  //平均速度;
+  uint32 avg_speed = 26;
+  //最大速度;
+  uint32 max_speed = 27;
+  //行驶时间;
+  uint32 drive_period = 28;
+}
+
+//查询行程明细结果
+message SearchTravelInfoDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchTravelInfoEntity record_list = 3;
+}
+
+//查询行程事件参数结构
+message SearchTravelEventParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //定位时间;
+  uint32 gpstime = 2;
+  //开始定位时间;
+  uint32 begin_gpstime = 3;
+  //结束定位时间;
+  uint32 end_gps_time = 4;
+  //开始接收时间;
+  uint32 begin_the_day = 5;
+  //结束接收时间;
+  uint32 end_the_day = 6;
+  //查询日期;
+  uint32 the_day = 7;
+  //记录ID;
+  uint64 rec_id = 8;
+  //渠道ID;
+  uint32 hold_id = 9;
+  //渠道级别;
+  uint32 hold_level = 10;
+  //事件类型;
+  repeated uint32 event_type_id = 11;
+  //开始接收时间;
+  uint32 begin_rcv_time = 12;
+  //结束接收时间;
+  uint32 end_rcv_time = 13;
+}
+
+//分页查询查询行程事件参数
+message SearchTravelEventDBReq {
+  //查询参数
+  SearchTravelEventParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询行程事件返回结果结构
+message SearchTravelEventEntity {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //消息内容;
+  string event_desc = 2;
+  //记录ID;
+  uint64 rec_id = 3;
+  //当前位置;
+  string cur_location = 4;
+  //原始经度;!!!注意结果需要除以1000000
+  int32 lon = 5;
+  //原始纬度;!!!注意结果需要除以1000000
+  int32 lat = 6;
+  //定位时间;
+  uint32 gpstime = 7;
+  //事件类型;
+  uint32 event_type_id = 8;
+  //事件或报警发生时间;
+  uint32 rcv_time = 9;
+}
+
+//查询行程事件结果
+message SearchTravelEventDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchTravelEventEntity record_list = 3;
+}
+
+//获取行程驾驶评分明细参数结构
+message GetDriveAnalysisInfoParam {
+  //渠道ID;
+  uint32 hold_id = 1;
+  //渠道级别;
+  uint32 hold_level = 2;
+  //设备ID、目标ID;
+  repeated uint32 object_id = 3;
+}
+
+//分页查询获取行程驾驶评分明细参数
+message GetDriveAnalysisInfoDBReq {
+  //查询参数
+  GetDriveAnalysisInfoParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取行程驾驶评分明细返回结果结构
+message GetDriveAnalysisInfoEntity {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //开始经度;!!!注意结果需要除以1000000
+  int32 start_lon = 2;
+  //开始纬度;!!!注意结果需要除以1000000
+  int32 start_lat = 3;
+  //结束经度;!!!注意结果需要除以1000000
+  int32 stop_lon = 4;
+  //结束纬度;!!!注意结果需要除以1000000
+  int32 stop_lat = 5;
+  //开始时间;
+  uint32 start_time = 6;
+  //结束时间;
+  uint32 stop_time = 7;
+  //行程里程;!!!注意结果需要除以100
+  uint64 travel_mileage = 8;
+  //行程油量;!!!注意结果需要除以100
+  uint64 travel_oil = 9;
+  //评分;
+  uint32 score = 10;
+  //行程时长;
+  uint32 travel_period = 11;
+}
+
+//获取行程驾驶评分明细结果
+message GetDriveAnalysisInfoDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetDriveAnalysisInfoEntity record_list = 3;
+}
+
+//获取停留明细参数结构
+message GetObjectStopDetailParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //开始时间;
+  uint32 begin_start_time = 2;
+  //结束时间;
+  uint32 end_start_time = 3;
+  //开始结束时间;
+  uint32 begin_stop_time = 4;
+  //开始停车到现在的间隔秒;
+  uint32 start_duration = 5;
+  //最终结束时间;
+  uint32 end_stop_time = 6;
+  //最近多少米
+  uint32 distance = 7;
+  //经度;!!!参数需要乘以1000000
+  int32 lon = 8;
+  //纬度;!!!参数需要乘以1000000
+  int32 lat = 9;
+  //停留日期;
+  uint32 stop_date = 10;
+  //渠道ID;
+  uint32 hold_id = 11;
+  //渠道级别;
+  uint32 hold_level = 12;
+  //分钟间隔大于 ;!!!参数需要乘以100
+  int32 minute_span = 13;
+  //开始经度;!!!参数需要乘以1000000
+  int32 begin_lon = 14;
+  //开始纬度;!!!参数需要乘以1000000
+  int32 begin_lat = 15;
+  //结束经度;!!!参数需要乘以1000000
+  int32 end_lon = 16;
+  //结束纬度;!!!参数需要乘以1000000
+  int32 end_lat = 17;
+  //查询直属渠道ID列表;
+  repeated uint32 hold_idlist = 18;
+  //结束停车时段;
+  uint32 begin_parking_time=19;
+  //开始停车时段;
+  uint32 end_parking_time=20;
+}
+
+//分页查询获取停留明细参数
+message GetObjectStopDetailDBReq {
+  //查询参数
+  GetObjectStopDetailParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取停留明细返回结果结构
+message GetObjectStopDetailEntity {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //开始经度;!!!注意结果需要除以1000000
+  int32 start_lon = 2;
+  //开始纬度;!!!注意结果需要除以1000000
+  int32 start_lat = 3;
+  //开始时间;
+  uint32 start_time = 4;
+  //记录ID;
+  uint64 rec_id = 5;
+  //结束时间;
+  uint32 stop_time = 6;
+  //分钟间隔;!!!注意结果需要除以100
+  uint32 minute_span = 7;
+  //原始上传流水号;
+  uint32 orig_up_id = 8;
+  //当前里程;!!!注意结果需要除以1000000
+  uint64 current_mileage = 9;
+  //跑前里程;!!!注意结果需要除以1000000
+  uint64 pre_run_mileage = 10;
+  //开始g p s标志;
+  uint32 start_gpsflag = 11;
+  //组织ID;
+  uint32 hold_id = 12;
+  //解析标志;
+  uint32 parse_flag = 13;
+  //当前位置;
+  string cur_location = 14;
+  //查询日期;
+  uint32 the_day = 15;
+  //设备名称
+  string object_name = 16;
+}
+
+//获取停留明细结果
+message GetObjectStopDetailDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetObjectStopDetailEntity record_list = 3;
+}
+
+//获取停留轨迹明细(去重)参数结构
+message GetMyFootsParam {
+  //渠道ID;
+  uint32 hold_id = 1;
+  //渠道级别;
+  uint32 hold_level = 2;
+  //设备ID、目标ID;
+  repeated uint32 object_id = 3;
+  //开始时间;
+  uint32 begin_start_time = 4;
+  //结束时间;
+  uint32 end_start_time = 5;
+}
+
+//分页查询获取停留轨迹明细(去重)参数
+message GetMyFootsDBReq {
+  //查询参数
+  GetMyFootsParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取停留轨迹明细(去重)返回结果结构
+message GetMyFootsEntity {
+  //开始经度;!!!注意结果需要除以1000000
+  int32 start_lon = 1;
+  //开始纬度;!!!注意结果需要除以1000000
+  int32 start_lat = 2;
+}
+
+//获取停留轨迹明细(去重)结果
+message GetMyFootsDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetMyFootsEntity record_list = 3;
+}
+
+//查询指令下发记录明细参数结构
+message SearchDownInfoCacheParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //发送用户ID;
+  uint32 send_user_id = 2;
+  //指令类型;
+  repeated uint32 cmdtype_id = 3;
+  //指令ID;
+  uint64 down_id = 4;
+  //内容模糊查询;
+  repeated string content = 5;
+  //提交时长(秒数);
+  uint64 submit_duration = 6;
+  //向下信息类型;
+  uint32 down_info_type = 7;
+  //发送内容;
+  string send_content = 8;
+  // SIM卡;
+  string to_sim = 9;
+  //指令流水号;
+  string seq = 10;
+  //发送标志;
+  repeated string send_flag = 11;
+  //渠道ID;
+  uint32 hold_id = 12;
+  //渠道级别;
+  uint32 hold_level = 13;
+  //开始提交时间;
+  uint32 begin_submit_time = 14;
+  //结束提交时间;
+  uint32 end_submit_time = 15;
+}
+
+//分页查询查询指令下发记录明细参数
+message SearchDownInfoCacheDBReq {
+  //查询参数
+  SearchDownInfoCacheParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询指令下发记录明细返回结果结构
+message SearchDownInfoCacheEntity {
+  //发送标志;
+  int32 send_flag = 1;
+  //指令类型;
+  uint32 cmdtype_id = 2;
+  //指令ID;
+  uint64 down_id = 3;
+  //发送用户ID;
+  uint32 send_user_id = 4;
+  //设备ID、目标ID;
+  uint32 object_id = 5;
+  // SIM卡;
+  string to_sim = 6;
+  //发送源;
+  uint32 send_source = 7;
+  //平台设备在线状态;
+  uint32 trans_type = 8;
+  //内容;
+  string content = 9;
+  //发送内容;
+  string send_content = 10;
+  //向下信息类型;
+  uint32 down_info_type = 11;
+  //提交时间;
+  uint32 submit_time = 12;
+  //备注;
+  string remark = 13;
+  //指令流水号;
+  string seq = 14;
+}
+
+//查询指令下发记录明细结果
+message SearchDownInfoCacheDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchDownInfoCacheEntity record_list = 3;
+}
+
+//获取设备离线明细(三表查询)参数结构
+message SearchObjectOfflineDetailParam {
+  //开始离线时间;
+  uint32 begin_start_time = 1;
+  //结束开始时间;
+  uint32 end_start_time = 2;
+  //开始时间;
+  uint32 start_time = 3;
+  //设备ID、目标ID;
+  repeated uint32 object_id = 4;
+  //记录ID;
+  uint64 rec_id = 5;
+  //渠道级别;
+  uint32 hold_level = 6;
+  //渠道ID;
+  uint32 hold_id = 7;
+  //间隔秒数大于 ;
+  uint32 second_span = 8;
+  //开始查询日期;
+  uint32 begin_the_day = 9;
+  //结束查询日期;
+  uint32 end_the_day = 10;
+  //渠道ID列表;
+  repeated uint32 hold_id_list = 11;
+  //设备类型ID;
+  uint32 mdttype_id = 12;
+  //最近多少米
+  uint32 distance = 13;
+  //经度;!!!参数需要乘以1000000
+  int32 lon = 14;
+  //纬度;!!!参数需要乘以1000000
+  int32 lat = 15;
+}
+
+//分页查询获取设备离线明细(三表查询)参数
+message SearchObjectOfflineDetailDBReq {
+  //查询参数
+  SearchObjectOfflineDetailParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取设备离线明细(三表查询)返回结果结构
+message SearchObjectOfflineDetailEntity {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //开始经度;!!!注意结果需要除以1000000
+  int32 start_lon = 2;
+  //开始纬度;!!!注意结果需要除以1000000
+  int32 start_lat = 3;
+  //开始位置;
+  string start_pos = 4;
+  //开始时间;
+  uint32 start_time = 5;
+  //结束经度;!!!注意结果需要除以1000000
+  int32 stop_lon = 6;
+  //结束纬度;!!!注意结果需要除以1000000
+  int32 stop_lat = 7;
+  //结束时间;
+  uint32 stop_time = 8;
+  //停止位置;
+  string stop_pos = 9;
+  //开始时间;
+  uint32 start_gpstime = 10;
+  //目标设备名称(如:车牌号码);
+  string object_name = 11;
+  //组织ID;
+  uint32 hold_id = 12;
+  //记录ID;
+  uint64 rec_id = 13;
+  //停止GPS时间;
+  uint32 stop_gpstime = 14;
+  //开始状态描述;
+  string start_status_desc = 15;
+  //停止状态描述;
+  string stop_status_desc = 16;
+  //查询日期;
+  uint32 the_day = 17;
+  //IMEI号;
+  string imei=18;
+}
+
+//获取设备离线明细(三表查询)结果
+message SearchObjectOfflineDetailDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchObjectOfflineDetailEntity record_list = 3;
+}
+
+//分页查询WEB日志明细信息参数结构
+message SearchWebLogDetailParam {
+  //日志ID;
+  repeated uint64 log_id = 1;
+  //详细信息;
+  repeated uint32 detail_id = 2;
+  //明细类型;
+  repeated uint32 detail_type = 3;
+}
+
+//分页查询分页查询WEB日志明细信息参数
+message SearchWebLogDetailDBReq {
+  //查询参数
+  SearchWebLogDetailParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//分页查询WEB日志明细信息返回结果结构
+message SearchWebLogDetailEntity {
+  //记录ID;
+  uint64 rec_id = 1;
+  //日志ID;
+  uint64 log_id = 2;
+  //详细信息;
+  uint32 detail_id = 3;
+  //明细类型;
+  uint32 detail_type = 4;
+  //创建时间;
+  uint32 create_time = 5;
+}
+
+//分页查询WEB日志明细信息结果
+message SearchWebLogDetailDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchWebLogDetailEntity record_list = 3;
+}
+
+//分页查询WEB日志信息参数结构
+message SearchWebLogParam {
+  //帐号ID、用户ID;
+  repeated uint32 user_id = 1;
+  //详细信息;
+  repeated uint32 detail_id = 2;
+  //操作类型;
+  uint32 operate_type = 3;
+  //开始操作时间;
+  uint32 begin_operate_time = 4;
+  //结束操作时间;
+  uint32 end_operate_time = 5;
+  //组织ID;
+  uint32 hold_id = 6;
+  //组织级别;
+  uint32 hold_level = 7;
+}
+
+//分页查询分页查询WEB日志信息参数
+message SearchWebLogDBReq {
+  //查询参数
+  SearchWebLogParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//分页查询WEB日志信息返回结果结构
+message SearchWebLogEntity {
+  //日志ID;
+  uint64 log_id = 1;
+  //帐号ID、用户ID;
+  uint32 user_id = 2;
+  //操作类型;
+  uint32 operate_type = 3;
+  //操作说明;
+  string operate_desc = 4;
+  //操作时间;
+  uint32 operate_time = 5;
+  //备注;
+  string remark = 6;
+  //组织ID;
+  uint32 hold_id = 7;
+  //详细信息(当传递条件时生效);
+  uint32 detail_id = 8;
+}
+
+//分页查询WEB日志信息结果
+message SearchWebLogDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchWebLogEntity record_list = 3;
+}
+
+//获取行程事件统计数分组查询参数结构
+// group by t1.ObjectID
+message GetTravelInfoEventCountParam {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //开始查询时间;
+  uint32 start_the_day = 2;
+  //开始查询时间;
+  uint32 stop_the_day = 3;
+  //查询日期;
+  uint32 the_day = 4;
+  //开始时间;
+  uint32 begin_start_time = 5;
+  //结束时间;
+  uint32 end_start_time = 6;
+  //是否隐藏,传递-1条件不启用。
+  int32 is_hide = 7;
+  //组织ID;
+  uint32 hold_id = 8;
+  //组织级别;
+  uint32 hold_level = 9;
+}
+
+//分组查询获取行程事件统计数参数
+message GetTravelInfoEventCountDBReq {
+  //查询参数
+  GetTravelInfoEventCountParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取行程事件统计数返回结果结构
+message GetTravelInfoEventCountEntity {
+  //停车Acc开关次数;
+  uint32 stop_accon_count = 1;
+  //加速数;
+  uint32 celerate_count = 2;
+  //减速数;
+  uint32 decelerate_count = 3;
+  //超速次数;
+  uint32 over_speed_count = 4;
+  //设备ID、目标ID;
+  uint32 object_id = 5;
+}
+
+//获取行程事件统计数分组查询结果
+message GetTravelInfoEventCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetTravelInfoEventCountEntity record_list = 3;
+}
+
+//获取时段内总里程(分组统计)分组查询参数结构
+// group by t1.ObjectID
+message GetObjectTotalMileageParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //开始时间;
+  uint32 begin_total_date = 2;
+  //结束时间;
+  uint32 end_total_date = 3;
+  //组织ID;
+  uint32 hold_id = 4;
+  //组织级别;
+  uint32 hold_level = 5;
+}
+
+//分组查询获取时段内总里程(分组统计)参数
+message GetObjectTotalMileageDBReq {
+  //查询参数
+  GetObjectTotalMileageParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取时段内总里程(分组统计)返回结果结构
+message GetObjectTotalMileageEntity {
+  //总值;!!!注意结果需要除以10
+  uint64 total_value = 1;
+  //设备ID、目标ID;
+  uint32 object_id = 2;
+}
+
+//获取时段内总里程(分组统计)分组查询结果
+message GetObjectTotalMileageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetObjectTotalMileageEntity record_list = 3;
+}
+
+//获取时段内的停留大于多少分钟总数分组查询参数结构
+// group by t1.ObjectID
+message GetObjectStopCountParam {
+  //开始时间;
+  uint32 begin_start_time = 1;
+  //设备ID、目标ID;
+  uint32 object_id = 2;
+  //结束时间;
+  uint32 end_start_time = 3;
+  //分钟间隔大于;!!!参数需要乘以100
+  int32 minute_span = 4;
+  //开始时间;
+  uint32 start_time = 5;
+  //大经;!!!参数需要乘以1000000
+  int32 max_lon = 6;
+  //大纬;!!!参数需要乘以1000000
+  int32 max_lat = 7;
+  //小经;!!!参数需要乘以1000000
+  int32 min_lon = 8;
+  //小纬;!!!参数需要乘以1000000
+  int32 min_lat = 9;
+  //组织ID;
+  uint32 hold_id = 10;
+  //组织级别;
+  uint32 hold_level = 11;
+}
+
+//分组查询获取时段内的停留大于多少分钟总数参数
+message GetObjectStopCountDBReq {
+  //查询参数
+  GetObjectStopCountParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取时段内的停留大于多少分钟总数返回结果结构
+message GetObjectStopCountEntity {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //记录数;
+  uint64 count = 2;
+}
+
+//获取时段内的停留大于多少分钟总数分组查询结果
+message GetObjectStopCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetObjectStopCountEntity record_list = 3;
+}
+
+//获取报警汇总信息分组查询参数结构
+// group by t2.ObjectName,t2.ObjectID,t2.IMEI,t2.MDTTypeID,t2.HoldID
+message GetAlarmSummaryParam {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //组织ID;
+  uint32 hold_id = 2;
+  //开始时间(接收或定位时间);
+  uint32 begin_rcv_time = 3;
+  //结束时间(接收或定位时间）;
+  uint32 end_rcv_time = 4;
+  // IMEI或设备名;
+  string imei_or_object_name = 5;
+  //渠道级别;
+  uint32 hold_level = 6;
+  //开始定位时间;
+  uint32 begin_gpstime = 7;
+  //结束定位时间;
+  uint32 end_gpstime = 8;
+}
+
+//分组查询获取报警汇总信息参数
+message GetAlarmSummaryDBReq {
+  //查询参数
+  GetAlarmSummaryParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取报警汇总信息返回结果结构
+message GetAlarmSummaryEntity {
+  //分组统计值;
+  uint32 count = 1;
+  //目标设备名称(如:车牌号码);
+  string object_name = 2;
+  //设备ID、目标ID;
+  uint32 object_id = 3;
+  //车辆设备的IMEI;
+  string imei = 4;
+  //设备类型ID;
+  uint32 mdttype_id = 5;
+  //组织ID;
+  uint32 hold_id = 6;
+}
+
+//获取报警汇总信息分组查询结果
+message GetAlarmSummaryDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetAlarmSummaryEntity record_list = 3;
+}
+
+//获取报警类型统计分组查询参数结构
+// group by t1.AlarmTypeID,t1.AlarmType
+message GetAlarmTypeCountParam {
+  //组织ID;
+  uint32 hold_id = 1;
+  //设备ID、目标ID;
+  uint32 object_id = 2;
+  //报警类型ID;
+  uint32 alarm_type_id = 3;
+  //处理状态;
+  string disp_state = 4;
+  //开始时间;
+  uint32 begin_rcv_time = 5;
+  //结束时间;
+  uint32 end_rcv_time = 6;
+  //开始定位时间;
+  uint32 begin_gpstime = 7;
+  //结束定位时间;
+  uint32 end_gpstime = 8;
+  //是否为接收或定位时间或查询;
+  bool both_gpsor_rcv_time = 9;
+  //渠道级别;
+  uint32 hold_level = 10;
+  //大于等于接收时间距今秒数;
+  uint32 begin_submit_duraion = 11;
+  //小于等于接收时间距今秒数;
+  uint32 end_submit_duration = 12;
+}
+
+//分组查询获取报警类型统计参数
+message GetAlarmTypeCountDBReq {
+  //查询参数
+  GetAlarmTypeCountParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取报警类型统计返回结果结构
+message GetAlarmTypeCountEntity {
+  //报警类型ID;
+  uint32 alarm_type_id = 1;
+  //报警类型;
+  string alarm_type = 2;
+  //分组大小;
+  uint64 group_count = 3;
+}
+
+//获取报警类型统计分组查询结果
+message GetAlarmTypeCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetAlarmTypeCountEntity record_list = 3;
+}
+
+//报警报警状态统计分组查询参数结构
+// group by t1.DispState
+message GetAlarmDispCountParam {
+  //组织ID;
+  uint32 hold_id = 1;
+  //报警类型ID;
+  uint32 alarm_type_id = 2;
+  //处理状态;
+  string disp_state = 3;
+  //开始时间;
+  uint32 start_rcv_time = 4;
+  //结束时间;
+  uint32 stop_rcv_time = 5;
+  //渠道级别;
+  uint32 hold_level = 6;
+}
+
+//分组查询报警报警状态统计参数
+message GetAlarmDispCountDBReq {
+  //查询参数
+  GetAlarmDispCountParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//报警报警状态统计返回结果结构
+message GetAlarmDispCountEntity {
+  //处理状态;
+  uint32 disp_state = 1;
+  //分组大小过滤;
+  uint32 group_count = 2;
+}
+
+//报警报警状态统计分组查询结果
+message GetAlarmDispCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetAlarmDispCountEntity record_list = 3;
+}
+
+//获取设备时段内各停留时长分布统计分组查询参数结构
+//
+message GetObjectTiemRangeStopParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //开始汇总日期;
+  uint32 begin_start_time = 2;
+  //结束汇总日期;
+  uint32 end_start_time = 3;
+  //渠道 ID;
+  uint32 hold_id = 4;
+  //渠道级别;
+  uint32 hold_level = 5;
+}
+
+//分组查询获取设备时段内各停留时长分布统计参数
+message GetObjectTiemRangeStopDBReq {
+  //查询参数
+  GetObjectTiemRangeStopParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取设备时段内各停留时长分布统计返回结果结构
+message GetObjectTiemRangeStopEntity {
+  // 6小时停留数;
+  uint64 stop_count1 = 1;
+  // 12小时停留数;
+  uint64 stop_count2 = 2;
+  // 24小时停留数;
+  uint64 stop_count3 = 3;
+  // 1天停留数;
+  uint64 stop_count4 = 4;
+}
+
+//获取设备时段内各停留时长分布统计分组查询结果
+message GetObjectTiemRangeStopDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetObjectTiemRangeStopEntity record_list = 3;
+}
+
+//获取行程油耗里程统计(每日油耗)分组查询参数结构
+// group by EveryDay
+message GetTravelOilSummaryParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //开始时间;
+  uint32 start_time = 2;
+  //开始时间;
+  uint32 begin_start_time = 3;
+  //结束时间;
+  uint32 end_start_time = 4;
+  //是否查询每日油耗;
+  bool group_by_date = 5;
+  //渠道ID;
+  uint32 hold_id = 6;
+  //渠道级别;
+  uint32 hold_level = 7;
+  //大于等于行程里程;!!!参数需要乘以100
+  int32 travel_mileage = 8;
+}
+
+//分组查询获取行程油耗里程统计(每日油耗)参数
+message GetTravelOilSummaryDBReq {
+  //查询参数
+  GetTravelOilSummaryParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取行程油耗里程统计(每日油耗)返回结果结构
+message GetTravelOilSummaryEntity {
+  //行程里程;!!!注意结果需要除以100
+  uint64 travel_mileage = 1;
+  //行程油量;!!!注意结果需要除以100
+  uint64 travel_oil = 2;
+  //行程数;
+  uint64 count = 3;
+  //行程时长;
+  uint32 travel_period = 4;
+  //行驶时间;
+  uint32 drive_period = 5;
+  //平均评分;
+  uint32 avg_score = 6;
+  //每日日期;
+  string every_day = 7;
+  //最大行程油量;!!!注意结果需要除以100
+  uint64 max_travel_oil = 8;
+  //最小行程油量;!!!注意结果需要除以100
+  uint64 min_travel_oil = 9;
+}
+
+//获取行程油耗里程统计(每日油耗)分组查询结果
+message GetTravelOilSummaryDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetTravelOilSummaryEntity record_list = 3;
+}
+
+//获取WEB日志的各类分组统计分组查询参数结构
+// group by t1.BrowseVersion
+message GetWebLogCountParam {
+  //开始操作时间;
+  uint32 begin_operate_time = 1;
+  //结束操作时间;
+  uint32 end_operate_time = 2;
+  //被查询人（姓名）;
+  uint32 hold_id = 3;
+  //被查询人（姓名）;
+  uint32 hold_level = 4;
+}
+
+//分组查询获取WEB日志的各类分组统计参数
+message GetWebLogCountDBReq {
+  //查询参数
+  GetWebLogCountParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取WEB日志的各类分组统计返回结果结构
+message GetWebLogCountEntity {
+  //浏览版本;
+  string browse_version = 1;
+  //统计个数;
+  string count = 2;
+}
+
+//获取WEB日志的各类分组统计分组查询结果
+message GetWebLogCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetWebLogCountEntity record_list = 3;
+}
+
+//查询指令下发记录数统计查询参数结构
+message GetDownInfoCacheCountParam {
+  //渠道ID;
+  uint32 hold_id = 1;
+  //渠道级别;
+  uint32 hold_level = 2;
+  //内容;
+  repeated string content = 3;
+  //距今秒数;
+  uint32 sub_duration = 4;
+  //发送用户ID;
+  uint32 send_user_id = 5;
+}
+
+//统计查询查询指令下发记录数参数
+message GetDownInfoCacheCountDBReq {
+  //查询参数
+  GetDownInfoCacheCountParam search_param = 1;
+}
+
+//查询指令下发记录数统计查询结果
+message GetDownInfoCacheCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  uint64 count = 2;
+}
+
+//获取行程事件记录数(三表查询)统计查询参数结构
+message GetTravelEventCountParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //渠道ID;
+  uint32 hold_id = 2;
+  //查询日期;
+  uint32 begin_the_day = 3;
+  //结束日期;
+  uint32 end_the_day = 4;
+  //事件类型;
+  uint32 event_type_id = 5;
+  //查询日期;
+  uint32 the_day = 6;
+  //渠道级别;
+  uint32 hold_level = 7;
+}
+
+//统计查询获取行程事件记录数(三表查询)参数
+message GetTravelEventCountDBReq {
+  //查询参数
+  GetTravelEventCountParam search_param = 1;
+}
+
+//获取行程事件记录数(三表查询)统计查询结果
+message GetTravelEventCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  uint64 count = 2;
+}
+
+//获取行程记录数统计查询参数结构
+message GetTravelInfoCountParam {
+  //设备ID、目标ID;
+  repeated uint32 object_list = 1;
+  //渠道ID;
+  uint32 hold_id = 2;
+  //查询日期;
+  uint32 the_day = 3;
+  //开始时间;
+  uint32 begin_the_day = 4;
+  //结束时间;
+  uint32 end_the_day = 5;
+  //渠道级别;
+  uint32 hold_level = 6;
+  //故障数;
+  bool has_bdcount = 7;
+  //大于等于开始时间;
+  uint32 begin_start_time = 8;
+  //小于等于开始时间;
+  uint32 end_start_time = 9;
+  //大于等于行程时长;
+  uint32 travel_period = 10;
+}
+
+//统计查询获取行程记录数参数
+message GetTravelInfoCountDBReq {
+  //查询参数
+  GetTravelInfoCountParam search_param = 1;
+}
+
+//获取行程记录数统计查询结果
+message GetTravelInfoCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  uint64 count = 2;
+}
+
+//行程燃油统计(不是分组统计)统计查询参数结构
+message GetTravelOilCountParam {
+  //渠道ID;
+  uint32 hold_id = 1;
+  //渠道级别;
+  uint32 hold_level = 2;
+  //设备ID、目标ID;
+  repeated uint32 object_id = 3;
+  //开始时间;
+  uint32 begin_start_time = 4;
+  //结束时间;
+  uint32 end_start_time = 5;
+  //开始时间;
+  uint32 start_time = 6;
+}
+
+//统计查询行程燃油统计(不是分组统计)参数
+message GetTravelOilCountDBReq {
+  //查询参数
+  GetTravelOilCountParam search_param = 1;
+}
+
+//行程燃油统计(不是分组统计)统计查询结果
+message GetTravelOilCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  uint64 count = 2;
+}
+
+//查询报警记录数统计查询参数结构
+message GetAlarmCountParam {
+  //报警类型ID;
+  repeated uint32 alarm_type_id = 1;
+  //处理状态;
+  string disp_state = 2;
+  //组织ID;
+  uint32 hold_id = 3;
+  //开始定位时间;
+  uint32 start_gpstime = 4;
+  //结束定位时间;
+  uint32 stop_gpstime = 5;
+  //开始时间;
+  uint32 start_rcv_time = 6;
+  //结束时间;
+  uint32 stop_rcv_time = 7;
+  //事件或报警发生时间;
+  uint32 rcv_time = 8;
+  //定位时间;
+  uint32 gpstime = 9;
+  //渠道级别;
+  uint32 hold_level = 10;
+  //设备ID、目标ID;
+  repeated uint32 object_id = 11;
+  //已读状态，0：忽略 1：为未读 2：已读
+  uint32 is_read = 12;
+}
+
+//统计查询查询报警记录数参数
+message GetAlarmCountDBReq {
+  //查询参数
+  GetAlarmCountParam search_param = 1;
+}
+
+//查询报警记录数统计查询结果
+message GetAlarmCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  uint64 count = 2;
+}
+
+//添加WEB日志信息参数结构
+message AddWebLogParam {
+  //日志ID;
+  uint64 log_id = 1;
+  //帐号ID、用户ID;
+  uint32 user_id = 2;
+  //关注类型;
+  uint32 operate_type = 3;
+  //操作说明;
+  string operate_desc = 4;
+  //操作时间;
+  uint32 operate_time = 5;
+  //备注;
+  string remark = 6;
+  //登录IP;
+  string login_ip = 7;
+  //登录方式;
+  string login_by = 8;
+  //帐号登录类型 0-自有平台帐号登录 1-QQ帐号登录 2-微信帐号登录 3-新浪微博登录;
+  uint32 login_type = 9;
+  //组织ID;
+  uint32 hold_id = 10;
+  //浏览版本;
+  string browse_version = 11;
+}
+
+// WEB明细日志结构
+message AddWebLogDetailParam {
+  //记录ID;
+  uint64 rec_id = 1;
+  //日志ID;
+  uint64 log_id = 2;
+  //详细信息;
+  uint32 detail_id = 3;
+  //明细类型;
+  uint32 detail_type = 4;
+  //创建时间;
+  uint32 create_time = 5;
+}
+
+//分页查询添加WEB日志信息参数
+message AddWebLogDetailDBReq {
+  //查询参数
+  AddWebLogParam main_info = 1;
+  //分页参数
+  repeated AddWebLogDetailParam detail_info = 2;
+}
+
+//添加WEB日志信息结果
+message AddWebLogDetailDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取某设备每天的停车里程总数分组查询参数结构
+message GetDailyDrivedMileageParam {
+	//设备ID、目标ID;
+	repeated uint32 object_id=1;
+	//汇总日期;
+	uint32 begin_total_date=2;
+	//汇总日期;
+	uint32 end_total_date=3;
+	//渠道ID;
+	uint32 hold_id = 4;
+	//渠道级别;
+	uint32 hold_level = 5;
+}
+
+//分组查询获取某设备每天的停车里程总数参数
+message GetDailyDrivedMileageDBReq{
+    //查询参数
+    GetDailyDrivedMileageParam search_param = 1;
+
+    //分页参数
+    mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取某设备每天的停车里程总数返回结果结构
+message GetDailyDrivedMileageEntity{
+        //总值;!!!注意结果需要除以10
+         uint32 total_value=1;
+        //汇总日期;
+         string total_date=2;
+        //设备ID、目标ID;
+         uint32 object_id=3;
+}
+
+//获取某设备每天的停车里程总数分组查询结果
+message GetDailyDrivedMileageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetDailyDrivedMileageEntity record_list = 3;
+}
+
+//获取OBD的诊断信息明细参数结构
+message SearchPIDInfoDetailParam {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //故障码;!!!参数需要乘以10
+  uint32 p2_fa = 2;
+  //创建时间;
+  uint32 begin_create_time = 3;
+  //创建时间;
+  uint32 end_create_time = 4;
+  //查询日期;
+  uint32 begin_the_day = 5;
+  //查询日期;
+  uint32 end_the_day = 6;
+}
+
+//分页查询获取OBD的诊断信息明细参数
+message SearchPIDInfoDetailDBReq {
+  //查询参数
+  SearchPIDInfoDetailParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取OBD的诊断信息明细返回结果结构
+message SearchPIDInfoDetailEntity {
+  //记录ID;
+  uint32 rec_id = 1;
+  //故障码;
+  uint32 p0_cab = 2;
+  //故障码;!!!注意结果需要除以10
+  uint32 p04_a = 3;
+  //故障码;!!!注意结果需要除以100
+  uint32 p42_ab = 4;
+  //故障码;
+  uint32 p0_da = 5;
+  //故障码;!!!注意结果需要除以10
+  uint32 p05_a = 6;
+  //故障码;
+  string p03_a = 7;
+  //故障码;
+  string p03_b = 8;
+  //故障码;!!!注意结果需要除以10
+  uint32 p06_a = 9;
+  //故障码;!!!注意结果需要除以10
+  uint32 p0_ea = 10;
+  //故障码;
+  string p13_a = 11;
+  //故障码;
+  uint32 p0_fa = 12;
+  //故障码;!!!注意结果需要除以1000
+  uint32 p15_a = 13;
+  //故障码;!!!注意结果需要除以10
+  uint32 p15_b = 14;
+  //故障码;
+  string p1_ca = 15;
+  //故障码;
+  uint32 p21_ab = 16;
+  //设备ID、目标ID;
+  uint32 object_id = 17;
+  //故障码;!!!注意结果需要除以10
+  uint32 p2_fa = 18;
+  //创建时间;
+  uint32 create_time = 19;
+}
+
+//获取OBD的诊断信息明细结果
+message SearchPIDInfoDetailDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchPIDInfoDetailEntity record_list = 3;
+}
+
+//查询设备指定报警分组的统计数分组查询参数结构
+// group by t1.ObjectID
+message GetObjectAlarmCountParam {
+  //设备ID、目标ID;
+  repeated uint32 object_id = 1;
+  //组织ID;
+  uint32 hold_id = 2;
+  //组织级别;
+  uint32 hold_level = 3;
+  //大于等于事件或报警发生时间;
+  uint32 begin_rcv_time = 4;
+  //小于等于事件或报警发生时间;
+  uint32 end_rcv_time = 5;
+  //报警类型ID;
+  repeated uint32 alarm_type_id = 6;
+}
+
+//分组查询查询设备指定报警分组的统计数参数
+message GetObjectAlarmCountDBReq {
+  //查询参数
+  GetObjectAlarmCountParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询设备指定报警分组的统计数返回结果结构
+message GetObjectAlarmCountEntity {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+  //定位模式;
+  uint32 poweroff_count = 2;
+  //定位模式;
+  uint32 fence_count = 3;
+  //定位模式;
+  uint32 two_ption_count = 4;
+}
+
+//查询设备指定报警分组的统计数分组查询结果
+message GetObjectAlarmCountDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetObjectAlarmCountEntity record_list = 3;
+}
+//------------------------------------------------------------------------------------------------------------------
+//获取告警类型ID分组统计信息
+message GetAlarmGroupAlarmTypeIdReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //组织ID
+  uint32 hold_id = 2;
+
+  //用户级别
+  uint32 hold_level = 3;
+
+  //报警类型ID
+  repeated uint32 alarm_type_id = 4;
+
+  //开始rcvtime时间
+  uint32 begin_rcvtime = 5;
+
+  //结束rcvtime时间
+  uint32 end_rcvtime = 6;
+
+  //开始gps时间
+  uint32 begin_gpstime = 7;
+
+  //结束gps时间
+  uint32 end_gpstime = 8;
+
+  //告警gps结束条件，0：忽略 1：为null 2：不为null
+  uint32 is_stop_gpstime = 9;
+
+  //已读状态，0：忽略 1：为未读 2：已读
+  uint32 is_read = 10;
+}
+
+message AlarmGroupAlarmTypeId {
+  //报警类型ID
+  uint32 alarm_type_id = 1;
+
+  //数量
+  uint32 count = 2;
+}
+
+message GetAlarmGroupAlarmTypeIdResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated AlarmGroupAlarmTypeId record_list = 3;
+}
+
+//获取告警设备id分组统计信息
+message GetAlarmGroupObjectIdReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //组织ID
+  uint32 hold_id = 2;
+
+  //用户级别
+  uint32 hold_level = 3;
+
+  //报警类型ID
+  repeated uint32 alarm_type_id = 4;
+
+  //开始gps时间
+  uint32 begin_gpstime = 5;
+
+  //结束gps时间
+  uint32 end_gpstime = 6;
+
+  //开始rcvtime时间
+  uint32 begin_rcvtime = 7;
+
+  //结束rcvtime时间
+  uint32 end_rcvtime = 8;
+
+  //设备ID、目标ID
+  repeated uint32 object_list = 9;
+
+  //设备类型id
+  uint32 mdt_type_id = 10;
+
+  //已读状态
+  uint32 is_read = 11;
+
+  //处理状态
+  uint32 disp_state = 12;
+}
+
+message AlarmGroupObjectId {
+  //设备ID、目标ID
+  uint32 object_id = 1;
+
+  //数量
+  uint32 count = 2;
+}
+
+message GetAlarmGroupObjectIdResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated AlarmGroupObjectId record_list = 3;
+}
+
+//获取告警设备id、alarmtypeid分组统计信息
+message AlarmGroupObjectIdAndAlarmTypeId {
+  //设备ID、目标ID
+  uint32 object_id = 1;
+
+  //报警类型ID
+  uint32 alarm_type_id = 2;
+
+  //数量
+  uint32 count = 3;
+}
+
+message GetAlarmGroupObjectIdAndAlarmTypeIdResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated AlarmGroupObjectIdAndAlarmTypeId record_list = 3;
+}
+
+//获取告警rcvtime分组统计信息，按RcvTime的日期分组
+message GetAlarmGroupRcvTimeReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //组织ID
+  uint32 hold_id = 2;
+
+  //用户级别
+  uint32 hold_level = 3;
+
+  //报警类型ID
+  repeated uint32 alarm_type_id = 4;
+
+  //开始rcvtime时间
+  uint32 begin_rcvtime = 5;
+
+  //结束rcvtime时间
+  uint32 end_rcvtime = 6;
+
+  //设备ID、目标ID
+  repeated uint32 object_list = 7;
+}
+
+message AlarmGroupRcvTime {
+  //rcvtime时间
+  uint32 rcv_time = 1;
+
+  //数量
+  uint32 count = 2;
+}
+
+message GetAlarmGroupRcvTimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated AlarmGroupRcvTime record_list = 3;
+}
+
+//保存报警信息
+message SaveAlarmInfoReq {
+  //报警信息
+  SearchAlarmDetailEntity alarm = 1;
+}
+
+message SaveAlarmInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取告警最小告警ID
+message GetMinAlarmInfoReq {
+  //设备ID、目标ID
+  uint32 object_id = 1;
+
+  //报警类型ID
+  uint32 alarm_type_id = 2;
+
+  //创建时间
+  uint32 begin_the_day = 3;
+
+  //组织ID
+  uint32 hold_id = 4;
+
+  //用户级别
+  uint32 hold_level = 5;
+}
+
+message GetMinAlarmInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //最小告警ID
+  uint64 alarm_id = 2;
+}
+
+//更新设备告警信息
+message UpdateAlarmInfoReq {
+  //告警ID
+  uint64 alarm_id = 1;
+
+  //设备ID
+  uint32 object_id = 2;
+
+  //警报确认
+  uint32 alarm_confirm = 3;
+
+  //处理状态
+  uint32 disp_state = 4;
+
+  //处理时间
+  uint32 process_time = 5;
+
+  //已读状态
+  uint32 is_read = 6;
+
+  //通知用户
+  uint32 notice_user_id = 7;
+
+  //通知时间
+  uint32 notice_time = 8;
+
+  //开始位置描述
+  string cur_location = 9;
+
+  //结束位置描述
+  string stopcur_location = 10;
+
+  //组织ID
+  uint32 hold_id = 11;
+
+  //用户级别
+  uint32 hold_level = 12;
+}
+
+message UpdateAlarmInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除告警记录
+message DeleteAlarmReq { 
+	uint32 object_id = 1; 
+}
+
+message DeleteAlarmResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取行程Starttime分组，按Starttime的日期分组
+message GetTravelInfoGroupStarttimeReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //开始时间
+  uint32 begin_start_time = 2;
+
+  //结束时间
+  uint32 end_start_time = 3;
+
+  //设备ID
+  repeated uint32 object_list = 4;
+
+  //组织ID
+  uint32 hold_id = 5;
+
+  //用户级别
+  uint32 hold_level = 6;
+
+  //开始里程;!!!注意需要乘以100,如果要判断大于0，begin_travel_mileage填1
+  int32 begin_travel_mileage = 7;
+
+  //开始行程时长
+  uint32 begin_travel_period = 8;
+
+  //结束行程时长
+  uint32 end_travel_period = 9;
+
+  //过滤隐藏的数据 <0:无效 0:非隐藏 1:隐藏 
+  int32 is_hide = 10;
+}
+
+message TravelInfoGroupStarttime {
+  //开始时间;
+  uint32 start_time = 1;
+  //超速总次数;
+  uint32 sum_over_speed_count = 2;
+  //行程总里程;注意需要除以100
+  uint64 sum_travel_mileage = 3;
+  //行程总油量;注意需要除以100
+  uint64 sum_travel_oil = 4;
+  //总行程时长
+  uint32 sum_travel_period = 5;
+  //平均评分
+  uint32 avg_score = 6;
+  //行驶总时间
+  uint32 sum_drive_period = 7;
+  //条数
+  uint32 count = 8;
+}
+
+message GetTravelInfoGroupStarttimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated TravelInfoGroupStarttime record_list = 3;
+}
+
+//获取行程Theday分组，按Theday的日期分组
+message GetTravelInfoGroupThedayReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //开始时间
+  uint32 begin_start_time = 2;
+
+  //结束时间
+  uint32 end_start_time = 3;
+
+  //设备ID
+  repeated uint32 object_list = 4;
+
+  //组织ID
+  uint32 hold_id = 5;
+
+  //用户级别
+  uint32 hold_level = 6;
+}
+
+message TravelInfoGroupTheday {
+  //创建时间
+  uint32 the_day = 1;
+  //超速总次数;
+  uint32 sum_over_speed_count = 2;
+  //行程总里程;注意需要除以100
+  uint64 sum_travel_mileage = 3;
+  //行程总油量;注意需要除以100
+  uint64 sum_travel_oil = 4;
+  //总行程时长
+  uint32 sum_travel_period = 5;
+  //条数
+  uint32 count = 6;
+}
+
+message GetTravelInfoGroupThedayResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated TravelInfoGroupTheday record_list = 3;
+}
+
+//获取行程Objectid分组
+message GetTravelInfoGroupObjectidReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //开始时间
+  uint32 begin_start_time = 2;
+
+  //结束时间
+  uint32 end_start_time = 3;
+
+  //设备ID
+  repeated uint32 object_list = 4;
+
+  //组织ID
+  uint32 hold_id = 5;
+
+  //用户级别
+  uint32 hold_level = 6;
+
+  //行程里程;!!!注意需要乘以100,如果要判断大于0，begin_travel_mileage填1
+  int32 begin_travel_mileage = 7;
+
+  //行程油量;!!!注意需要乘以100,如果要判断大于0，begin_travel_mileage填1
+  int32 begin_travel_oil = 8;
+
+  //过滤隐藏的数据 <0:无效 0:非隐藏 1:隐藏 
+  int32 is_hide = 9;
+}
+
+message TravelInfoGroupObjectid {
+  //设备id
+  uint32 object_id = 1;
+  //超速总次数;
+  uint32 sum_over_speed_count = 2;
+  //行程总里程;注意需要除以100
+  uint64 sum_travel_mileage = 3;
+  //行程总油量;注意需要除以100
+  uint64 sum_travel_oil = 4;
+  //总行程时长
+  uint32 sum_travel_period = 5;
+  //总评分
+  uint32 sum_score = 6;
+   //行驶总时间
+  uint32 sum_drive_period = 7;
+  //总减速
+  uint32 sum_decelerate_count = 8;
+  //总加速
+  uint32 sum_celerate_count = 9;
+  //总急转弯次数
+  uint32 sum_sharp_turn_count = 10;
+  //最大总里程除以行程时长;注意需要除以1000
+  uint32 max_mileage_divided_period = 11;
+  //条数
+  uint32 count = 12;
+  //平均评分
+  uint32 avg_score = 13;
+}
+
+message GetTravelInfoGroupObjectidResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated TravelInfoGroupObjectid record_list = 3;
+}
+
+//更新行程信息
+message UpdateTravelInfoReq {
+  //序号id
+  repeated uint64 rec_id = 1;
+  //开始位置描述
+  string start_pos = 2;
+  //结束位置描述
+  string stop_pos = 3;
+  //位置描述更新标志
+  sint32 location_flag = 4;
+  //是否隐藏
+  int32 is_hide = 5;
+  //组织ID
+  uint32 hold_id = 6;
+  //用户级别
+  uint32 hold_level = 7;
+}
+
+message UpdateTravelInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分页查询设备里程明细参数
+message GetObjectMileAgeDetailReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //组织ID
+  uint32 hold_id = 2;
+  //用户级别
+  uint32 hold_level = 3;
+  //汇总开始日期
+  uint32 begin_total_date = 4;
+  //汇总结束日期
+  uint32 end_total_date = 5;
+  //设备id
+  repeated uint32 object_list = 6;
+}
+
+message ObjectMileAgeDetail {
+  //详细信息
+  uint32 detail_id = 1;
+
+  //设备ID、目标ID
+  uint32 object_id = 2;
+
+  //组织ID
+  uint32 hold_id = 3;
+
+  //司机1
+  uint32 driver_id1 = 4;
+
+  //司机2
+  uint32 driver_id2 = 5;
+
+  //汇总ID
+  uint32 total_id = 6;
+
+  //汇总日期
+  uint32 total_date = 7;
+
+  //总类型
+  uint32 total_type = 8;
+
+  //开始时间
+  uint32 start_time = 9;
+
+  //结束时间
+  uint32 end_time = 10;
+
+  //分钟
+  uint32 minutes = 11;
+
+  //总值,结果除以10
+  uint32 total_value = 12;
+
+  //查询日期
+  uint32 the_day = 13;
+}
+
+//获取设备里程明细结果
+message GetObjectMileAgeDetailResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //列表信息
+  repeated ObjectMileAgeDetail record_list = 3;
+}
+
+//获取车辆停留分组统计
+message GetObjectStopGroupObjectidReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //开始时间
+  uint32 begin_start_time = 2;
+
+  //结束时间
+  uint32 end_start_time = 3;
+
+  //用户id
+  uint32 hold_id = 4;
+
+  //用户级别
+  uint32 hold_level = 5;
+
+  //设备id
+  repeated uint32 object_list = 6;
+
+  //分钟间隔大于 ;!!!参数需要乘以100
+  int32 minute_span = 7;
+
+  //开始startlon经度
+  sint32 begin_start_lon = 8;
+
+  //结束startlon经度
+  sint32 end_start_lon = 9;
+
+  //开始startlat纬度
+  sint32 begin_start_lat = 10;
+
+  //结束startlat纬度
+  sint32 end_start_lat = 11;
+}
+
+message ObjectStopGroupObjectid {
+  //设备id
+  uint32 object_id = 1;
+  //汇总条数
+  uint32 count = 2;
+  //汇总分钟间隔;!!!注意结果需要除以100
+  uint32 sum_minute_span = 3;
+  //平均分钟间隔;!!!注意结果需要除以100
+  uint32 avg_minute_span = 4;
+}
+
+message GetObjectStopGroupObjectidResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated ObjectStopGroupObjectid record_list = 3;
+}
+
+//获取车辆停留统计
+message GetObjectStopCountReq {
+  //设备id
+  uint32 object_id = 1;
+  //开始时间
+  uint32 begin_start_time = 2;
+  //结束时间
+  uint32 end_start_time = 3;
+  //开始时间
+  uint32 begin_stop_time = 4;
+  //结束时间
+  uint32 end_stop_time = 5;
+  //分钟间隔;!!!参数需要乘以100,如果需要判断大于0，填写minute_span为0
+  int32 minute_span = 6;
+  //用户id
+  uint32 hold_id = 7;
+  //用户级别
+  uint32 hold_level = 8;
+}
+
+message GetObjectStopCountResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //条数
+  uint32 count = 2;
+
+  //汇总分钟间隔;!!!注意结果需要除以100
+  uint32 sum_minute_span = 3;
+
+  //平均分钟间隔;!!!注意结果需要除以100
+  uint32 avg_minute_span = 4;
+}
+
+//更新车辆停留信息
+message UpdateObjectStopReq {
+  //序号id
+  uint64 rec_id = 1;
+  //位置描述
+  string cur_location = 2;
+  //位置描述更新标志
+  sint32 parse_flag = 3;
+  //用户id
+  uint32 hold_id = 4;
+  //用户级别
+  uint32 hold_level = 5;
+}
+
+message UpdateObjectStopResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除车辆停留信息
+message DeleteObjectStopReq { 
+	uint32 object_id = 1; 
+}
+
+message DeleteObjectStopResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取车辆离线统计
+message GetObjectOfflineObjectidCountReq {
+  //设备id
+  uint32 object_id = 1;
+
+  //开始starttime时间
+  uint32 begin_start_time = 2;
+
+  //结束starttime时间
+  uint32 end_start_time = 3;
+
+  //开始stoptime时间
+  uint32 begin_stop_time = 4;
+
+  //结束stoptime时间
+  uint32 end_stop_time = 5;
+
+  //开始startgpstime时间
+  uint32 begin_start_gpstime = 6;
+
+  //结束startgpstime时间
+  uint32 end_start_gpstime = 7;
+
+  //用户id
+  uint32 hold_id = 8;
+
+  //用户级别
+  uint32 hold_level = 9;
+
+  //开始theday时间
+  uint32 begin_the_day = 10;
+
+  //结束theday时间
+  uint32 end_the_day = 11;
+
+  //开始时间或查询
+  bool start_time_or_search=12;
+}
+
+message GetObjectOfflineObjectidCountResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //数量
+  uint32 count = 3;
+}
+
+//获取车辆离线分组统计
+message GetObjectOfflineGroupObjectidReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //开始stoptime时间
+  uint32 begin_stop_time = 2;
+
+  //结束stoptime时间
+  uint32 end_stop_time = 3;
+
+  //设备类型id
+  uint32 mdt_type_id = 4;
+
+  //用户id
+  uint32 hold_id = 6;
+
+  //用户级别
+  uint32 hold_level = 7;
+}
+
+message ObjectOfflineGroupObjectid {
+  //设备id
+  uint32 object_id = 1;
+
+  //数量
+  uint32 count = 2;
+
+  //开始时间到结束时间汇总
+  uint32 sum_start_to_stop = 3;
+
+  //最大时间差
+  uint32 max_start_to_stop = 4;
+
+  //开始时间到结束时间平均值
+  uint32 avg_start_to_stop = 5;
+
+  //最大结束时间
+  uint32 max_stop_time = 6;
+}
+
+message GetObjectOfflineGroupObjectidResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated ObjectOfflineGroupObjectid record_list = 3;
+}
+
+//统计报警状态
+message GetAlarmDispCountAlarmIdReq {
+  //序号id
+  uint64 alarm_id = 1;
+
+  //用户id
+  uint32 hold_id = 2;
+
+  //用户级别
+  uint32 hold_level = 3;
+}
+
+message GetAlarmDispCountAlarmIdResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //计数
+  uint32 count = 2;
+}
+
+//保存目标处警信息
+message SearchDispAlarmEntity {
+  //处警ID
+  uint64 disp_alarm_id = 1;
+
+  //告警ID
+  uint64 alarm_id = 2;
+
+  //中心用户
+  uint32 center_user_id = 3;
+
+  //处理警报开始时间
+  uint32 disp_alarm_start_time = 4;
+
+  //警报结束时间
+  uint32 dis_alarm_end_time = 5;
+
+  //警报描述
+  string dis_alarm_desc = 6;
+
+  //报警结果
+  string dis_alarm_result = 7;
+
+  //追踪影像
+  string track_image = 8;
+
+  //处理用户名
+  string disp_user_name = 9;
+
+  //处理状态
+  uint32 disp_state = 10;
+
+  //查询日期
+  uint32 the_day = 11;
+}
+
+message SaveDispAlarmReq {
+  //目标处警信息
+  SearchDispAlarmEntity dis_info = 1;
+}
+
+message SaveDispAlarmResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分页查询处理报警信息
+message GetDispAlarmDBReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //告警ID
+  uint64 alarm_id = 2;
+
+  //中心用户
+  uint32 center_user_id = 3;
+
+  //处理状态
+  uint32 disp_state = 4;
+
+  //查询日期
+  uint32 the_day = 5;
+}
+
+message GetDispAlarmDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //列表信息
+  repeated SearchDispAlarmEntity record_list = 3;
+}
+
+//删除指令下发数据
+message DeleteDownInfoCacheReq {
+  //设备ID
+  uint32 object_id = 1;
+}
+
+message DeleteDownInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取用户操作日志结构
+message SearchUserLogEntity {
+  //序号
+  uint64 rec_id = 1;
+
+  //帐号ID、用户ID
+  uint32 user_id = 2;
+
+  //组织ID
+  uint32 hold_id = 3;
+
+  //设备ID
+  uint32 object_id = 4;
+
+  //应用类型(1:web,3:App)
+  uint32 app_type = 5;
+
+  //操作说明
+  string operate_desc = 6;
+
+  //操作时间
+  uint32 operate_time = 7;
+
+  //登录IP
+  string oper_ip = 8;
+
+  //纬度
+  sint32 lon = 9;
+
+  //经度
+  sint32 lat = 10;
+
+  //地址
+  string address = 11;
+
+  //版本号
+  string version = 12;
+
+  //手机os版本号
+  string os_version = 13;
+
+  //浏览器版本
+  string browser_version = 14;
+
+  //记录时间
+  uint32 the_day = 15;
+}
+
+//保存用户操作日志
+message SaveUserLogReq {
+  //操作用户日志结构
+  SearchUserLogEntity user_log = 1;
+}
+
+message SaveUserLogResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分组统计用户操作日志
+message GetUserLogGroupOperateTimeReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //开始时间
+  uint32 begin_operate_time = 2;
+  //结束时间
+  uint32 end_operate_time = 3;
+}
+
+message UserLogGroupOperateTime {
+  //日期
+  string date = 1;
+  //计数
+  uint32 count = 2;
+}
+
+message GetUserLogGroupOperateTimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated UserLogGroupOperateTime record_list = 3;
+}
+
+//分组统计web用户操作日志
+message GetWebUserLogGroupOperateTimeReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //开始操作时间
+  uint32 begin_operate_time = 2;
+  //结束操作时间
+  uint32 end_operate_time = 3;
+  //用户ID
+  uint32 hold_id = 4;
+  //渠道级别;
+  uint32 hold_level = 5;
+}
+
+message WebUserLogGroupOperateTime {
+  //计数
+  uint32 count = 1;
+  //操作时间
+  uint32 operate_time = 2;
+}
+
+message GetWebUserLogGroupOperateTimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated WebUserLogGroupOperateTime record_list = 3;
+}
+
+//分组统计web用户操作日志
+message GetWebUserLogGroupLoginIpReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //开始操作时间
+  uint32 begin_operate_time = 2;
+  //结束操作时间
+  uint32 end_operate_time = 3;
+  //组织ID(包含子级）;
+  uint32 hold_id = 4;
+  //渠道级别;
+  uint32 hold_level = 5;
+}
+
+message WebUserLogGroupLoginIp {
+  //计数
+  uint32 count = 1;
+  //登录IP
+  string login_ip = 2;
+}
+
+message GetWebUserLogGroupLoginIpResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程汇总信息
+  repeated WebUserLogGroupLoginIp record_list = 3;
+}
+
+//分页查询WEB操作日志
+message GetWebUserLogReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //操作类型
+  uint32 operate_type = 2;
+  //开始操作时间
+  uint32 begin_operate_time = 3;
+  //结束操作时间
+  uint32 end_operate_time = 4;
+  //明细类型
+  repeated uint32 detail_type_list = 5;
+  //日志ID
+  uint32 log_id = 6;
+  //用户ID
+  uint32 user_id=7;
+}
+
+message WebUserLog {
+  //日志ID
+  uint32 log_id = 1;
+
+  //帐号ID、用户ID
+  uint32 user_id = 2;
+
+  //操作类型
+  uint32 operate_type = 3;
+
+  //操作说明
+  string operate_desc = 4;
+
+  //操作时间
+  uint32 operate_time = 5;
+
+  //备注
+  string remark = 6;
+
+  //登录IP
+  string login_ip = 7;
+
+  //登入
+  string login_by = 8;
+
+  //帐号登录类型 0-自有平台帐号登录 1-QQ帐号登录 2-微信帐号登录 3-新浪微博登录
+  uint32 login_type = 9;
+
+  //组织ID
+  uint32 hold_id = 10;
+
+  //浏览器版本
+  string browse_version = 11;
+
+  //明细ID
+  uint32 detail_id = 12;
+
+  //明细类型
+  uint32 detail_type = 13;
+}
+
+message GetWebUserLogResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //列表信息
+  repeated WebUserLog record_list = 3;
+}
+
+//保存指令信息
+message SaveDownInfoCacheReq {
+  //指令信息
+  SearchDownInfoCacheEntity down_info = 1;
+  //是否返回指令ID
+  bool is_get_down_id = 2;
+}
+
+message SaveDownInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //指令ID;
+  uint64 down_id = 2;
+}
+
+//更新指令信息
+message UpdateDownInfoCacheReq {
+  //指令流水号
+  string seq = 1;
+  //处理结果
+  string handle_result = 2;
+  //设备ID
+  uint32 object_id = 3;
+  //组织ID(包含子级）;
+  uint32 hold_id = 4;
+  //渠道级别;
+  uint32 hold_level = 5;
+}
+
+message UpdateDownInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取设备id
+message GetObjectIdByHoldReq {
+  //组织ID
+  uint32 hold_id = 1;
+}
+
+message GetObjectIdByHoldResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //设备id
+  repeated uint32 object_list = 2;
+}
+
+//获取行程事件GPSTime分组统计，按Gpstime的日期和时间分组
+message GetTravelEventGroupGpstimeReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //设备ID
+  uint32 object_id = 2;
+
+  //开始定位时间
+  uint32 begin_gps_time = 3;
+
+  //结束定位时间
+  uint32 end_gps_time = 4;
+}
+
+message GetTravelEventGroupGpstime {
+  //定位时间
+  uint32 gps_time = 1;
+  //汇总条数
+  uint32 count = 2;
+  //流水号
+  uint64 max_rec_id = 3;
+  //设备id
+  uint32 max_object_id = 4;
+  //事件类型id
+  uint32 max_event_type_id = 5;
+  //事件描述
+  string max_event_desc = 6;
+  //接收时间
+  uint32 max_rcv_time = 7;
+  //经度
+  uint32 max_lon = 8;
+  //纬度
+  uint32 max_lat = 9;
+  //地址描述
+  string max_cur_location = 10;
+}
+
+message GetTravelEventGroupGpstimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+  //行程事件汇总信息
+  repeated GetTravelEventGroupGpstime record_list = 3;
+}
+
+//保存设备超速信息
+message ObjectOverSpeed {
+	//记录id
+	uint64 recid = 1;
+
+	//设备id
+	uint32 object_id = 2;
+
+	//经度
+	sint32 lon = 3;
+
+	//纬度
+	sint32 lat = 4;
+
+	//限速速度
+	uint32 limti_speed = 5;
+
+	//速度
+	uint32 speed = 6;
+
+	//地址解析
+	string location = 7;
+
+	//时间
+	uint32 event_time = 8;
+}
+
+message SaveObjectOverSpeedReq {
+	//超速信息
+	repeated ObjectOverSpeed over_speed_list = 1;
+}
+
+message SaveObjectOverSpeedResp {
+	//公共结构
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取告警设备id分组报警类型统计信息
+message GetAlarmCountGroupObjectIdReq {
+  //组织ID
+  uint32 hold_id = 1;
+
+  //用户级别
+  uint32 hold_level = 2;
+
+  //报警类型ID
+  repeated uint32 alarm_type_id = 3;
+
+  //开始rcvtime时间
+  uint32 begin_rcvtime = 4;
+
+  //结束rcvtime时间
+  uint32 end_rcvtime = 5;
+
+  //设备类型id
+  uint32 mdt_type_id = 6;
+}
+
+message AlarmCountGroupObjectId {
+  //报警类型ID
+  uint32 alarm_type_id = 1;
+
+  //数量
+  uint32 count = 2;
+}
+
+message GetAlarmCountGroupObjectIdResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  repeated AlarmCountGroupObjectId record_list = 2;
+}
+
+//统计查询获取设备时段内各离线时长分布统计
+message GetObjectTimeRangeOfflineReq {
+  //开始汇总日期;
+  uint32 begin_start_time = 1;
+  //结束汇总日期;
+  uint32 end_start_time = 2;
+  //渠道 ID;
+  uint32 hold_id = 3;
+  //渠道级别;
+  uint32 hold_level = 4;
+}
+
+message GetObjectTimeRangeOfflineResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  // 6小时离线数;
+  uint64 offline_count1 = 2;
+
+  // 12小时离线数;
+  uint64 offline_count2 = 3;
+
+  // 24小时离线数;
+  uint64 offline_count3 = 4;
+
+  // 1天离线数;
+  uint64 offline_count4 = 5;
+}

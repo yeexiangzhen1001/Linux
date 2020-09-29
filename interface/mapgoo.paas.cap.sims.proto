@@ -1,0 +1,336 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.sims;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.simcard.proto";
+import public "mapgoo.paas.simcache.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+// 设置卡类型缓存参数
+message SetCardTypeCacheReq
+{
+    // 设置卡的key保存类型，可以是iccid,sim,imei等，支持往后扩展
+    string field = 1;
+    // 设置卡的key保存类型的值
+    string field_value = 2;
+    // 卡类型
+    mapgoo.paas.simcard.SimCardType card_type = 3;
+}
+
+// 设置卡类型缓存返回
+message SetCardTypeCacheResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// 获取卡类型缓存数据请求
+message GetCardTypeCacheReq
+{
+    // 设置卡的key保存类型，可以是iccid,sim,imei等，支持往后扩展
+    string field = 1;
+    // 设置卡的key保存类型的值
+    string field_value = 2;
+}
+
+// 获取卡类型缓存数据返回
+message GetCardTypeCacheResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡类型，查询存在即返回
+    mapgoo.paas.simcard.SimCardType card_type = 2;
+}
+
+// 设置卡基础信息缓存
+message SetSimBaseInfoCacheReq
+{
+    // 卡基础信息实体
+    mapgoo.paas.simcard.SimBaseInfo baseInfo = 1;
+}
+
+// 设置卡基础信息缓存返回
+message SetSimBaseInfoCacheResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// 获取卡基础信息缓存
+message GetSimBaseInfoCacheReq
+{
+    // 卡基础信息实体
+    mapgoo.paas.base.SimcardId simcard = 1;
+}
+
+message GetSimBaseInfoCacheResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡基础信息实体
+    mapgoo.paas.simcard.SimBaseInfo simBaseInfo = 2;
+}
+
+service SimsCacheProxy {
+    // 1.设置卡类型缓存
+    rpc setCardTypeCache(SetCardTypeCacheReq) returns (SetCardTypeCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/sims/setCardTypeCache"
+        };
+    };
+
+    // 2.获取卡类型缓存值
+    rpc getCardTypeCache(GetCardTypeCacheReq) returns (GetCardTypeCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/sims/getCardTypeCache"
+        };
+    };
+
+    // 3.设置卡基础信息缓存
+    rpc setSimBaseInfoCache(SetSimBaseInfoCacheReq) returns (SetSimBaseInfoCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/sims/setSimBaseInfoCache"
+        };
+    };
+
+    // 4.获取卡基础信息缓存值
+    rpc getSimBaseInfoCache(GetSimBaseInfoCacheReq) returns (GetSimBaseInfoCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/sims/getSimBaseInfoCache"
+        };
+    };
+    /////////////////////////////////////////////卡渠道//////////////////////////////////////////////
+    //获取渠道缓存
+    rpc GetHoldCache(mapgoo.paas.simcache.data.GetHoldCacheReq) returns (mapgoo.paas.simcache.data.GetHoldCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetHoldCache"
+        };
+    };
+
+    //设置渠道缓存
+    rpc SetHoldCache(mapgoo.paas.simcache.data.SetHoldCacheReq) returns (mapgoo.paas.simcache.data.SetHoldCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetHoldCache"
+        };
+    };
+
+    //移除渠道缓存
+    rpc RemoveHoldCache(mapgoo.paas.simcache.data.RemoveHoldCacheReq) returns (mapgoo.paas.simcache.data.RemoveHoldCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveHoldCache"
+        };
+    };
+
+    //获取渠道版本号
+    rpc GetHoldMaxVerCache(mapgoo.paas.simcache.data.GetHoldMaxVerCacheReq) returns (mapgoo.paas.simcache.data.GetHoldMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetHoldMaxVerCache"
+        };
+    };
+
+    //设置最大版本号
+    rpc SetHoldMaxVerCache(mapgoo.paas.simcache.data.SetHoldMaxVerCacheReq) returns (mapgoo.paas.simcache.data.SetHoldMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetHoldMaxVerCache"
+        };
+    };
+
+    /////////////////////////////////////////////卡套餐//////////////////////////////////////////////
+    //卡套餐。。。
+    rpc GetSimPackageCache(mapgoo.paas.simcache.data.GetSimPackageCacheReq) returns (mapgoo.paas.simcache.data.GetSimPackageCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimPackageCache"
+        };
+    };
+
+    //设置卡套餐缓存
+    rpc SetSimPackageCache(mapgoo.paas.simcache.data.SetSimPackageCacheReq) returns (mapgoo.paas.simcache.data.SetSimPackageCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimPackageCache"
+        };
+    };
+
+    //移除卡套餐缓存
+    rpc RemoveSimPackageCache(mapgoo.paas.simcache.data.RemoveSimPackageCacheReq) returns (mapgoo.paas.simcache.data.RemoveSimPackageCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveSimPackageCache"
+        };
+    };
+
+    //获取版本号
+    rpc GetSimPackageMaxVerCache(mapgoo.paas.simcache.data.GetSimPackageMaxVerCacheReq) returns (mapgoo.paas.simcache.data.GetSimPackageMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimPackageMaxVerCache"
+        };
+    };
+
+    //设置最大版本号
+    rpc SetSimPackageMaxVerCache(mapgoo.paas.simcache.data.SetSimPackageMaxVerCacheReq) returns (mapgoo.paas.simcache.data.SetSimPackageMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimPackageMaxVerCache"
+        };
+    };
+
+
+
+    /////////////////////////////////卡类型//////////////////////////////////////
+    //获取卡类型缓存
+    rpc GetSimCardTypeCache(mapgoo.paas.simcache.data.GetSimCardTypeCacheReq) returns (mapgoo.paas.simcache.data.GetSimCardTypeCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimCardTypeCache"
+        };
+    };
+
+
+    //设置卡类型
+    rpc SetSimCardTypeCache(mapgoo.paas.simcache.data.SetSimCardTypeCacheReq) returns (mapgoo.paas.simcache.data.SetSimCardTypeCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimCardTypeCache"
+        };
+    };
+
+    //移除卡类型
+    rpc RemoveSimCardTypeCache(mapgoo.paas.simcache.data.RemoveSimCardTypeCacheReq) returns (mapgoo.paas.simcache.data.RemoveSimCardTypeCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveSimCardTypeCache"
+        };
+    };
+
+    //获取卡类型最大版本号
+    rpc GetSimCardTypeMaxVerCache(mapgoo.paas.simcache.data.GetSimCardTypeMaxVerCacheReq) returns (mapgoo.paas.simcache.data.GetSimCardTypeMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimCardTypeMaxVerCache"
+        };
+    };
+
+    //设置卡类型最大版本号
+    rpc SetSimCardTypeMaxVerCache(mapgoo.paas.simcache.data.SetSimCardTypeMaxVerCacheReq) returns (mapgoo.paas.simcache.data.SetSimCardTypeMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimCardTypeMaxVerCache"
+        };
+    };
+
+    rpc GetBatchSimCardTypeCache(mapgoo.paas.simcache.data.GetBatchSimCardTypeCacheReq) returns (mapgoo.paas.simcache.data.GetBatchSimCardTypeCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetBatchSimCardTypeCache"
+        };
+    };
+
+
+    ////////////////////////////////////卡基础信息/////////////////////////////
+
+    rpc GetSimCardBaseInfoCache(mapgoo.paas.simcache.data.GetSimCardBaseInfoCacheReq) returns (mapgoo.paas.simcache.data.GetSimCardBaseInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimCardBaseInfoCache"
+        };
+    };
+
+    //设置卡基础信息
+    rpc SetSimCardBaseInfoCache(mapgoo.paas.simcache.data.SetSimCardBaseInfoCacheReq) returns (mapgoo.paas.simcache.data.SetSimCardBaseInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimCardBaseInfoCache"
+        };
+    };
+
+
+    //移除卡基础信息
+    rpc RemoveSimCardBaseInfoCache(mapgoo.paas.simcache.data.RemoveSimCardBaseInfoCacheReq) returns (mapgoo.paas.simcache.data.RemoveSimCardBaseInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveSimCardBaseInfoCache"
+        };
+    };
+
+    //获取卡用量信息
+    rpc GetSimCardusageInfoCache(mapgoo.paas.simcache.data.GetSimCardusageInfoCacheReq) returns (mapgoo.paas.simcache.data.GetSimCardusageInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimCardusageInfoCache"
+        };
+    };
+
+    //设置卡用量信息
+    rpc SetSimCardusageInfoCache(mapgoo.paas.simcache.data.SetSimCardusageInfoCacheReq) returns (mapgoo.paas.simcache.data.SetSimCardusageInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimCardusageInfoCache"
+        };
+    };
+
+    //设置卡类型缓存
+    rpc SetSimCardTypeListCache(mapgoo.paas.simcache.data.SetSimCardTypeListCacheReq) returns (mapgoo.paas.simcache.data.SetSimCardTypeListCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimCardTypeListCache"
+        };
+    };
+
+    //移除卡类型最大版本号
+    rpc RemoveSimCardTypeMaxVerCache(mapgoo.paas.simcache.data.RemoveSimCardTypeMaxVerCacheReq) returns (mapgoo.paas.simcache.data.RemoveSimCardTypeMaxVerCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveSimCardTypeMaxVerCache"
+        };
+    };
+
+
+    //移除卡用量缓存
+    rpc RemoveSimCardusageInfoCache(mapgoo.paas.simcache.data.RemoveSimCardusageInfoCacheReq) returns (mapgoo.paas.simcache.data.RemoveSimCardusageInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveSimCardusageInfoCache"
+        };
+    };
+
+    //获取实名缓存
+    rpc GetSimCardRealNameCache(mapgoo.paas.simcache.data.GetSimCardRealNameCacheReq) returns (mapgoo.paas.simcache.data.GetSimCardRealNameCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimCardRealNameCache"
+        };
+    };
+
+    //移除卡实名缓存
+    rpc RemoveSimCardRealNameCache(mapgoo.paas.simcache.data.RemoveSimCardRealNameCacheReq) returns (mapgoo.paas.simcache.data.RemoveSimCardRealNameCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/RemoveSimCardRealNameCache"
+        };
+    };
+
+    //设置卡实名缓存
+    rpc SetSimCardRealNameCache(mapgoo.paas.simcache.data.SetSimCardRealNameCacheReq) returns (mapgoo.paas.simcache.data.SetSimCardRealNameCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetSimCardRealNameCache"
+        };
+    };
+
+    //根据 imei imsi sim 映射缓存 获取ICCID
+    rpc GetICCIDByGrobalMappingCache(mapgoo.paas.simcache.data.GetICCIDByGrobalMappingCacheReq) returns (mapgoo.paas.simcache.data.GetICCIDByGrobalMappingCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetICCIDByGrobalMappingCache"
+        };
+    };
+
+    //设置 imei imsi sim 映射缓存 ICCID
+    rpc SetICCIDByGrobalMappingCache(mapgoo.paas.simcache.data.SetICCIDByGrobalMappingCacheReq) returns (mapgoo.paas.simcache.data.SetICCIDByGrobalMappingCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetICCIDByGrobalMappingCache"
+        };
+    };
+
+
+    //CMS任务分布式锁
+    rpc SetTaskTryLockCache(mapgoo.paas.simcache.data.SetTaskTryLockCacheReq) returns (mapgoo.paas.simcache.data.SetTaskTryLockCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetTaskTryLockCache"
+        };
+    };
+
+    //CMS任务分布式锁
+    rpc SetTaskTryUnLockCache(mapgoo.paas.simcache.data.SetTaskTryUnLockCacheReq) returns (mapgoo.paas.simcache.data.SetTaskTryUnLockCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/SetTaskTryUnLockCache"
+        };
+    };
+
+
+    rpc GetSimCardDetailCache(mapgoo.paas.simcache.data.GetSimCardDetailCacheReq) returns (mapgoo.paas.simcache.data.GetSimCardDetailCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/sims/GetSimCardDetailCache"
+        };
+    };
+
+}

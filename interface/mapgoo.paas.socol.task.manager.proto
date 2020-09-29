@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.socol.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.socol.task.manager;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+service SocolTaskManager {
+  //拆分任务-指令下发
+  rpc AddSocolTask(mapgoo.paas.socol.task.manager.AddSocolTaskReq)returns (mapgoo.paas.socol.task.manager.AddSocolTaskResp) {
+    option (google.api.http) = {
+      post : "/socoltask/addsocoltask"
+    };
+  }
+
+  //设备确认任务
+  rpc socolTaskConfirm(mapgoo.paas.socol.task.manager.SocolTaskConfirmReq)returns (mapgoo.paas.socol.task.manager.SocolTaskConfirmResp) {
+    option (google.api.http) = {
+      post : "/socoltask/socoltaskack"
+    };
+  }
+
+  //上传抽帧结果、检测任务完成接口
+  rpc uploadSocolTask(mapgoo.paas.socol.task.manager.UploadSocolTaskReq)returns (mapgoo.paas.socol.task.manager.UploadSocolTaskResp) {
+    option (google.api.http) = {
+      post : "/socoltask/uploadsocoltask"
+    };
+  }
+
+  //修改任务指令状态
+  rpc updateSocolCmdStatus(mapgoo.paas.socol.task.manager.UpdateSocolCmdStatusReq)returns (mapgoo.paas.socol.task.manager.UpdateSocolCmdStatusResp) {
+    option (google.api.http) = {
+      post : "/socoltask/updateSocolCmdStatus"
+    };
+  }
+
+  //任务状态
+  rpc getSocolTaskStatus(mapgoo.paas.socol.task.manager.GetSocolTaskStatusReq)returns (mapgoo.paas.socol.task.manager.GetSocolTaskStatusResp) {
+    option (google.api.http) = {
+      post : "/socoltask/getsocoltaskstatus"
+    };
+  }
+}
+
+service AimiSocolTaskManager{
+  //指令拆分任务-艾米
+  rpc AddAimiSocolTask(mapgoo.paas.socol.task.manager.AddAimiSocolTaskReq)returns (mapgoo.paas.socol.task.manager.AddAimiSocolTaskResp) {
+    option (google.api.http) = {
+      post : "/socoltask/addaimisocoltask"
+    };
+  }
+
+  //检测任务完成接口
+  rpc UploadAimiSocolTask(mapgoo.paas.socol.task.manager.UploadAimiSocolTaskReq)returns (mapgoo.paas.socol.task.manager.UploadAimiSocolTaskResp) {
+    option (google.api.http) = {
+      post : "/socoltask/uploadaimisocoltask"
+    };
+  }
+}
+
+message AddSocolTaskReq{
+  mapgoo.paas.base.DeviceId device_id = 1;
+  int32 action = 2; //指令类型
+  string source = 3; //指令来源
+  string seq_id = 4; //指令序列号
+  int64 rtime = 5; //指令创建时间
+  int64 ctime = 6; //指令推送时间
+  mapgoo.paas.socol.data.SocolActionData action_data = 7; //抽帧指令数据
+}
+
+message AddSocolTaskResp{
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message SocolTaskConfirmReq{
+  string imei = 1;
+  string source = 2; //指令来源
+  string seq = 3; //指令序列号
+  int32 result = 4;
+  mapgoo.paas.socol.data.SocolUploadMessage message = 5;
+}
+
+message SocolTaskConfirmResp{
+  uint32 error = 1;
+  string reason = 2;
+  string result = 3;
+}
+
+message UploadSocolTaskReq{
+  string imei = 1;
+  string versionCode = 2;
+  string source = 3; //指令来源
+  string seq = 4; //指令序列号
+  int32 action = 5;
+  int32 result = 6;
+  int32 batch_type = 7;
+  mapgoo.paas.socol.data.SocolUploadMessage message = 8;
+  mapgoo.paas.socol.data.SocolUploadSummary summary = 9;
+  mapgoo.paas.socol.data.SocolUploadData data = 10; //抽帧图片数据
+}
+
+message UploadSocolTaskResp{
+  uint32 error = 1;
+  string reason = 2;
+  string result = 3;
+}
+
+message GetSocolTaskStatusReq{
+  mapgoo.paas.socol.data.SocolCmdSeq cmd_seq = 1;
+}
+
+message GetSocolTaskStatusResp{
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message UpdateSocolCmdStatusReq{
+  uint32 object_id = 1;
+  mapgoo.paas.socol.data.SocolCmdSeq cmd_seq = 2;
+  uint32 cmd_status = 3; //指令发送状态
+  uint32 try_count = 4;
+  uint32 update_time = 5;
+}
+
+message UpdateSocolCmdStatusResp{
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message AddAimiSocolTaskReq{
+    string imei = 1; 
+    uint32 hold_id = 2; //渠道号
+    int32 action = 3; //指令类型
+    string source = 4; //指令来源
+    string seq_id = 5; //指令序列号
+    int64 rtime = 6; //指令创建时间
+    int64 ctime = 7; //指令推送时间
+    mapgoo.paas.socol.data.SocolActionData action_data = 8; //抽帧指令数据
+}
+
+message SocolCaptureTask{
+    string task_id = 1;
+    string Imei = 2; //设备号
+    int32 action = 3; //指令类型
+    int64 rtime = 4; //指令创建时间
+    int64 ctime = 5; //指令推送时间
+    mapgoo.paas.socol.data.SocolActionData action_data = 6; //抽帧指令数据
+}
+
+message AddAimiSocolTaskResp{
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  repeated SocolCaptureTask task_list = 2;
+}
+
+message UploadAimiSocolTaskReq{
+    string Imei = 1; //设备号
+    string source = 2; //指令来源
+    string seq_id = 3; //指令序列号
+    int32 result = 4; //上传结果
+    string versionCode = 5;
+    mapgoo.paas.socol.data.SocolUploadMessage message = 6; //失败信息
+    mapgoo.paas.socol.data.SocolUploadData data = 7; //抽帧图片数据
+}
+
+message UploadAimiSocolTaskResp{
+  // 返回统一请求结果状态实例
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}

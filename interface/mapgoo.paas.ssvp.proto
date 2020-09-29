@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package mapgoo.paas.ssvp;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+import public "mapgoo.paas.ssvp.data.proto";
+
+service SsvpProxy
+{
+	//图片抓拍
+	rpc takePhoto(mapgoo.paas.ssvp.data.TakePhotoReq) returns (mapgoo.paas.ssvp.data.TakePhotoResp) { };	
+
+	//视频抓拍
+	rpc takeVideo(mapgoo.paas.ssvp.data.TakeVideoReq) returns (mapgoo.paas.ssvp.data.TakeVideoResp) { };
+
+	//获取摄像头状态
+	rpc getCameraInfo(mapgoo.paas.ssvp.data.GetCameraInfoReq) returns (mapgoo.paas.ssvp.data.GetCameraInfoResp) { };	
+	
+	//获取视频直播地址
+	rpc getVideoLiveInfo(mapgoo.paas.ssvp.data.GetVideoLiveInfoReq) returns (mapgoo.paas.ssvp.data.GetVideoLiveInfoResp) { };
+	
+	//指令下发
+    rpc sendCommand(mapgoo.paas.ssvp.data.SendCommandReq) returns (mapgoo.paas.ssvp.data.SendCommandResp) { };			
+}

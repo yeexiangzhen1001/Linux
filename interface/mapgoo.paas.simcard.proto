@@ -1,0 +1,450 @@
+syntax = "proto3";
+
+package mapgoo.paas.simcard;
+
+option go_package = "api";
+
+import "google/api/annotations.proto";
+import public "mapgoo.paas.base.proto";
+
+/**
+ @ int32 : 使用可变长度编码。对负数编码效率低下-如果字段可能有负值，请改用sint32。
+*/
+
+// 卡状态枚举
+enum SimcardStatus
+{
+	// 库存
+	INVENTORY_NAME   = 0;
+	// 可测试
+	TEST_READY_NAME  = 1;
+	// 可激活
+	ACTIVATION_NAME  = 2;
+	// 已激活
+	ACTIVATED_NAME   = 3;
+	// 已停用
+	DEACTIVATED_NAME = 4;
+	// 已失效
+	RETIRED_NAME     = 5;
+	// 已注销
+	PURGED_NAME 	 = 6;
+	// 已更换
+	REPLACED_NAME	 = 7;
+}
+
+// 卡类型枚举
+enum SimCardType 
+{
+	// 移动卡
+	CardType_YD = 0;
+	// 联通卡
+	CardType_LT = 1;
+	// 电信卡
+	CardType_DX = 2;
+}
+
+// 实名提醒方式
+enum RealNameRemindMode
+{
+	// 0不提醒
+	RemindMode_None = 0;
+	// 1倒计时提醒
+	RemindMode_Countdown = 1;
+	// 2通用提醒
+	RemindMode_Default = 2;
+}
+
+// 实名类型
+enum RealNameType
+{
+	// 缺省，无需选
+	RealNameType_None   = 0;
+	// 个人实名
+	RealNameType_Person = 1;
+	// 企业实名
+	RealNameType_Compay = 2;
+	// 手机实名
+	RealNameType_Mobile = 3;
+}
+
+// 基础信息[新增/修改]
+message SimCardDBInfo
+{
+	// 用户/渠道id
+    uint32 hold_id = 1;
+	// 账号id
+    uint32 user_id = 2;
+	// iccid号
+    string iccid = 3;
+	// sim卡号
+    string sim = 4;
+	// imsi号
+	string imsi = 5;
+	// 卡运营商类型
+    mapgoo.paas.simcard.SimCardType card_type = 6;
+	// 套餐id
+    uint32 package_id = 7;
+	// 套餐周期
+	uint32 package_period = 8;
+	// 是否支持短信
+    bool if_sms = 9;
+    // 设备类型ID，外关联D_DeviceType表
+    uint32 device_type = 10;
+	// 周期总用量,单位kb
+    float usage_amount = 11;
+	// 资费id
+	uint32 farinfo_id = 12;
+	// 分组id
+	uint32 group_id = 13;
+	// 卡源id
+	uint32 source_id = 14;
+	// 标签
+	string tag = 15;
+	// 静默期(月)
+	uint32 quiet_period = 16;
+	// 活跃期(月)
+	uint32 active_period = 17;
+}
+
+// 基础信息[返回]
+message SimBaseInfo
+{
+	// 卡ID
+	uint32 sim_id = 1;
+	// ICCID号				
+	string iccid = 2;
+	// sim卡号			
+	string sim = 3;
+	// IMEI号		    		
+	string imei = 4;
+	// 卡状态	
+	SimcardStatus status_sim = 5;
+	// 套餐id
+	uint32 package_id = 6;
+	// 套餐信息
+	PackageInfo package = 7;
+	// 周期总用量,单位kb
+	float usage_amount = 8;
+	// 当月用量,单位kb	
+	float usage_month = 9;
+	// 到期日期,格式yyyy-MM-dd
+	uint64 date_expire = 10;
+	// 首次激活日期,格式yyyy-MM-dd	
+	uint64 date_active_first = 11;
+	// 最近激活日期,格式yyyy-MM-dd
+	uint64 date_active_last = 12;
+	// 最近停机时间,格式yyyy-MM-dd HH:mm:ss
+	uint64 date_deactivated = 13;
+	// 实名信息
+	RealNameInfo realname_info = 14;
+	// 分离计费应用组
+	repeated AppPackage app_package = 15;
+	// 剩余周期,单位天
+	uint32 surplus_period = 16;
+}
+
+// 套餐实体
+message PackageInfo
+{
+	// 套餐编号
+	uint32 package_sn = 1;
+	// 套餐名称
+	string package_name = 2;
+	// 是否预付套餐
+	bool is_advance = 3;
+	// 是否清零套餐	
+	bool is_reset = 4;
+	// 是否叠加包
+	bool is_addpackage = 5;
+	// 是否无限套餐
+	bool is_limitless = 6;
+	// 是否日无限套餐
+	bool is_daylimit = 7;
+	// 套餐周期(天)	
+	uint32 period_days = 8;
+	// 套餐周期(月)
+	uint32 period_months = 9;
+	// 套餐描述
+	string info_desc = 10;
+	// 续费套餐二维码(可续套餐列表使用)
+	string qrcode = 11;
+}
+
+// 分离计费应用组
+message AppPackage 
+{
+	// 应用组名
+	string app_name = 1;				
+	// 周期总用量kb
+	float amount_usage = 2;				
+	// 当前周期剩余用量kb
+	float surplus_usage = 3;			
+	// 剩余服务(天)
+	uint32 surplus_period = 4;			
+	// 周期开始时间,格式yyyy-MM-dd
+	uint64 date_periodstart = 5;		
+	// 周期结束时间,格式yyyy-MM-dd
+	uint64 date_periodend = 6;			
+	// 到期时间,格式yyyy-MM-dd
+	uint64 date_expire = 7;
+}
+
+// 批量查卡信息返回
+message BatchSimInfo 
+{
+	// iccid号
+	string iccid = 1;
+	// sim卡号	
+	string sim = 2;
+	// IMSI号
+	string imsi = 3;
+	// IMEI号				
+	string imei = 4;
+	// 卡状态		
+	SimcardStatus status_sim = 5;
+	// 套餐编号
+	uint32 package_sn = 6;
+	// 套餐名称
+	string package_name = 7;
+	// 周期总用量,单位kb
+	float usage_amount = 8;
+	// 当月用量,单位kb
+	float usage_month = 9;
+	// 剩余用量,单位kb
+	float surplus_usage = 10;	
+	// 剩余周期,单位天
+	uint32 surplus_period = 11;
+	// 到期日期,格式yyyy-MM-dd
+	uint64 date_expire = 12;				
+	// 首次激活日期,格式yyyy-MM-dd		
+	uint64 date_active_first = 13;				
+	// 最近激活日期,格式yyyy-MM-dd
+	uint64 date_active_last = 14;
+	// 实名状态, -1实名不通过,0未实名,1未实名,2待审,3已实名
+	sint32 status_realname = 15;
+}
+
+// 续费业务
+message RenewalsReq
+{
+	// 卡id、卡号信息
+	mapgoo.paas.base.SimcardId simcard = 1;
+	// 续费套餐编号	
+	uint32 package_sn = 2;
+	// 自定义加油包的倍数，缺省1，最大不能超过499，此参数只对支持自定义倍数的年加油包套餐有效	
+	uint32 custom_num = 3;
+	// 交易的金额,单位分
+	uint32 price = 4;
+	// 用户自定义的订单号(length<=50)
+	string user_ordersn = 5;
+	// 用户自定义的标记(length<=50)
+	string custom_field = 6;
+}
+
+// 续费返回
+message RenewalsResp
+{
+	mapgoo.paas.base.BaseRespInfo base = 1;
+	// 订单号(内部)
+	string ordersn = 2;
+	// 订单金额, 单位分
+    uint32 price = 3;
+}
+
+// 实名认证业务
+message AuthRealNameReq
+{
+	// 卡id、卡号信息
+	mapgoo.paas.base.SimcardId simcard = 1;
+	// 真实姓名
+	string true_name = 2;
+	// 身份证号码
+	string idcard = 3;
+	// 手机号
+	string mobile = 4;
+	// 手持身份证正面图片url
+	string img_front = 5;
+	// 手持身份证反面图片url
+	string img_back = 6;
+	// 手持身份证全身图片url
+	string img_full = 7;
+}
+
+// 续费套餐内容
+message RenewPackageInfo
+{
+	// 套餐编号
+	uint32 package_sn = 1;
+	// 套餐名称	
+	string package_name = 2;
+	// 套餐用量,单位kb
+	float package_usage = 3;
+	// 套餐周期,单位天
+	uint32 package_period = 4;
+	// 套餐销售价格,单位分
+	uint32 price = 5;
+	// 套餐原价,单位分
+	uint32 orig_price = 6;
+	// 是否清零,true清零,false不清零
+	bool is_reset = 7;
+	// 是否叠加包,true叠加包,false非叠加包
+	bool is_added = 8;
+	// 是否加油包,0不是加油包,1是加油包但不支持自定义倍数,2是加油包且支持自定义倍数
+	uint32 is_addusage = 9;
+	// 套餐描述
+	string package_info = 10;
+	// 套餐类型
+	string package_type = 11;
+	// 余额
+	uint32 balance = 12;
+	// 云智可续套餐二维码
+	string qrcode_url = 13;
+}
+
+// 实名信息（用于查询）
+message RealNameInfo
+{
+	// 实名状态,-1实名不通过,0未实名,1未实名,2待审,3已实名
+	sint32 status_realname = 1;
+	// 实名类型
+	RealNameType type = 2;			
+	// 实名认证有效期,格式yyyy-MM-dd		
+	uint64 term = 3;
+	// 是否提醒实名
+	RealNameRemindMode remind_mode = 4;
+	// 未实名卡是否允许续费
+	bool allow_renewals = 5;
+	// 实名赠送套餐id
+	uint32 present_package = 6;
+	// 实名赠送套餐名称
+	string present_package_name = 7;
+}
+
+// 内部调用同步卡用量接口返回实体
+message SynchTerminalUsages
+{
+	// SIM卡ID
+    uint32 simId = 1;
+	// iccid号
+    string iccid = 2;
+	// sim卡号
+    string sim = 3;
+	// sim卡状态(联通卡)
+    uint32 sim_status = 4;
+	// 月用量，单位kb
+    float usage_month = 5;
+	// 当前周期剩余用量,单位kb
+    float usage_surplus = 6;
+	// 套餐模式, advance=预约, share=共享
+    string contract_type = 7;
+	// 套餐编号
+    uint32 package_code = 8;
+	// 套餐名称
+    string package_name = 9;
+	// 套餐信息
+    string package_info = 10;
+	// 是否允许续费: true=是,false=否
+    bool can_renewals = 11;
+	// 激活时间
+    uint32 active_time = 12;
+	// 到期时间
+    uint32 expire_time = 13;
+	// 用量更新时间
+    uint32 flowleft_time = 14;
+	// 卡类型
+    SimCardType cardtype = 15;
+	// 卡余额
+    uint32 balance = 16;
+	// 移动卡状态
+    uint32 service_state = 17;
+}
+
+// 续费记录结构
+message RenewalRecordsInfo 
+{
+	// 订单号
+	string ordersn = 1;
+	// 续费状态,1代表成功,0代表失败
+	uint32 renewals_status = 2;
+	// 续费时间,格式yyyy-MM-dd HH:mm:ss
+	uint64 renewals_time = 3;
+	// 套餐编号
+	uint32 package_sn = 4;
+	// 套餐名
+	string package_name = 5;
+	// 套餐总量,单位kb		
+	float package_usage = 6;
+	// 套餐周期,单位天
+	uint32 package_period = 7;
+	// 是否清零
+	bool is_reset = 8;
+	// 是否叠加包
+	bool is_added = 9;
+	// 续费价格,单位分
+	uint32 price = 10;
+	// 套餐描述
+	string package_info = 11;				
+}
+
+// 月账单用量信息结构(联通)
+message MonthBillUsageInfo
+{
+	// 账单时间,格式yyyyMM
+    uint64 bill_time = 1;               
+	// 账单用量,单位kb
+    float usage = 2;                    
+}
+
+// 渠道下激活的设备结构
+message ActivatedTerminalInfo 
+{
+	// ICCID卡号
+	string iccid = 1;
+	// SIM卡号	
+	string sim = 2;
+	// IMSI号	
+	string imsi = 3;					
+	// 首次激活时间,格式yyyy-MM-dd HH:mm:ss
+	uint64 active_time = 4;				
+}
+
+// 渠道下出库的卡
+message OutStockTerminalInfo 
+{
+	// ICCID卡号
+	string iccid = 1;						
+	// SIM卡号
+	string sim = 2;								
+	// IMSI号
+	string imsi = 3;							
+	// 出库时间,格式yyyy-MM-dd
+	uint64 outstock_time = 4;					
+	// 所属公司名称
+	string company = 5;
+}
+
+// 用户可续套餐列表返回node-1
+message UserPackageList
+{
+    // 套餐编号
+    uint32 packagesn = 1;
+    // 该套餐可续的套餐列表
+    repeated RenewPackageInfo renewals_pkg = 2;
+}
+
+// 联通卡账单表
+message BillLtMonth_Table
+{
+	// iccid号
+	string iccid = 1;
+	// simId
+	uint32 simid = 2;
+	// 渠道id
+	uint32 holdid = 3;
+	// 用量
+	float usage_kb = 4;
+	// 统计月份yyyyMM
+	string stat_month = 5;
+	// 更新时间
+	uint64 update_time = 6;
+}

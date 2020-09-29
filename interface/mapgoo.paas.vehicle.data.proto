@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package mapgoo.paas.vehicle.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+
+//获取车辆信息
+message GetVehicleInfoReq
+{
+	//车辆id
+	uint32 vehicle_id = 1;
+
+	//设备id
+	uint32 object_id = 2;
+
+	//车辆名称
+    string vehicle_name = 3;
+}
+
+message GetVehicleInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//车辆信息
+	mapgoo.paas.base.VehicleInfo vehicle = 2;
+}

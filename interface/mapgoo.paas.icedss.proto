@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package mapgoo.paas.icedss;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+
+message IceDssRouterInfo{
+    uint32 obj_id = 1;
+    string gateway_ip = 2;
+    uint32 gateway_port = 3;
+    uint32 gatewayType = 4;
+    string device_ip = 5;
+    uint32 device_port = 6;
+    uint32 updateTime = 7;
+}
+
+service IceDssProxy {
+    rpc updateRouter(mapgoo.paas.icedss.IceDssRouterInfo) returns (mapgoo.paas.baseex.BaseRespInfoEx) {
+
+	};
+
+	rpc deleteRouter(mapgoo.paas.icedss.IceDssRouterInfo) returns (mapgoo.paas.baseex.BaseRespInfoEx) {
+
+	};
+}

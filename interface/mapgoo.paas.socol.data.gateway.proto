@@ -1,0 +1,218 @@
+syntax = "proto3";
+
+import public "mapgoo.paas.socol.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.socol.data.gateway;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+service SocolDataGateway {
+  //合作方注册socol设备
+  rpc AddSocolDevice(mapgoo.paas.socol.data.gateway.SocolRegisterReq)returns (mapgoo.paas.socol.data.gateway.SocolRegisterResp) {
+    option (google.api.http) = {
+      post : "/mapgoo/dataplatform/deviceregister"
+    };
+  }
+  //合作方上传socol设备轨迹
+  rpc SocolUploadTrack(mapgoo.paas.socol.data.gateway.SocolTrackRecordReq)returns (mapgoo.paas.socol.data.gateway.SocolTrackRecordResp) {
+    option (google.api.http) = {
+      post : "/mapgoo/dataplatform/trackreport"
+    };
+  }
+  //合作方上传socol设备状态
+  rpc SocolNotifyStatus(mapgoo.paas.socol.data.gateway.SocolNotifyStatusReq)returns (mapgoo.paas.socol.data.gateway.SocolNotifyStatusResp) {
+    option (google.api.http) = {
+      post : "/mapgoo/dataplatform/statusnotify"
+    };
+  }
+  //下发指令到合作方socol设备
+  rpc SendSocolCaptureCmd(mapgoo.paas.socol.data.gateway.SocolCaptureCmdReq)returns (mapgoo.paas.socol.data.gateway.SocolCaptureCmdResp) {
+    option (google.api.http) = {
+      post : "/dps/dataplatform/sendcapture"
+    };
+  }
+
+  //合作方socol设备指令确认
+  rpc SocolCmdAck(mapgoo.paas.socol.data.gateway.SocolCmdConfirmReq)returns (mapgoo.paas.socol.data.gateway.SocolCmdConfirmResp) {
+    option (google.api.http) = {
+      post : "/mapgoo/dataplatform/cmdack"
+    };
+  }
+  //合作方socol设备数据回传
+  rpc SocolCaptureResult(mapgoo.paas.socol.data.gateway.SocolUploadImageReq)returns (mapgoo.paas.socol.data.gateway.SocolUploadImageResp) {
+    option (google.api.http) = {
+      post : "/mapgoo/dataplatform/captureresult"
+    };
+  }
+}
+
+message SocolRegisterReq {
+    //提供给第三方设备号
+    string device_imei = 1 [ (gogoproto.jsontag) = 'device_imei' ];
+    //sim卡对应的iccid
+    string iccid = 2 [ (gogoproto.jsontag) = 'iccid' ];
+    //合作方编号，如:艾米
+    string service_id = 3 [ (gogoproto.jsontag) = 'service_id' ];
+    //合作方子分类，如:3G 6580 720P
+    string service_chn = 4 [ (gogoproto.jsontag) = 'service_chn' ];
+    //设备版本号
+    string product = 5 [ (gogoproto.jsontag) = 'product' ];
+    //设备版本信息
+    string device_ver_no = 6 [ (gogoproto.jsontag) = 'device_ver_no' ];
+    //设备清晰度
+    string device_dpi = 7 [ (gogoproto.jsontag) = 'device_dpi' ];
+    //方案商
+    string sys_maker = 8 [ (gogoproto.jsontag) = 'sys_maker' ];
+    //硬件制造商
+    string hardware_maker = 9 [ (gogoproto.jsontag) = 'hardware_maker' ];
+    //操作系统版本号
+    string os_ver = 10 [ (gogoproto.jsontag) = 'os_ver' ];
+    //cpu指令集
+    string cpu = 11 [ (gogoproto.jsontag) = 'cpu' ];
+    //cpu频率，单位MHZ
+    int32 cpuz = 12 [ (gogoproto.jsontag) = 'cpuz' ];
+    //插件版本号
+    string app_ver = 13 [ (gogoproto.jsontag) = 'app_ver' ];
+    //总存储量MB
+    uint64 total_space = 14 [ (gogoproto.jsontag) = 'total_space' ];
+    //剩余存储量MB
+    uint64 free_space = 15 [ (gogoproto.jsontag) = 'free_space' ];
+    //签名md5
+    string sign = 16 [ (gogoproto.jsontag) = 'sign' ];
+    //签名验证字段
+    repeated string _sign_key = 17 [ (gogoproto.jsontag) = '_sign_key' ];
+    //imsi
+    string imsi = 18 [ (gogoproto.jsontag) = 'imsi' ];
+}
+
+message SocolRegisterResp {
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+}
+
+message SocolTrackRecordReq {
+    //合作方编号，如:aimi、xiaojing
+    string service_id = 1;
+    //轨迹列表
+    repeated mapgoo.paas.socol.data.SocolTrackRecord data = 2;
+}
+
+message SocolTrackRecordResp {
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+    //轨迹推送成功数
+    int32 success_num = 3;
+}
+
+message SocolNotifyStatus{
+    //设备号
+    string device_imei = 1;
+    bool is_online = 2;
+    uint32 timestamp = 3;
+}
+
+message SocolNotifyStatusReq{
+    repeated SocolNotifyStatus list = 1;
+}
+
+message SocolNotifyStatusResp{
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+}
+
+message SocolCaptureCmdReq{
+    //设备号
+    uint32 object_id = 1[ (gogoproto.jsontag) = 'object_id' ];
+    //指令来源
+    uint32 source = 2;
+    //指令序号
+    string seq = 3;
+    //指令内容
+    string content = 4;
+    //指令过期时间
+    uint32 expired_time = 5;
+}
+
+message SocolCaptureCmdResp{
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+}
+
+message SocolAcceptCaptureCmdReq{
+    //设备号
+    string device_imei = 1[ (gogoproto.jsontag) = 'device_imei' ];
+    //业务ID
+    string service_id = 2[ (gogoproto.jsontag) = 'service_id' ];
+    //指令类型
+    int32 action = 3;
+    //指令序列号
+    string seq_id = 4;
+    //指令创建时间
+    int64 rtime = 5;
+    //指令推送时间
+    int64 ctime = 6;
+    //抽帧指令数据
+    mapgoo.paas.socol.data.SocolActionData data = 7;
+    //暂停指令有效，0暂停 1启用
+    int32 suspend = 8;
+    //指令验证签名
+    string sign = 9;
+    //签名验证字段
+    repeated string _sign_key = 10;
+}
+
+message SocolAcceptCaptureCmdResp{
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+}
+
+message SocolCmdConfirmReq {
+    //设备号
+    string device_imei = 1;
+    //指令序列号
+    string seq_id = 2;
+    //状态
+    int32 status = 3;
+}
+
+message SocolCmdConfirmResp {
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+}
+
+message SocolUploadImageReq {
+    //设备号
+    string device_imei = 1;
+    //指令来源
+    string source = 2;
+    //指令序列号
+    string seq_id = 3;
+    //回传状态
+    int32 result = 4;
+    //失败信息
+    string message = 5;
+    //抽帧图片数据
+    mapgoo.paas.socol.data.SocolUploadData data = 6;
+}
+
+message SocolUploadImageResp {
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string errmsg = 2;
+}

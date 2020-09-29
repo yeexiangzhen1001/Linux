@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "mapgoo.paas.openplatform.api.data.proto";
+import "mapgoo.paas.device.proto";
+
+package mapgoo.paas.openplatform.api;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service OpenFlatformApi {
+  //获取设备在线状态
+  rpc GetDeviceOnlineStatus(
+      mapgoo.paas.openplatform.api.data.GetDeviceOnlineStatusReq)
+      returns (mapgoo.paas.openplatform.api.data.GetDeviceOnlineStatusResp) {
+    option (google.api.http) = {
+      get : "/open/v1/getdeviceonlinestatus"
+    };
+  }
+
+  //获取设备直播拉流地址
+  rpc GetDeviceLiveAddr(mapgoo.paas.openplatform.api.data.GetOpenDeviceLiveAddrReq)
+      returns (mapgoo.paas.openplatform.api.data.GetOpenDeviceLiveAddrResp) {
+    option (google.api.http) = {
+      get : "/open/v1/getdeviceliveaddr"
+    };
+  }
+
+  //获取设备基本信息for openapi
+  rpc GetDeviceBaseInfoApi(mapgoo.paas.device.GetDeviceBaseInfoApiReq)
+      returns (mapgoo.paas.openplatform.api.data.GetObjectBaseInfoResp) {
+    option (google.api.http) = {
+      get : "/open/v1/getdevicebaseinfo"
+    };
+  }
+
+  //获取设备正在直播的观看列表
+  rpc GetDeviceLiveStatus(
+      mapgoo.paas.openplatform.api.data.GetDeviceLiveStatusReq)
+      returns (mapgoo.paas.openplatform.api.data.GetDeviceLiveStatusResp) {
+    option (google.api.http) = {
+      get : "/open/v1/getdevicelivestatus"
+    };
+  }
+
+  //统计查询图片/视频抓拍
+  rpc Snap(mapgoo.paas.openplatform.api.data.SnapReq)
+      returns (mapgoo.paas.openplatform.api.data.SnapResp) {
+    option (google.api.http) = {
+      post : "/open/v1/snap"
+    };
+  }
+
+    //获取实时轨迹信息
+    rpc GetRealtimeTrackList(mapgoo.paas.openplatform.api.data.GetRealtimeTrackListReq) returns (mapgoo.paas.openplatform.api.data.GetRealtimeTrackListResp) {
+        option (google.api.http) = {
+            post : "/open/v1/GetRealtimeTrackList"
+        };
+    }
+
+  //获取历史轨迹信息
+  rpc GetHistoryTrackList(mapgoo.paas.openplatform.api.data.GetHistoryTrackListReq) returns (mapgoo.paas.openplatform.api.data.GetHistoryTrackListResp) {
+      option (google.api.http) = {
+          post : "/open/v1/GetHistoryTrackList"
+      };
+  }   
+
+  //获取设备历史抓拍的照片或视频列表
+  rpc GetHistorySnapList(mapgoo.paas.openplatform.api.data.GetHistorySnapListReq) returns (mapgoo.paas.openplatform.api.data.GetHistorySnapListResp) {
+      option (google.api.http) = {
+          post : "/open/v1/GetHistorySnapList"
+      };
+  }   
+
+  //获取经纬度省市区
+  rpc GetLngLatArea(mapgoo.paas.openplatform.api.data.GetLngLatAreaReq) returns (mapgoo.paas.openplatform.api.data.GetLngLatAreaResp) {
+      option (google.api.http) = {
+          post : "/open/v1/GetLngLatArea"
+      };
+  }   
+
+  //获取最后行程信息
+  rpc GetCurrentTravel(mapgoo.paas.openplatform.api.data.GetCurrentTravelReq) returns (mapgoo.paas.openplatform.api.data.GetCurrentTravelResp) {
+      option (google.api.http) = {
+          post : "/open/v1/GetCurrentTravel"
+      };
+  }
+
+  //获取行程列表
+  rpc GetTravelList(mapgoo.paas.openplatform.api.data.GetTravelListReq) returns (mapgoo.paas.openplatform.api.data.GetTravelListResp) {
+      option (google.api.http) = {
+          post : "/open/v1/GetTravelList"
+      };
+  }  
+
+  //用户已购套餐信息查询
+  rpc GetUserPackageList(
+      mapgoo.paas.openplatform.api.data.GetUserPackageListOpenapiReq)
+      returns (mapgoo.paas.openplatform.api.data.GetUserPackageListOpenapiResp) {
+    option (google.api.http) = {
+      get : "/open/v1/cloudStorage/userPackageInfo"
+    };
+  }
+
+  //分页查询Openapi拉取时间轴
+  rpc GetTimeLine(mapgoo.paas.openplatform.api.data.GetTimeLineOpenapiReq)
+      returns (mapgoo.paas.openplatform.api.data.GetTimeLineOpenapiResp) {
+    option (google.api.http) = {
+      post : "/open/v1/cloudStorage/getTimeLine"
+    };
+  }
+
+  // Openapi拉取文件列表
+  rpc GetIndex(mapgoo.paas.openplatform.api.data.GetIndexOpenapiReq)
+      returns (mapgoo.paas.openplatform.api.data.GetIndexOpenapiResp) {
+    option (google.api.http) = {
+      post : "/open/v1/cloudStorage/getIndex"
+    };
+  }
+
+  //查询云记录仪视频日历
+  rpc GetCalendar(mapgoo.paas.openplatform.api.data.GetCalendarReq)
+      returns (mapgoo.paas.openplatform.api.data.GetCalendarResp) {
+    option (google.api.http) = {
+      post : "/open/v1/cloudStorage/getCalendar"
+    };
+  }
+
+  //查询驾驶事件明细
+  rpc GetVideoLabel(mapgoo.paas.openplatform.api.data.GetVideoLabelReq)
+      returns (mapgoo.paas.openplatform.api.data.GetVideoLabelResp) {
+    option (google.api.http) = {
+      get : "/open/v1/cloudStorage/getVideoLabel"
+    };
+  }
+}

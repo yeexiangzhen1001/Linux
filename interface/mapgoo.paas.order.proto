@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package mapgoo.paas.order;
+
+option java_package = "com.mapgoo.mill.pb";
+option java_outer_classname = "Order";
+
+message OrderOwner
+{
+	uint32 businessTypeId = 1;				//业务入口
+	uint32 userid = 2;						//用户ID
+	string openid = 3;						//OpenID
+	string unionid = 4;						//unionId
+	uint32 objectid = 5;					//设备ID
+	uint32 simid = 6;						//卡id
+	string imei = 7;						//设备IMEI
+	string iccid = 8;						//卡ICCID
+	string sim = 9;							//卡sim
+	string imsi = 10;						//卡imsi
+}
+
+message QueryOrderReq
+{
+	OrderOwner owner = 1;
+	uint32 beginTime = 2;
+	uint32 endTime = 3;
+	uint32 pageNo = 4;
+	uint32 pageSize = 5;
+}

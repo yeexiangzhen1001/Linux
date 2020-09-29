@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package mapgoo.paas.hcc;
+
+option go_package = "api";
+
+import public "mapgoo.paas.hcc.data.proto";
+
+service HccProxy
+{
+	//获取设备号
+    rpc getSocolDeviceNo(mapgoo.paas.hcc.data.GetSocolDeviceNoReq) returns (mapgoo.paas.hcc.data.GetSocolDeviceNoResp) { };
+}

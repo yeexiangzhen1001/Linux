@@ -1,0 +1,258 @@
+syntax = "proto3";
+
+package mapgoo.paas.dss;
+
+option go_package = "api";
+
+import "google/api/annotations.proto";
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.travel.data.proto";
+import public "mapgoo.paas.status.data.proto";
+import public "mapgoo.paas.live.data.proto";
+import public "mapgoo.paas.video.data.proto";
+
+service DSS {
+	//获取历史行程
+	rpc getHisTravel(mapgoo.paas.travel.data.GetHisTravelReq) returns (mapgoo.paas.travel.data.GetHisTravelResp) {
+		option (google.api.http) = {
+			post:"/dss/getHisTravel"
+		};
+	};
+
+	//获取行程统计信息
+    rpc getStatisticsTravel(mapgoo.paas.travel.data.GetStatisticsTravelReq) returns (mapgoo.paas.travel.data.GetStatisticsTravelResp) {
+        option (google.api.http) = {
+            post:"/dss/getStatisticsTravel"
+        };
+    };
+
+	//获取驾驶评分
+    rpc getDrivingScore(mapgoo.paas.status.data.GetDrivingScoreReq) returns (mapgoo.paas.status.data.GetDrivingScoreResp) { 
+        option (google.api.http) = {
+            post:"/dss/getDrivingScore"
+        };
+    };
+
+	//更新定位表信息
+	rpc updateDeviceStatus(mapgoo.paas.status.data.UpdateDeviceStatusReq) returns (mapgoo.paas.status.data.UpdateDeviceStatusResp) {
+		option (google.api.http) = {
+			post:"/dss/updateDeviceStatus"
+		};
+	};
+
+	//查询事件标签
+	rpc getDriveEventInfo(mapgoo.paas.live.data.GetDriveEventInfoReq) returns (mapgoo.paas.live.data.GetDriveEventInfoResp) {
+        option (google.api.http) = {
+            post:"/dss/getDriveEventInfo"
+        };
+    }; 
+
+	//保存事件标签
+	rpc saveDriveEventInfo(mapgoo.paas.live.data.SaveDriveEventInfoReq) returns (mapgoo.paas.live.data.SaveDriveEventInfoResp) {
+        option (google.api.http) = {
+            post:"/dss/saveDriveEventInfo"
+        };
+    }; 
+
+	//设备事件信息
+	rpc getDeviceEvent(mapgoo.paas.live.data.GetDeviceEventReq) returns (mapgoo.paas.live.data.GetDeviceEventResp) {
+		option (google.api.http) = {
+			post:"/dss/getDeviceEvent"
+		};
+	};
+
+	//保存事件信息
+	rpc saveDeviceEvent(mapgoo.paas.live.data.SaveDeviceEventReq) returns (mapgoo.paas.live.data.SaveDeviceEventResp) {
+		option (google.api.http) = {
+			post:"/dss/saveDeviceEvent"
+		};
+	};
+
+	//统计查询图片/视频抓拍
+	rpc SnapCmd(mapgoo.paas.live.data.SnapCmdReq) returns (mapgoo.paas.live.data.SnapCmdResp) {
+		option (google.api.http) = {
+			post : "/dss/snapCmd"
+		};
+	}
+	//上报视频异常信息
+	rpc ReportBadVideoInfo(mapgoo.paas.live.data.ReportBadVideoInfoReq)
+		returns (mapgoo.paas.live.data.ReportBadVideoInfoResp) {
+		option (google.api.http) = {
+		post : "/dss/reportBadVideoInfo"
+		};
+	}
+	//分页查询APP拉取时间戳
+    rpc GetTimeLine(mapgoo.paas.live.data.GetTimeLineReq)
+        returns (mapgoo.paas.live.data.GetTimeLineResp) {
+        option (google.api.http) = {
+        post : "/dss/getTimeLine"
+        };
+    }
+
+    // APP拉取文件列表
+    rpc GetIndex(mapgoo.paas.live.data.GetIndexReq)
+        returns (mapgoo.paas.live.data.GetIndexResp) {
+        option (google.api.http) = {
+        post : "/dss/getIndex"
+        };
+    }
+
+    //设备端视频文件上传
+    rpc UploadIndex(mapgoo.paas.live.data.UploadIndexReq)
+        returns (mapgoo.paas.live.data.UploadIndexResp) {
+        option (google.api.http) = {
+        post : "/dss/uploadIndex"
+        };
+    }
+
+    //分页查询获取云记录仪视频日历
+    rpc GetRecorderDaySummary(
+        mapgoo.paas.live.data.GetRecorderDaySummaryReq)
+        returns (mapgoo.paas.live.data.GetRecorderDaySummaryResp) {
+        option (google.api.http) = {
+        post : "/dss/getRecorderDaySummary"
+        };
+    }
+
+    //保存目录树
+    rpc SaveCloudStorageIndex(mapgoo.paas.live.data.SaveCloudStorageIndexReq)
+        returns (mapgoo.paas.live.data.SaveCloudStorageIndexResp) {
+      option (google.api.http) = {
+        post : "/dss/saveCloudStorageIndex"
+      };
+    }
+
+    //增量拉取目录树
+    rpc GetCloudStorageIndex(mapgoo.paas.live.data.GetCloudStorageIndexReq)
+        returns (mapgoo.paas.live.data.GetCloudStorageIndexResp) {
+      option (google.api.http) = {
+        post : "/dss/getCloudStorageIndex"
+      };
+    }
+
+    //开始远程调阅
+    rpc RemotePlay(mapgoo.paas.live.data.RemotePlayReq)
+        returns (mapgoo.paas.live.data.RemotePlayResp) {
+      option (google.api.http) = {
+        post : "/dss/remotePlay"
+      };
+    }
+
+    //停止远程调阅
+    rpc StopRemotePlay(mapgoo.paas.live.data.StopRemotePlayReq)
+        returns (mapgoo.paas.live.data.StopRemotePlayResp) {
+      option (google.api.http) = {
+        post : "/dss/stopRemotePlay"
+      };
+    }
+
+    //删除本地目录树
+    rpc DeleteCloudStorageIndex(
+        mapgoo.paas.live.data.DeleteCloudStorageIndexReq)
+        returns (mapgoo.paas.live.data.DeleteCloudStorageIndexResp) {
+      option (google.api.http) = {
+        post : "/dss/deleteCloudStorageIndex"
+      };
+    }
+
+    //保存直播信息
+    rpc SaveSsvidInfo(mapgoo.paas.live.data.SaveSsvidInfoReq)
+        returns (mapgoo.paas.live.data.SaveSsvidInfoResp) {
+            option (google.api.http) = {
+            post : "/dss/SaveSsvidInfo"
+        };
+    }
+
+    //获取实时轨迹信息
+    rpc GetRealtimeTrack(mapgoo.paas.status.data.GetRealtimeTrackReq) returns (mapgoo.paas.status.data.GetRealtimeTrackResp) {
+        option (google.api.http) = {
+            post : "/dss/GetRealtimeTrack"
+        };
+    }
+
+    //获取设备实时行程
+    rpc GetRealtimeTravel(mapgoo.paas.travel.data.GetRealtimeTravelReq) returns (mapgoo.paas.travel.data.GetRealtimeTravelResp) {
+        option (google.api.http) = {
+            post:"/dss/GetRealtimeTravel"
+        };
+    };
+
+   //获取经纬度省市区
+   rpc GetRegionInfoByGeo(mapgoo.paas.status.data.GetRegionInfoByGeoReq) returns (mapgoo.paas.status.data.GetRegionInfoByGeoResp) {
+      option (google.api.http) = {
+          post : "/dss/GetRegionInfoByGeo"
+      };
+   }  
+   
+    //发送指令
+    rpc SendCommand(mapgoo.paas.status.data.CommandReq) returns (mapgoo.paas.status.data.CommandResp) {
+      option (google.api.http) = {
+          post:"/dss/SendCommand"
+      };
+   };
+
+    //获取历史轨迹信息
+    rpc GetHistoryTrack(mapgoo.paas.status.data.GetHistoryTrackReq) returns (mapgoo.paas.status.data.GetHistoryTrackResp) {
+      option (google.api.http) = {
+          post : "/dss/GetHistoryTrack"
+      };
+   }
+
+    //视频编码信息上报
+    rpc SaveVideoInfo(mapgoo.paas.video.data.SaveVideoInfoReq) returns (mapgoo.paas.video.data.SaveVideoInfoResp) {
+        option (google.api.http) = {
+            post:"/dss/SaveVideoInfo"
+        };
+    };
+
+    //查询视频信息
+    rpc SearchVideoInfo(mapgoo.paas.video.data.SearchVideoInfoReq) returns (mapgoo.paas.video.data.SearchVideoInfoResp) {
+        option (google.api.http) = {
+            post:"/dss/SearchVideoInfo"
+        };
+    };
+
+    //上报视频错误码信息
+    rpc SaveVideoErrCode(mapgoo.paas.video.data.SaveVideoErrCodeReq) returns (mapgoo.paas.video.data.SaveVideoErrCodeResp) {
+        option (google.api.http) = {
+            post:"/dss/SaveVideoErrCode"
+        };
+    };
+
+    //删除
+    rpc DelVideoIndex(mapgoo.paas.video.data.DelVideoIndexReq) returns (mapgoo.paas.video.data.DelVideoIndexResp) {
+        option (google.api.http) = {
+            post:"/dss/DelVideoIndex"
+        };
+    };
+
+    //查询错误码
+    rpc SearchVideoErrInfo(mapgoo.paas.video.data.SearchVideoErrInfoReq) returns (mapgoo.paas.video.data.SearchVideoErrInfoResp) {
+        option (google.api.http) = {
+            post:"/dss/SearchVideoErrInfo"
+        };
+    };
+
+   	//获取设备实时路由信息
+    rpc getDeviceRouter(mapgoo.paas.status.data.GetDeviceRouterReq) returns (mapgoo.paas.status.data.GetDeviceRouterResp) {
+       option (google.api.http) = {
+           get:"/dss/getDeviceRouter"
+        };
+    };
+
+    //保存记录仪视频日历（有则更新无则新增）
+    rpc SaveRecorderDaySummary(mapgoo.paas.live.data.SaveRecorderDaySummaryReq)
+        returns (mapgoo.paas.live.data.SaveRecorderDaySummaryResp) {
+      option (google.api.http) = {
+        post : "dss/SaveRecorderDaySummary"
+      };
+    }
+
+    //获取设备状态
+    rpc GetDeviceStatus(mapgoo.paas.live.data.GetDeviceStatusReq)
+        returns (mapgoo.paas.live.data.GetDeviceStatusResp) {
+      option (google.api.http) = {
+        post : "dss/GetDeviceStatus"
+      };
+    }
+}

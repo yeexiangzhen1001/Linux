@@ -1,0 +1,340 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.status;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.status.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//更新设备实时状态信息
+//message UpdateDeviceStatusReq
+//{
+	//设备原始上报数据
+//    mapgoo.paas.status.DeviceReportData track_info = 1;
+//}
+
+//message UpdateDeviceStatusResp
+//{
+	//返回信息
+//    mapgoo.paas.base.BaseRespInfo base = 1;
+//}
+
+//更新设备实时告警结果
+//message UpdateDeviceAlarmResultReq
+//{
+    //设备id和imei
+//    mapgoo.paas.base.DeviceId device_id = 1;
+
+	//告警结果
+//   mapgoo.paas.status.AlarmResult alarm_info = 2;
+//}
+
+//message UpdateDeviceAlarmResultResp
+//{
+	//返回信息
+//    mapgoo.paas.base.BaseRespInfo base = 1;
+//}
+
+//更新设备实时行政区
+//message UpdateDeviceRegionReq
+//{
+    //设备id和imei
+//    mapgoo.paas.base.DeviceId device_id = 1;
+
+	//行政区信息
+//    mapgoo.paas.status.AdminRegion region_info = 2;
+//}
+
+//message UpdateDeviceRegionResp
+//{
+	//返回信息
+//    mapgoo.paas.base.BaseRespInfo base = 1;
+//}
+
+//更新设备实时路由信息
+//message UpdateCacheDeviceRouterReq
+//{
+	//路由信息
+//    mapgoo.paas.status.RouterInfo router = 1;
+//}
+
+//message UpdateCacheDeviceRouterResp
+//{
+	//返回信息
+//    mapgoo.paas.base.BaseRespInfo base = 1;
+//}
+
+//获取设备实时路由信息
+message GetDeviceRouterCacheReq
+{
+   //设备id和imei
+   mapgoo.paas.base.DeviceId device_id = 1;
+}
+
+message GetDeviceRouterCacheResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//路由信息
+    mapgoo.paas.status.data.RouterInfo router = 2;
+}
+
+//获取定时任务信息
+//message GetTaskInfoReq
+//{
+//	uint64 scheduled_time = 1;
+//}
+
+//message GetTaskInfoResp
+//{
+	//返回信息
+//    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//定时任务信息
+//	repeated mapgoo.paas.status.TaskInfo task_list = 2;
+//}
+
+//更新定时任务信息
+//message UpdateTaskInfoReq
+//{
+	//定时任务信息
+//	mapgoo.paas.status.TaskInfo task = 1;
+//}
+
+//message UpdateTaskInfoResp
+//{
+	//返回信息
+//    mapgoo.paas.base.BaseRespInfo base = 1;
+//}
+
+//轨迹、状态、告警、路由
+service DeviceStatusCacheProxy
+{
+    //获取设备实时轨迹、状态信息
+    rpc getDeviceTracksCache(GetDeviceTracksCacheReq) returns (GetDeviceTracksCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/status/getDeviceTrackCache"
+        };
+    };
+	
+	//更新设备实时状态信息
+	//rpc updateDeviceStatus(UpdateDeviceStatusReq) returns (UpdateDeviceStatusResp) {
+    //    option (google.api.http) = {
+    //        get:"/cap/status/updateDeviceStatus"
+    //    };
+    //};
+
+    //更新设备某些属性
+    rpc uploadDeviceOptionCache(mapgoo.paas.status.data.UploadDeviceOptionReq) returns (mapgoo.paas.status.data.UploadDeviceOptionResp) {
+        option (google.api.http) = {
+            get:"/cap/status/uploadDeviceOptionCache"
+        };
+    };
+	
+	//更新设备实时轨迹信息（gps、wifi、基站等）
+    rpc updateDeviceTracksCache(UpdateDeviceTracksCacheReq) returns (UpdateDeviceTracksCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/status/updateDeviceTracksCache"
+       };
+    };
+
+	//更新设备实时告警结果
+    //rpc updateDeviceAlarmResult(UpdateDeviceAlarmResultReq) returns (UpdateDeviceAlarmResultResp) {
+    //    option (google.api.http) = {
+    //        get:"/cap/status/updateDeviceAlarmResult"
+    //    };
+    //};
+
+    //更新设备实时路由信息
+    //rpc updateDeviceRouter(UpdateCacheDeviceRouterReq) returns (UpdateCacheDeviceRouterResp) {
+    //    option (google.api.http) = {
+    //        get:"/cap/status/updateDeviceRouter"
+    //    };
+    //};
+	
+	//获取设备实时路由信息
+    rpc getDeviceRouterCache(GetDeviceRouterCacheReq) returns (GetDeviceRouterCacheResp) {
+       option (google.api.http) = {
+           get:"/cap/status/getDeviceRouter"
+        };
+    };
+
+    //更新设备实时行政区
+    //rpc updateDeviceRegion(UpdateDeviceRegionReq) returns (UpdateDeviceRegionResp) {
+    //    option (google.api.http) = {
+    //        get:"/cap/status/updateDeviceRegion"
+    //   };
+    //};                  
+
+	//获取定时任务信息
+	//rpc getTaskInfo(GetTaskInfoReq) returns (GetTaskInfoResp) {
+    //    option (google.api.http) = {
+    //        get:"/cap/status/getTaskInfo"
+    //    };
+    // };   
+	
+	//更新定时任务信息
+	//rpc updateTaskInfo(UpdateTaskInfoReq) returns (UpdateTaskInfoResp) {
+    //    option (google.api.http) = {
+    //        get:"/cap/status/updateTaskInfo"
+    //    };
+    //};
+
+    //创建用户/设备数据移动任务
+    rpc AddDataMoveTask(AddDataMoveTaskReq) returns (AddDataMoveTaskResp) {
+        option (google.api.http) = {
+            get:"/cap/status/AddDataMoveTask"
+        };
+    };
+
+    //获取用户/设备数据移动任务
+    rpc GetDataMoveTask(GetDataMoveTaskReq) returns (GetDataMoveTaskResp) {
+        option (google.api.http) = {
+            get:"/cap/status/GetDataMoveTask"
+        };
+    };
+
+    //删除用户/设备数据移动任务
+    rpc DelDataMoveTask(DelDataMoveTaskReq) returns (DelDataMoveTaskResp) {
+        option (google.api.http) = {
+            get:"/cap/status/DelDataMoveTask"
+        };
+    };
+
+    //获取轨迹信息
+    rpc GetDeviceTracksByKeys(GetDeviceTracksByKeysReq) returns (GetDeviceTracksByKeysResp) {
+        option (google.api.http) = {
+            get:"/cap/status/GetDeviceTracksByKeys"
+        };
+    };
+
+    //添加设备跟踪
+    rpc AddDeviceTrace(AddDeviceTraceReq) returns (AddDeviceTraceResp) {
+        option (google.api.http) = {
+            get:"/cap/status/addDeviceTrace"
+        };
+    };
+
+    //删除设备跟踪
+    rpc DeleteDeviceTrace(DeleteDeviceTraceReq) returns (DeleteDeviceTraceResp) {
+        option (google.api.http) = {
+            get:"/cap/status/deleteDeviceTrace"
+        };
+    };
+}
+
+message GetDeviceTracksCacheReq
+{
+    uint32 object_id = 1 [(gogoproto.jsontag) = 'object_id'];
+}
+
+message GetDeviceTracksCacheResp
+{
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+
+	mapgoo.paas.status.data.DeviceTrack info = 2 [(gogoproto.jsontag) = 'info'];
+}
+
+//更新设备实时轨迹信息（gps、wifi、基站等）
+message UpdateDeviceTracksCacheReq
+{
+    uint32 object_id = 1 [(gogoproto.jsontag) = 'object_id'];
+
+	mapgoo.paas.status.data.DeviceTrackOpt info = 2[(gogoproto.jsontag) = 'info'];
+}
+
+message UpdateDeviceTracksCacheResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//创建用户/设备数据移动任务
+message AddDataMoveTaskReq
+{
+    //任务
+	mapgoo.paas.status.data.DataMoveTask task = 1;
+}
+
+message AddDataMoveTaskResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取用户/设备数据移动任务
+message GetDataMoveTaskReq
+{
+    //类型 1：拆分 2：合并 3：用户迁移 4：设备迁移
+    uint32 type = 1;
+
+    //设备id
+    uint32 object_id = 2;
+
+    //用户id
+    uint32 hold_id = 3;
+}
+
+message GetDataMoveTaskResp
+{
+    //返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //任务
+    repeated mapgoo.paas.status.data.DataMoveTask task_list = 2;
+}
+
+//删除用户/设备数据移动任务
+message DelDataMoveTaskReq
+{
+    //
+	mapgoo.paas.status.data.DataMoveTask task = 1;
+}
+
+message DelDataMoveTaskResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取轨迹信息
+message GetDeviceTracksByKeysReq
+{
+    //设备id
+    uint32 object_id = 1;
+
+    //key列表
+    repeated mapgoo.paas.status.data.TrackKeyName key_list = 2;
+}
+
+message GetDeviceTracksByKeysResp
+{
+    //返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //轨迹信息，根据请求的key赋值对应的字段
+	mapgoo.paas.status.data.DeviceAllTrack info = 2;
+}
+
+//添加设备跟踪
+message AddDeviceTraceReq{
+    string imei = 1;
+    int32 ttl = 2;
+}
+message AddDeviceTraceResp{
+    //返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除设备跟踪
+message DeleteDeviceTraceReq{
+    string imei = 1;
+}
+message DeleteDeviceTraceResp{
+    //返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}

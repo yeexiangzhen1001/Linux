@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+import "mapgoo.paas.liveservice.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.liveservice;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service LiveService {
+    //获取直播地址
+    rpc GetDeviceLiveAddr(mapgoo.paas.liveservice.data.GetDeviceLiveAddrReq) returns (mapgoo.paas.liveservice.data.GetDeviceLiveAddrResp) {
+            option (google.api.http) = {
+            get : "/live/GetDeviceLiveAddr"
+        };
+    }
+
+    //设备直播鉴权
+    rpc LiveStatusNotify(mapgoo.paas.liveservice.data.LiveStatusNotifyReq) returns (mapgoo.paas.liveservice.data.LiveStatusNotifyResp) {
+      option (google.api.http) = {
+        post : "/live/LiveStatusNotify"
+      };
+    }
+
+    //设备直播观看信息
+    rpc GetLiveInfo(mapgoo.paas.liveservice.data.GetLiveInfoReq) returns (mapgoo.paas.liveservice.data.GetLiveInfoResp) {
+        option (google.api.http) = {
+            post : "/live/GetLiveInfo"
+        };
+    }
+
+    //获取摄像头状态
+    rpc GetCameraStatus(mapgoo.paas.liveservice.data.GetCameraStatusReq)
+        returns (mapgoo.paas.liveservice.data.GetCameraStatusResp) {
+      option (google.api.http) = {
+        get : "live/GetCameraStatus"
+      };
+    }
+}

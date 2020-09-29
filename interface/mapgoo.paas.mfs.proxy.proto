@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package mapgoo.paas.mfs.proxy;
+import public "mapgoo.paas.mfs.data.proto";
+
+option go_package = "api";
+
+service MfsProxyProxy {
+  rpc getRecords (MfsGetRecordsReq) returns (MfsGetRecordsResp) {}
+  rpc addRecords (MfsAddRecordsReq) returns (MfsAddRecordsResp) {}
+}
+
+message MfsGpsData{
+	uint32 gpsTime = 1;
+	uint32 rcvTime = 2;
+	int32 lon = 3;
+	int32 lat = 4;
+	uint32 mileage = 5;
+	uint32 speed = 6;
+	int32 direct = 7;
+	int32 altitude = 8;
+	int32 battery = 9;
+	uint32 messageType = 10;
+	uint32 gsmStrength = 11;
+	uint32 satelliteNum = 12;
+	uint32 gpsAccuracyType = 13;
+	bytes mdtStatus = 14;
+}	
+
+message MfsGetRecordsReq {
+	uint32 object_id = 1;
+	uint32 begin_time = 2;
+	uint32 end_time = 3;
+}
+message MfsGetRecordsResp {
+	int32 status = 1;
+	repeated mapgoo.paas.mfs.data.GpsData gps_data = 2;
+}
+
+message MfsAddRecordsReq {
+	uint32 objectId = 1;
+	repeated MfsGpsData gps_data = 2;
+}
+
+message MfsAddRecordsResp {
+	int32 status = 1;
+}

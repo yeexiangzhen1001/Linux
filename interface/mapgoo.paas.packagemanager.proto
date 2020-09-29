@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+import "mapgoo.paas.packagemanager.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.packagemanager;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service PackageManagerService {
+
+  // OMS进行套餐配置(pms)
+  rpc ConfigPackage(mapgoo.paas.packagemanager.data.ConfigPackageReq)
+      returns (mapgoo.paas.packagemanager.data.ConfigPackageResp) {
+    option (google.api.http) = {
+      post : "/package/api/config"
+    };
+  }
+
+  //已配套餐分页查询(pms)
+  rpc GetPackageConfigList(
+      mapgoo.paas.packagemanager.data.GetPackageConfigListReq)
+      returns (mapgoo.paas.packagemanager.data.GetPackageConfigListResp) {
+    option (google.api.http) = {
+      get : "/package/api/getPackageConfigList"
+    };
+  }
+
+  //用户套餐购买
+  rpc BuyPackage(mapgoo.paas.packagemanager.data.BuyPackageReq)
+      returns (mapgoo.paas.packagemanager.data.BuyPackageResp) {
+    option (google.api.http) = {
+      post : "/package/api/buyPackage"
+    };
+  }
+
+  //用户已购套餐信息查询
+  rpc GetUserPackageList(mapgoo.paas.packagemanager.data.GetUserPackageListReq)
+      returns (mapgoo.paas.packagemanager.data.GetUserPackageListResp) {
+    option (google.api.http) = {
+      get : "/package/api/userPackageInfo"
+    };
+  }
+
+  //用户套餐功能校验
+  rpc CheckCloudRecoderPackage(
+      mapgoo.paas.packagemanager.data.CheckCloudRecoderPackageReq)
+      returns (mapgoo.paas.packagemanager.data.CheckCloudRecoderPackageResp) {
+    option (google.api.http) = {
+      get : "/package/api/checkCloudRecoderPackage"
+    };
+  }
+
+  //激活新套餐
+  rpc ActiveNewPackage(mapgoo.paas.packagemanager.data.ActiveNewPackageReq)
+      returns (mapgoo.paas.packagemanager.data.ActiveNewPackageResp) {
+    option (google.api.http) = {
+      get : "/package/api/activeNewPackage"
+    };
+  }
+
+  //获取当前需要结算的套餐结算信息
+  rpc GetAcitvePackageStatement(
+      mapgoo.paas.packagemanager.data.GetAcitvePackageStatementReq)
+      returns (mapgoo.paas.packagemanager.data.GetAcitvePackageStatementResp) {
+    option (google.api.http) = {
+      get : "/package/api/getAcitvePackageStatement"
+    };
+  }
+
+  //获取设备观看范围的总天数和保留天数
+  rpc GetDeviceWatchTime(mapgoo.paas.packagemanager.data.GetDeviceWatchTimeReq)
+      returns (mapgoo.paas.packagemanager.data.GetDeviceWatchTimeResp) {
+    option (google.api.http) = {
+      get : "/package/api/getDeviceWatchTime"
+    };
+  }
+
+  //更新设备结算信息
+  rpc UpdateDeviceStatementInfo(
+      mapgoo.paas.packagemanager.data.UpdateDeviceStatementInfoReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateDeviceStatementInfoResp) {
+    option (google.api.http) = {
+      post : "/package/api/updateDeviceStatementInfo"
+    };
+  }
+
+  //用户直播套餐功能校验
+  rpc CheckLivePackage(mapgoo.paas.packagemanager.data.CheckLivePackageReq)
+      returns (mapgoo.paas.packagemanager.data.CheckLivePackageResp) {
+    option (google.api.http) = {
+      get : "/package/api/checkLivePackage"
+    };
+  }
+
+  //获取记录仪相关的套餐列表
+  rpc GetUserRecorderPackageList(
+      mapgoo.paas.packagemanager.data.GetUserRecorderPackageListReq)
+      returns (mapgoo.paas.packagemanager.data.GetUserRecorderPackageListResp) {
+    option (google.api.http) = {
+      post : "/package/api/GetUserRecorderPackageList"
+    };
+  }
+}

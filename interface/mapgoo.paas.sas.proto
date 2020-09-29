@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package mapgoo.paas.sas;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+
+service SasProxy {
+
+	rpc alarmNotify(SasAlarmNotifyReq) returns (SasAlarmNotifyResp) {
+
+	};
+}
+
+message SasGeoPoint
+{
+	int32 lng = 1;
+	int32 lat = 2;
+}
+
+message SasGPSData
+{
+	uint32 gps_time = 1;
+	uint32 rcv_time = 2;
+	SasGeoPoint point = 3;
+	uint32 mileage = 4;
+	uint32 speed = 5;
+	int32 direction = 6;
+	int32 altitude = 7;
+	uint32 battery = 8;
+	uint32 message_type = 9;
+	uint32 gsm_strength = 10;
+	uint32 satellite_num = 11;
+	uint32 beidou_satellite_num = 12;
+	uint32 gps_accuracy_type = 13;
+	bool alarm_flag = 14;
+	string alarm_type = 15;
+	string alarm_desc = 16;
+}
+
+message SasAlarmNotifyReq{
+	uint32 obj_id = 1;
+	uint32 alarm_type_id = 2;
+	string alarm_desc = 3;
+	SasGPSData gps_data =4;
+}
+
+message SasAlarmNotifyResp{
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+}
+

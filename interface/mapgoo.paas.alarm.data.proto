@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package mapgoo.paas.alarm.data;
+
+option go_package = "api";
+
+//告警信息
+message AlarmDbInfo
+{
+	//报警id，雪花算法生成，递增唯一
+	uint64 alarm_id = 1;
+	
+	//
+	uint32 orig_up_id = 2;
+	
+	//设备id
+	uint32 object_id = 3;
+	
+	//渠道id
+	uint32 hold_id = 4;
+	
+	//
+	uint32 driver_id1 = 5;
+	
+	//
+	uint32 driver_id2 = 6;
+	
+	//报警类型描述
+	string alarm_type = 7;
+	
+	//报警描述
+	string alarm_desc = 8;
+	
+	//报警发生的数据接收时间
+	uint64 rcv_time = 9;
+	
+	//报警发生时的经度
+	sint32 lon = 10;
+	
+	//报警发生时的纬度
+	sint32 lat = 11;
+	
+	//报警发生时的速度
+	uint32 speed = 12;
+	
+	//报警发生时的定位类型
+	uint32 gps_flag = 13;
+	
+	//报警发生时的方向
+	uint32 direct = 14;
+	
+	//报警发生时的gps定位时间
+	uint64 gps_time = 15;
+	
+	//
+	string mdt_status = 16;
+	
+	//报警发生时的状态描述
+	string status_des = 17;
+	
+	//报警发生时的总里程值
+	uint32 mileage = 18;
+	
+	//报警发生时的油耗值
+	uint32 oilnum = 19;
+	
+	//报警发生持续时间
+	uint64 over_time = 20;
+	
+	//报警类型（参考d_alarmandstatus字典表）
+	uint32 alarm_type_id = 21;
+	
+	//报警处理状态
+	uint32 disp_state = 22;
+	
+	//报警位置的地址描述
+	string cur_location = 23;
+	
+	//是否已读:0-未读 1-已读
+	uint32 is_read = 24;
+	
+	//报警关联的多边形围栏id（围栏类报警有效，其他无效）
+	uint32 polygon_id = 25;
+	
+	//超速速度（超速报警有效，其他无效）
+	uint32 over_speed = 26;
+	
+	//记录插入时间
+	uint64 the_day = 27;
+	
+	//报警通知时间
+	uint64 notice_time = 28;
+	
+	//报警通知的用户id
+	uint32 notice_user_id = 29;
+	
+	//报警是否确认:0-未确认 1-已确认
+	uint32 alarm_confirm = 30;
+	
+	//报警处理时间
+	uint64 process_time = 31;
+	
+	//报警结束时的数据接受时间
+	uint64 stop_rcv_time = 32;
+	
+	//报警结束时的gps定位时间
+	uint64 stop_gps_time = 33;
+	
+	//报警结束时的经度
+	sint32 stop_lon = 34;
+	
+	//报警结束时的纬度
+	sint32 stop_lat = 35;
+	
+	//报警结束时的总里程
+	uint32 stop_mileage = 36;
+	
+	//报警结束时的的状态表述
+	string stop_status_des = 37;
+	
+	//报警结束时位置的地址描述
+	string stop_cur_location = 38;
+	
+	//geohash字符串
+	string geo_code = 39;
+	
+	//告警时长，秒
+	uint32 alarm_period = 40;
+}
+
+//离线信息
+message OfflineDetailDbInfo
+{
+	//设备id
+	uint32 object_id = 1;
+	
+	//离线开始时间（最后数据接收时间）
+	uint64 start_time = 2;
+	
+	//离线结束时间（最后数据接收时间）
+	uint64 stopt_ime = 3;
+	
+	//离线开始的经度
+	sint32 start_lon = 4;
+	
+	//离线开始的纬度
+	sint32 start_lat = 5;
+	
+	//离线开始位置的地址描述
+	string start_pos = 6;
+	
+	//离线开始时间（gps定位时间）
+	uint64 start_gps_time = 7;
+	
+	//离线开始状态描述
+	string start_status_desc = 8;
+	
+	//离线结束的经度
+	sint32 stop_lon = 9;
+	
+	//离线结束的纬度
+	sint32 stop_lat = 10;
+	
+	//离线结束位置的地址描述
+	string stop_pos = 11;
+	
+	//离线结束时间（gps定位时间）
+	uint64 stop_gps_time = 12;
+	
+	//离线结束的状态描述
+	string stop_status_desc = 13;
+	
+	//
+	uint32 log_flag = 14;
+	
+	//地址解析标志 -1未解析 0-已解析
+	uint32 location_flag = 15;
+	
+	//备注
+	string remark = 16;
+	
+	//记录插入时间
+	uint64 the_day = 17;
+	
+	//记录id，雪花算法生成，递增唯一
+	uint64 rec_id = 18;
+	
+	//离线时长，秒
+	uint32 offline_period = 19;
+	
+	//geohash字符串
+	string geo_code = 20;
+}

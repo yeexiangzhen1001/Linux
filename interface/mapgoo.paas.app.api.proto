@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+import "mapgoo.paas.app.api.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.app.api;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service AppApi {
+
+  //获取车机APK信息(APP-api)
+  rpc GetCarAppInfo(mapgoo.paas.app.api.data.GetCarAppInfoReq)
+      returns (mapgoo.paas.app.api.data.GetCarAppInfoResp) {
+    option (google.api.http) = {
+      get : "/app/api/getCarAppInfo"
+    };
+  }
+
+	//分页查询APP拉取时间戳
+	rpc GetTimeLine(mapgoo.paas.app.api.data.GetTimeLineAppReq)
+		returns (mapgoo.paas.app.api.data.GetTimeLineAppResp) {
+		option (google.api.http) = {
+		post : "/app/api/cloudRecorder/getTimeLine"
+		};
+	}
+
+	// APP拉取文件列表
+	rpc GetIndex(mapgoo.paas.app.api.data.GetIndexAppReq)
+		returns (mapgoo.paas.app.api.data.GetIndexAppResp) {
+		option (google.api.http) = {
+		post : "/app/api/cloudRecorder/getIndex"
+		};
+	}
+
+	//查询云记录仪视频日历
+	rpc GetCalendar(mapgoo.paas.app.api.data.GetCalendarReq)
+			returns (mapgoo.paas.app.api.data.GetCalendarResp) {
+		option (google.api.http) = {
+			post : "/app/api/cloudRecorder/getCalendar"
+		};
+    }
+
+	//停止远程调阅
+	rpc StopRemotePlay(mapgoo.paas.app.api.data.StopRemotePlayAppReq)
+			returns (mapgoo.paas.app.api.data.StopRemotePlayAppResp) {
+		option (google.api.http) = {
+			get : "/app/api/StopRemotePlay"
+		};
+	}
+
+	//开始远程调阅
+	rpc RemotePlay(mapgoo.paas.app.api.data.RemotePlayAppReq)
+			returns (mapgoo.paas.app.api.data.RemotePlayAppResp) {
+		option (google.api.http) = {
+			get : "/app/api/RemotePlay"
+		};
+	}
+
+    //获取直播地址
+    rpc GetDeviceLiveAddr(mapgoo.paas.app.api.data.GetAppDeviceLiveAddrReq)
+        returns (mapgoo.paas.app.api.data.GetAppDeviceLiveAddrResp) {
+            option (google.api.http) = {
+            get : "/app/api/GetDeviceLiveAddr"
+        };
+    }
+
+    //发送指令
+	rpc SendCommand(mapgoo.paas.app.api.data.SendCommandReq)
+            returns (mapgoo.paas.app.api.data.SendCommandResp) {
+        option (google.api.http) = {
+            post : "/app/api/SendCommand"
+        };
+    }
+
+    //下发视频指令
+    rpc SnapVideo(mapgoo.paas.app.api.data.SnapVideoReq)
+             returns (mapgoo.paas.app.api.data.SnapVideoResp) {
+         option (google.api.http) = {
+             post : "/app/api/SnapVideo"
+         };
+     }
+
+    //下发拍照指令
+    rpc ImageCmd(mapgoo.paas.app.api.data.ImageCmdReq)
+            returns (mapgoo.paas.app.api.data.ImageCmdResp) {
+        option (google.api.http) = {
+            post : "/app/api/ImageCmd"
+        };
+    }
+
+    //用户已购套餐信息查询
+    rpc GetUserPackageList(mapgoo.paas.app.api.data.GetUserPackageListAppReq)
+        returns (mapgoo.paas.app.api.data.GetUserPackageListAppResp) {
+      option (google.api.http) = {
+        get : "/app/api/userPackageInfo"
+      };
+    }
+
+    //设备直播观看信息
+    rpc GetLiveInfo(mapgoo.paas.app.api.data.GetAppLiveInfoReq) returns (mapgoo.paas.app.api.data.GetAppLiveInfoResp) {
+        option (google.api.http) = {
+            post : "/app/api/GetLiveInfo"
+        };
+    }
+
+    //获取历史轨迹信息
+    rpc GetHistoryTrackInfo(mapgoo.paas.app.api.data.GetAppHistoryTrackInfoReq) returns (mapgoo.paas.app.api.data.GetAppHistoryTrackInfoResp) {
+    option (google.api.http) = {
+            get : "/app/api/GetHistoryTrackInfo"
+        };
+    }
+}
+
+/*
+业务接口统计：
+
+*/

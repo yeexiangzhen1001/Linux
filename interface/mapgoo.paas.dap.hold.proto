@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package mapgoo.paas.hold.dap;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.hold.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//渠道管理
+service HoldManagement {
+	/*************************************新版接口**********************************/
+	//获取配置分组表
+	rpc GetApkConfigGroupInfo(mapgoo.paas.hold.data.GetApkConfigGroupInfoDBReq)
+		returns (mapgoo.paas.hold.data.GetApkConfigGroupInfoDBResp);
+
+	//获取配置字典表
+	rpc GetApkItemConfig(mapgoo.paas.hold.data.GetApkItemConfigDBReq)
+		returns (mapgoo.paas.hold.data.GetApkItemConfigDBResp);
+
+	//设置渠道配置列表
+	rpc SaveApkConfigList(mapgoo.paas.hold.data.SaveApkConfigListDBReq)
+		returns (mapgoo.paas.hold.data.SaveApkConfigListDBResp);
+
+	//获取渠道配置列表
+	rpc GetApkConfigList(mapgoo.paas.hold.data.GetApkConfigListDBReq)
+		returns (mapgoo.paas.hold.data.GetApkConfigListDBResp);
+
+	//查询渠道配置列表
+	rpc SearchApkConfigList(mapgoo.paas.hold.data.SearchApkConfigListDBReq)
+		returns (mapgoo.paas.hold.data.SearchApkConfigListDBResp);
+
+	//删除渠道配置
+	rpc DeleteApkConfig(mapgoo.paas.hold.data.DeleteApkConfigDBReq)
+		returns (mapgoo.paas.hold.data.DeleteApkConfigDBResp);
+
+	//保存渠道配置字典数据
+	rpc SaveApkConfigDict(mapgoo.paas.hold.data.SaveApkConfigDictDBReq)
+		returns (mapgoo.paas.hold.data.SaveApkConfigDictDBResp);
+
+	//删除渠道配置字典数据
+	rpc DeleteApkConfigDict(mapgoo.paas.hold.data.DeleteApkConfigDictDBReq)
+		returns (mapgoo.paas.hold.data.DeleteApkConfigDictDBResp);
+
+	//分页查询渠道配置字典信息
+	rpc SearchApkConfigDict(mapgoo.paas.hold.data.SearchApkConfigDictDBReq)
+		returns (mapgoo.paas.hold.data.SearchApkConfigDictDBResp);
+
+	//保存渠道配置分组信息
+	rpc SaveApkConfigGroup(mapgoo.paas.hold.data.SaveApkConfigGroupDBReq)
+		returns (mapgoo.paas.hold.data.SaveApkConfigGroupDBResp);
+
+	//删除渠道配置分组数据
+	rpc DeleteApkConfigGroup(mapgoo.paas.hold.data.DeleteApkConfigGroupDBReq)
+		returns (mapgoo.paas.hold.data.DeleteApkConfigGroupDBResp);
+
+	//分页查询渠道配置分组信息
+	rpc SearchApkConfigGroup(mapgoo.paas.hold.data.SearchApkConfigGroupDBReq)
+		returns (mapgoo.paas.hold.data.SearchApkConfigGroupDBResp);
+
+	//同步APK数据信息
+	rpc SyncApkConfigData(mapgoo.paas.hold.data.SyncApkConfigDataDBReq)
+		returns (mapgoo.paas.hold.data.SyncApkConfigDataDBResp) {
+		option (google.api.http) = {
+		get : "/dap/hold/SyncApkConfigData"
+		};
+	}
+
+        //分页查询查询渠道信息列表
+	rpc SearchHoldInfo(mapgoo.paas.hold.data.SearchHoldInfoDBReq)
+		returns (mapgoo.paas.hold.data.SearchHoldInfoDBResp);
+
+	//获取渠道目录树
+	rpc GetHoldTreePath(mapgoo.paas.hold.data.GetHoldTreePathDBReq)
+		returns (mapgoo.paas.hold.data.GetHoldTreePathDBResp);
+
+	  //获取渠道对应分库信息
+	rpc GetHoldDataRouter(GetHoldDataRouterReq) returns (GetHoldDataRouterResp) {
+        option (google.api.http) = {
+            get:"/dap/hold/GetHoldDataRouter"
+        };
+    }; 
+
+	//保存渠道对应分库信息
+	rpc SaveHoldDataRouter(SaveHoldDataRouterReq) returns (SaveHoldDataRouterResp) {
+        option (google.api.http) = {
+            get:"/dap/hold/SaveHoldDataRouter"
+        };
+    }; 
+
+	//更新渠道对应分库信息
+	rpc UpdateHoldDataRouter(UpdateHoldDataRouterReq) returns (UpdateHoldDataRouterResp) {
+        option (google.api.http) = {
+            get:"/dap/hold/UpdateHoldDataRouter"
+        };
+    };
+}
+
+//获取渠道对应分库信息
+message GetHoldDataRouterReq
+{
+    //用户ID
+	uint32 hold_id = 1;
+
+	//状态 1-拆分未迁移完成 2-拆分迁移完成 3-合并未迁移完成
+	uint32 status = 2;
+}
+
+message GetHoldDataRouterResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//渠道对应分库信息
+	repeated mapgoo.paas.hold.data.HoldDataRouter router_list = 2;
+}
+
+//保存渠道对应分库信息
+message SaveHoldDataRouterReq
+{
+    //用户ID
+	mapgoo.paas.hold.data.HoldDataRouter router = 1;
+}
+
+message SaveHoldDataRouterResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//更新渠道对应分库信息
+message UpdateHoldDataRouterReq
+{
+    //用户ID
+	uint32 hold_id = 1;
+
+	//是否删除 1-已删除'
+	uint32 is_deleted = 2;	
+
+	//状态 1-拆分未迁移完成 2-拆分迁移完成 3-合并未迁移完成
+	uint32 status = 3;	
+}
+
+message UpdateHoldDataRouterResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+

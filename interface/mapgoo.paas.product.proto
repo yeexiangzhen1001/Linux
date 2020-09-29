@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package mapgoo.paas.product;
+
+option java_package = "com.mapgoo.mill.pb";
+option java_outer_classname = "Product";
+
+
+//查找商品的SPU参数
+message GetSPUReq
+{
+	uint32 categSupplierInfooryId = 1;
+	uint32 supplierId = 2;
+	string productName = 3;
+	uint32 pageNo = 4;
+	uint32 pageSize = 5;
+}
+
+message GetSKUReq
+{
+	uint32 categoryId = 1;
+	uint32 supplierId = 2;
+	string productName = 3;
+	uint32 productId = 4;
+	uint32 pageNo = 5;
+	uint32 pageSize = 6;
+}

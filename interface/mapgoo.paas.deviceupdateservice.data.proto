@@ -1,0 +1,124 @@
+syntax = "proto3";
+package mapgoo.paas.deviceupdateservice.data;
+option go_package = "api";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import public "mapgoo.paas.base.proto";
+
+//设备更新检测接口入参明细
+message GetDeviceUpgradeReq {
+    //imei
+    string imei = 1;
+
+    //需要检测更新包
+    repeated GetDeviceUpgradeReqItem package_list = 2;
+}
+
+//设备更新检测接口入参明细
+message GetDeviceUpgradeReqItem {
+    //包名
+    string package_name = 1;
+
+    //版本号
+    string version_code = 2;
+
+}
+
+//设备更新检测接口的结果
+message GetDeviceUpgradeResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+    repeated GetDeviceUpgradeRespItem result = 2 [ (gogoproto.jsontag) = 'result' ];
+
+}
+
+
+//设备更新检测接口的结果的明细项目
+message GetDeviceUpgradeRespItem {
+
+    //包的下载地址
+    string download_url=1;
+
+    //是否强制升级
+    int32 forced=2;
+
+    //版本名称
+    string version_name=3;
+
+    //版本编号
+    string version_code=4;
+
+    //内容
+    string content=5;
+
+    //创建时间
+    string create_time=6;
+
+    //大小
+    string size=7;
+
+    //文件md5
+    string md5=8;
+
+    //包名
+    string package_name=9;
+
+    //更新包ID
+    int32 package_id=10;
+
+}
+
+//设备下载状态上报入参
+message GetDeviceUpgradeDownloadReq {
+
+    //imei
+    string imei=1;
+
+    //更新包
+    string package_name=2;
+
+    //更新包ID
+    int32 package_id=3;
+
+    //更新code
+    string version_code=4;
+
+    //下载状态，0-失败，1-成功
+    int32 state=5;
+
+}
+
+//设备下载状态上报结果
+message GetDeviceUpgradeDownloadResp {
+
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//设备升级状态上报入参
+message GetDeviceUpgradeUpdateReq {
+
+    //imei
+    string imei=1;
+
+    //更新包
+    string package_name=2;
+
+    //更新包ID
+    int32 package_id=3;
+
+    //更新code
+    string version_code=4;
+
+    //升级状态：0-失败，1-成功
+    int32 state=5;
+
+}
+
+//设备升级状态上报结果
+message GetDeviceUpgradeUpdateResp {
+
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}

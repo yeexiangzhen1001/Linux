@@ -1,0 +1,164 @@
+syntax = "proto3";
+
+import public "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.socol.data;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+message SocolActionData{
+    //摄像头
+    int32 channel = 1;
+    //指令具体时间，13位毫秒时间戳
+    repeated int64 stime = 2;
+    //指令有效时长
+    int64 rrt = 3;
+    //指令抽帧成功的要求的最低成功率
+    uint32 min_succecc_rate = 4;
+}
+
+//socol指令状态
+message SocolCmdStatus {
+    //指令发送标志，0-未发送 1-已发送
+    bool send_flag = 1;
+    //指令发送时间，时间戳
+    uint32 send_time = 2;
+    //指令发送结果，-1-位置，0-失败，1-成功
+    int32 send_result = 3;
+    //指令成功时间
+    uint32 success_time = 4;
+    //指令重试次数
+    uint32 retry_times = 5;
+}
+
+message SocolUploadImage{
+    //索引
+    int64 index = 1;
+    //指令开始时间
+    int64 time = 2;
+    //图片URL
+    string url = 3;
+    //图片大小
+    uint32 size = 4;
+    //包名
+    string name = 5;
+}
+
+message SocolUploadData{
+    repeated SocolUploadImage images = 1; //抽帧图片数据
+}
+
+message SocolUploadSummary{
+    //期望抽帧的总数
+    uint32 expect_cnt = 1;
+    //实际成功的数量
+    uint32 success_cnt = 2;
+
+    uint32 extract_cnt = 3;
+    //任务尝试次数(最小为1)
+    uint32 try_cnt = 4;
+    //任务完成时间
+    uint64 finish_time = 5;
+    //任务执行时长（单位：s）
+    uint32 duration = 6;
+}
+
+message SocolCmdSeq{
+    //指令来源
+    string source = 1;
+    //指令序号
+    string seq_id = 2;
+}
+
+message SocolUploadMessage{
+  string code = 1;
+  string message = 2;
+}
+
+message OMSUploadImageReq {
+    //设备号
+    string imei = 1;
+    //指令序列号
+    string seq = 2;
+    //指令来源
+    string source = 3;
+    //回传状态
+    string result = 4;
+    //版本号
+    string versionCode = 5;
+    //设备抽帧的任务类型
+    int32 batch_type = 6;
+    //抽帧图片数据
+    SocolUploadData data = 7;
+    //失败信息
+    SocolUploadMessage message = 8;
+    SocolUploadSummary summary = 9;
+}
+
+message OMSResultResp {
+    //返回码，0-成功
+    int32 error = 1;
+    //返回信息
+    string reason = 2;
+}
+
+message SocolWarnPos{
+    //设备系统时间
+    int64 system_time = 1;
+    //设备定位时间
+    int64 gps_time = 2;
+    //预警经度
+    int32 longtitude = 3;
+    //预警纬度
+    int32 lantitude = 4;
+}
+message SocolWarning{
+    //预警设备号
+    string imei = 1;
+    //预警类型
+    uint32 warn_type = 2;
+    //预警描述
+    string warn_desc = 3;
+    //抽帧渠道号
+    uint32 source = 4;
+    //抽帧流水号
+    string source_seq = 5;
+    //设备预警定位点, 用于抽帧
+    repeated SocolWarnPos pos_list = 6;
+}
+
+message SocolTrackRecord {
+    //设备号
+    string device_imei = 1;
+    //经度
+    int32 longtitude = 2;
+    //纬度
+    int32 latitude = 3;
+    //系统的时间戳
+    int32 loc_time = 4;
+    //坐标类型
+    string coord_type = 5;
+    //速度
+    double speed = 6;
+    //方向
+    uint32 direction = 7;
+    //高度
+    double height = 8;
+    //定位精度
+    double radius = 9;
+    //GPS定位时间
+    uint64 locT = 10;
+    //设备时间
+    uint64 sysT = 11;
+    //搜到的卫星总数
+    uint32 satellite_total = 12;
+    //信噪比不为0的个数
+    int32 satellite_snr = 13;
+    //表示轨迹用到的卫星数目
+    uint32 satellite_used = 14;
+    //单个轨迹上传数据包的大小，单位：byte
+    uint32 size = 15;
+}

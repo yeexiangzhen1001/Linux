@@ -1,0 +1,525 @@
+syntax = "proto3";
+import "mapgoo.paas.reportservice.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+package mapgoo.paas.reportservice;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+service HistoryManagement {
+
+  //分页查询查询报警明细记录
+  rpc SearchAlarmDetail(mapgoo.paas.reportservice.data.SearchAlarmDetailDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchAlarmDetailDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchAlarmDetail"
+    };
+  }
+
+  //分页查询查询行程明细
+  rpc SearchTravelInfo(mapgoo.paas.reportservice.data.SearchTravelInfoDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchTravelInfoDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchTravelInfo"
+    };
+  }
+
+  //分页查询查询行程事件
+  rpc SearchTravelEvent(mapgoo.paas.reportservice.data.SearchTravelEventDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchTravelEventDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchTravelEvent"
+    };
+  }
+
+  //分页查询获取行程驾驶评分明细
+  rpc GetDriveAnalysisInfo(mapgoo.paas.reportservice.data.GetDriveAnalysisInfoDBReq)
+      returns (mapgoo.paas.reportservice.data.GetDriveAnalysisInfoDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetDriveAnalysisInfo"
+    };
+  }
+
+  //分页查询获取停留明细
+  rpc GetObjectStopDetail(mapgoo.paas.reportservice.data.GetObjectStopDetailDBReq)
+      returns (mapgoo.paas.reportservice.data.GetObjectStopDetailDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetObjectStopDetail"
+    };
+  }
+
+  //分页查询获取停留轨迹明细(去重)
+  rpc GetMyFoots(mapgoo.paas.reportservice.data.GetMyFootsDBReq)
+      returns (mapgoo.paas.reportservice.data.GetMyFootsDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetMyFoots"
+    };
+  }
+
+  //分页查询查询指令下发记录明细
+  rpc SearchDownInfoCache(mapgoo.paas.reportservice.data.SearchDownInfoCacheDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchDownInfoCacheDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchDownInfoCache"
+    };
+  }
+
+  //分页查询获取设备离线明细(三表查询)
+  rpc SearchObjectOfflineDetail(
+      mapgoo.paas.reportservice.data.SearchObjectOfflineDetailDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchObjectOfflineDetailDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchObjectOfflineDetail"
+    };
+  }
+
+  //分组查询获取行程事件统计数
+  rpc GetTravelInfoEventCount(
+      mapgoo.paas.reportservice.data.GetTravelInfoEventCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetTravelInfoEventCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetTravelInfoEventCount"
+    };
+  }
+
+  //分组查询获取时段内总里程(分组统计)
+  rpc GetObjectTotalMileage(mapgoo.paas.reportservice.data.GetObjectTotalMileageDBReq)
+      returns (mapgoo.paas.reportservice.data.GetObjectTotalMileageDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetObjectTotalMileage"
+    };
+  }
+
+  //分组查询获取时段内的停留大于多少分钟总数
+  rpc GetObjectStopCount(mapgoo.paas.reportservice.data.GetObjectStopCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetObjectStopCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetObjectStopCount"
+    };
+  }
+
+  //分组查询获取报警汇总信息
+  rpc GetAlarmSummary(mapgoo.paas.reportservice.data.GetAlarmSummaryDBReq)
+      returns (mapgoo.paas.reportservice.data.GetAlarmSummaryDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetAlarmSummary"
+    };
+  }
+
+  //分组查询获取报警类型统计
+  rpc GetAlarmTypeCount(mapgoo.paas.reportservice.data.GetAlarmTypeCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetAlarmTypeCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetAlarmTypeCount"
+    };
+  }
+
+  //分组查询报警报警状态统计
+  rpc GetAlarmDispCount(mapgoo.paas.reportservice.data.GetAlarmDispCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetAlarmDispCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetAlarmDispCount"
+    };
+  }
+
+  //统计查询查询指令下发记录数
+  rpc GetDownInfoCacheCount(mapgoo.paas.reportservice.data.GetDownInfoCacheCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetDownInfoCacheCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetDownInfoCacheCount"
+    };
+  }
+
+  //统计查询获取行程事件记录数(三表查询)
+  rpc GetTravelEventCount(mapgoo.paas.reportservice.data.GetTravelEventCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetTravelEventCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetTravelEventCount"
+    };
+  }
+
+  //统计查询获取行程记录数
+  rpc GetTravelInfoCount(mapgoo.paas.reportservice.data.GetTravelInfoCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetTravelInfoCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetTravelInfoCount"
+    };
+  }
+
+  //统计查询获取行程油耗里程统计(每日油耗)
+  rpc GetTravelOilSummary(mapgoo.paas.reportservice.data.GetTravelOilSummaryDBReq)
+      returns (mapgoo.paas.reportservice.data.GetTravelOilSummaryDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetTravelOilSummary"
+    };
+  }
+
+  //统计查询查询报警记录数
+  rpc GetAlarmCount(mapgoo.paas.reportservice.data.GetAlarmCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetAlarmCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetAlarmCount"
+    };
+  }
+
+  //统计查询获取设备时段内各停留时长分布统计
+  rpc GetObjectTiemRangeStop(
+      mapgoo.paas.reportservice.data.GetObjectTiemRangeStopDBReq)
+      returns (mapgoo.paas.reportservice.data.GetObjectTiemRangeStopDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetObjectTiemRangeStop"
+    };
+  }
+
+  //统计查询行程燃油统计(不是分组统计)
+  rpc GetTravelOilCount(mapgoo.paas.reportservice.data.GetTravelOilCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetTravelOilCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetTravelOilCount"
+    };
+  }
+
+  //分组查询获取WEB日志的各类分组统计
+  rpc GetWebLogCount(mapgoo.paas.reportservice.data.GetWebLogCountDBReq)
+      returns (mapgoo.paas.reportservice.data.GetWebLogCountDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetWebLogCount"
+    };
+  }
+
+  //分页查询分页查询WEB日志明细信息
+  rpc SearchWebLogDetail(mapgoo.paas.reportservice.data.SearchWebLogDetailDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchWebLogDetailDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchWebLogDetail"
+    };
+  }
+
+  //分页查询分页查询WEB日志信息
+  rpc SearchWebLog(mapgoo.paas.reportservice.data.SearchWebLogDBReq)
+      returns (mapgoo.paas.reportservice.data.SearchWebLogDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/SearchWebLog"
+    };
+  }
+
+  //添加WEB日志信息
+  rpc AddWebLogDetail(mapgoo.paas.reportservice.data.AddWebLogDetailDBReq)
+      returns (mapgoo.paas.reportservice.data.AddWebLogDetailDBResp) {
+    option (google.api.http) = {
+      post : "/ReportService/AddWebLogDetail"
+    };
+  }
+
+//分组查询获取某设备每天的停车里程总数
+rpc GetDailyDrivedMileage(mapgoo.paas.reportservice.data.GetDailyDrivedMileageDBReq)
+    returns(mapgoo.paas.reportservice.data.GetDailyDrivedMileageDBResp){
+  option(google.api.http)={post:"/ReportService/GetDailyDrivedMileage"};
+}
+
+//分页查询获取OBD的诊断信息明细
+rpc SearchPIDInfoDetail(mapgoo.paas.reportservice.data.SearchPIDInfoDetailDBReq)
+    returns (mapgoo.paas.reportservice.data.SearchPIDInfoDetailDBResp) {
+  option (google.api.http) = {
+    post : "/ReportService/SearchPIDInfoDetail"
+  };
+}
+
+//分组查询查询设备指定报警分组的统计数
+rpc GetObjectAlarmCount(mapgoo.paas.reportservice.data.GetObjectAlarmCountDBReq)
+    returns (mapgoo.paas.reportservice.data.GetObjectAlarmCountDBResp) {
+  option (google.api.http) = {
+    post : "/ReportService/GetObjectAlarmCount"
+  };
+}
+//--------------------------------------------------------------------------------------------------------
+
+//获取告警类型id分组统计信息
+rpc GetAlarmGroupAlarmTypeId(
+    mapgoo.paas.reportservice.data.GetAlarmGroupAlarmTypeIdReq)
+    returns (mapgoo.paas.reportservice.data.GetAlarmGroupAlarmTypeIdResp) {
+  option (google.api.http) = {
+    post : "/ReportService/GetAlarmGroupAlarmTypeId"
+  };
+	}
+
+	//获取告警设备id分组统计信息
+	rpc GetAlarmGroupObjectId(mapgoo.paas.reportservice.data.GetAlarmGroupObjectIdReq) 
+	returns (mapgoo.paas.reportservice.data.GetAlarmGroupObjectIdResp) { 
+		option (google.api.http) = {
+			post:"/ReportService/GetAlarmGroupObjectId"
+		};
+	}
+
+	//获取告警设备id、alarmtypeid分组统计信息
+	rpc GetAlarmGroupObjectIdAndAlarmTypeId(mapgoo.paas.reportservice.data.GetAlarmGroupObjectIdReq) 
+	returns (mapgoo.paas.reportservice.data.GetAlarmGroupObjectIdAndAlarmTypeIdResp) { 
+		option (google.api.http) = {
+			post:"/ReportService/GetAlarmGroupObjectIdAndAlarmTypeId"
+		};
+	}
+
+	//获取告警rcvtime分组统计信息
+	rpc GetAlarmGroupRcvTime(mapgoo.paas.reportservice.data.GetAlarmGroupRcvTimeReq) 
+	returns (mapgoo.paas.reportservice.data.GetAlarmGroupRcvTimeResp) { 
+		option (google.api.http) = {
+			post:"/ReportService/GetAlarmGroupRcvTime"
+		};
+	}
+
+	//保存报警信息
+	rpc SaveAlarmInfo(mapgoo.paas.reportservice.data.SaveAlarmInfoReq)
+	returns (mapgoo.paas.reportservice.data.SaveAlarmInfoResp) {
+		option (google.api.http) = {
+			post : "/ReportService/SaveAlarmInfo"
+		};
+	}
+
+	//获取告警最小告警ID
+	rpc GetMinAlarmInfo(mapgoo.paas.reportservice.data.GetMinAlarmInfoReq) 
+	returns (mapgoo.paas.reportservice.data.GetMinAlarmInfoResp) { 
+		option (google.api.http) = {
+			post:"/ReportService/GetMinAlarmInfo"
+		};
+	};
+
+	//更新设备告警信息
+	rpc UpdateAlarmInfo(mapgoo.paas.reportservice.data.UpdateAlarmInfoReq)
+	returns (mapgoo.paas.reportservice.data.UpdateAlarmInfoResp) {
+		option (google.api.http) = {
+			post : "/ReportService/UpdateAlarmInfo"
+		};
+	}
+
+	//删除告警记录
+	rpc DeleteAlarm(mapgoo.paas.reportservice.data.DeleteAlarmReq)
+	returns (mapgoo.paas.reportservice.data.DeleteAlarmResp) {
+		option (google.api.http) = {
+			post : "/ReportService/DeleteAlarm"
+		};
+	}
+
+	//获取行程Starttime分组
+	rpc GetTravelInfoGroupStarttime(mapgoo.paas.reportservice.data.GetTravelInfoGroupStarttimeReq)
+	returns (mapgoo.paas.reportservice.data.GetTravelInfoGroupStarttimeResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetTravelInfoGroupStarttime"
+		};
+	}
+
+	//获取行程Theday分组
+	rpc GetTravelInfoGroupTheday(mapgoo.paas.reportservice.data.GetTravelInfoGroupThedayReq)
+	returns (mapgoo.paas.reportservice.data.GetTravelInfoGroupThedayResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetTravelInfoGroupTheday"
+		};
+	}
+
+	//获取行程Objectid分组
+	rpc GetTravelInfoGroupObjectid(mapgoo.paas.reportservice.data.GetTravelInfoGroupObjectidReq)
+	returns (mapgoo.paas.reportservice.data.GetTravelInfoGroupObjectidResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetTravelInfoGroupObjectid"
+		};
+	}
+
+	//更新行程信息
+	rpc UpdateTravelInfo(mapgoo.paas.reportservice.data.UpdateTravelInfoReq)
+	returns (mapgoo.paas.reportservice.data.UpdateTravelInfoResp) {
+		option (google.api.http) = {
+			post : "/ReportService/UpdateTravelInfo"
+		};
+	}
+
+	//分页查询设备里程明细参数
+	rpc GetObjectMileAgeDetail(mapgoo.paas.reportservice.data.GetObjectMileAgeDetailReq)
+	returns (mapgoo.paas.reportservice.data.GetObjectMileAgeDetailResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetObjectMileAgeDetail"
+		};
+	}
+
+	//获取车辆停留分组统计
+	rpc GetObjectStopGroupObjectid(
+	mapgoo.paas.reportservice.data.GetObjectStopGroupObjectidReq)
+	returns (mapgoo.paas.reportservice.data.GetObjectStopGroupObjectidResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetObjectStopGroupObjectid"
+		};
+	}
+
+	//获取车辆停留统计
+	rpc GetObjectStopCountEx(
+	mapgoo.paas.reportservice.data.GetObjectStopCountReq)
+	returns (mapgoo.paas.reportservice.data.GetObjectStopCountResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetObjectStopCountEx"
+		};
+	}
+
+	//更新车辆停留信息
+	rpc UpdateObjectStop(
+	mapgoo.paas.reportservice.data.UpdateObjectStopReq)
+	returns (mapgoo.paas.reportservice.data.UpdateObjectStopResp) {
+		option (google.api.http) = {
+			post : "/ReportService/UpdateObjectStop"
+		};
+	}
+
+	//删除车辆停留信息
+	rpc DeleteObjectStop(
+	mapgoo.paas.reportservice.data.DeleteObjectStopReq)
+	returns (mapgoo.paas.reportservice.data.DeleteObjectStopResp) {
+		option (google.api.http) = {
+			post : "/ReportService/DeleteObjectStop"
+		};
+	}
+
+	//获取车辆离线统计
+	rpc GetObjectOfflineObjectidCount(
+	mapgoo.paas.reportservice.data.GetObjectOfflineObjectidCountReq)
+	returns (mapgoo.paas.reportservice.data.GetObjectOfflineObjectidCountResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetObjectOfflineObjectidCount"
+		};
+	}
+
+	//获取车辆离线分组统计
+	rpc GetObjectOfflineGroupObjectid(
+	mapgoo.paas.reportservice.data.GetObjectOfflineGroupObjectidReq)
+	returns (mapgoo.paas.reportservice.data.GetObjectOfflineGroupObjectidResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetObjectOfflineGroupObjectid"
+		};
+	}
+
+	//统计报警状态
+	rpc GetAlarmDispCountAlarmId(
+	mapgoo.paas.reportservice.data.GetAlarmDispCountAlarmIdReq)
+	returns (mapgoo.paas.reportservice.data.GetAlarmDispCountAlarmIdResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetAlarmDispCountAlarmId"
+		};
+	}
+
+	//保存目标处警信息
+	rpc SaveDispAlarm(mapgoo.paas.reportservice.data.SaveDispAlarmReq)
+	returns (mapgoo.paas.reportservice.data.SaveDispAlarmResp) {
+		option (google.api.http) = {
+			post : "/ReportService/SaveDispAlarm"
+		};
+	}
+
+	//分页查询处理报警信息
+	rpc GetDispAlarm(mapgoo.paas.reportservice.data.GetDispAlarmDBReq)
+	returns (mapgoo.paas.reportservice.data.GetDispAlarmDBResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetDispAlarm"
+		};
+	}
+
+	//删除指令下发数据
+	rpc DeleteDownInfoCache(mapgoo.paas.reportservice.data.DeleteDownInfoCacheReq)
+	returns (mapgoo.paas.reportservice.data.DeleteDownInfoCacheResp) {
+		option (google.api.http) = {
+			post : "/ReportService/DeleteDownInfoCache"
+		};
+	}
+
+	//保存用户操作日志
+	rpc SaveUserLog(mapgoo.paas.reportservice.data.SaveUserLogReq)
+	returns (mapgoo.paas.reportservice.data.SaveUserLogResp) {
+		option (google.api.http) = {
+			post : "/ReportService/SaveUserLog"
+		};
+	}
+
+	//分组统计用户操作日志
+	rpc GetUserLogGroupOperateTime(mapgoo.paas.reportservice.data.GetUserLogGroupOperateTimeReq)
+	returns (mapgoo.paas.reportservice.data.GetUserLogGroupOperateTimeResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetUserLogGroupOperateTime"
+		};
+	}
+
+	//分组统计web用户操作日志
+	rpc GetWebUserLogGroupOperateTime(mapgoo.paas.reportservice.data.GetWebUserLogGroupOperateTimeReq)
+	returns (mapgoo.paas.reportservice.data.GetWebUserLogGroupOperateTimeResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetWebUserLogGroupOperateTime"
+		};
+	}
+
+	//分组统计web用户操作日志
+	rpc GetWebUserLogGroupLoginIp(mapgoo.paas.reportservice.data.GetWebUserLogGroupLoginIpReq)
+	returns (mapgoo.paas.reportservice.data.GetWebUserLogGroupLoginIpResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetWebUserLogGroupLoginIp"
+		};
+	}
+	
+	//分页查询WEB操作日志参数
+	rpc GetWebUserLog(mapgoo.paas.reportservice.data.GetWebUserLogReq)
+	returns (mapgoo.paas.reportservice.data.GetWebUserLogResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetWebUserLog"
+		};
+	}
+	
+	//保存指令信息
+	rpc SaveDownInfoCache(mapgoo.paas.reportservice.data.SaveDownInfoCacheReq)
+	returns (mapgoo.paas.reportservice.data.SaveDownInfoCacheResp) {
+		option (google.api.http) = {
+			post : "/ReportService/SaveDownInfoCache"
+		};
+	}
+	
+	//更新指令信息
+	rpc UpdateDownInfoCache(mapgoo.paas.reportservice.data.UpdateDownInfoCacheReq)
+	returns (mapgoo.paas.reportservice.data.UpdateDownInfoCacheResp) {
+		option (google.api.http) = {
+			post : "/ReportService/UpdateDownInfoCache"
+		};
+	}
+
+	//获取设备id
+	rpc GetObjectIdByHold(mapgoo.paas.reportservice.data.GetObjectIdByHoldReq)
+	returns (mapgoo.paas.reportservice.data.GetObjectIdByHoldResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetObjectIdByHold"
+		};
+	}
+
+	//获取行程事件GPSTime分组统计
+	rpc GetTravelEventGroupGpstime(mapgoo.paas.reportservice.data.GetTravelEventGroupGpstimeReq)
+	returns (mapgoo.paas.reportservice.data.GetTravelEventGroupGpstimeResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetTravelEventGroupGpstime"
+		};
+	}
+
+	//保存设备超速信息
+	rpc SaveObjectOverSpeed(mapgoo.paas.reportservice.data.SaveObjectOverSpeedReq)
+	returns (mapgoo.paas.reportservice.data.SaveObjectOverSpeedResp) {
+		option (google.api.http) = {
+			post : "/ReportService/SaveObjectOverSpeed"
+		};
+	}
+	
+	//获取告警设备id分组报警类型统计信息
+	rpc GetAlarmCountGroupObjectId(mapgoo.paas.reportservice.data.GetAlarmCountGroupObjectIdReq)
+	returns (mapgoo.paas.reportservice.data.GetAlarmCountGroupObjectIdResp) {
+		option (google.api.http) = {
+			post : "/ReportService/GetAlarmCountGroupObjectId"
+		};
+	}
+
+	 //统计查询获取设备时段内各离线时长分布统计
+   rpc GetObjectTimeRangeOffline(
+      mapgoo.paas.reportservice.data.GetObjectTimeRangeOfflineReq)
+      returns (mapgoo.paas.reportservice.data.GetObjectTimeRangeOfflineResp) {
+    option (google.api.http) = {
+      post : "/ReportService/GetObjectTimeRangeOffline"
+    };
+  }
+}

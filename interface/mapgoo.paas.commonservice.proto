@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "mapgoo.paas.commonservice.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.commonservice;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service CommonServiceApi {
+
+  //获取对象存储的参数
+  rpc GetYunStorageParams(
+      mapgoo.paas.commonservice.data.GetYunStorageParamsComReq)
+      returns (mapgoo.paas.commonservice.data.GetYunStorageParamsComResp) {
+    option (google.api.http) = {
+      post : "/commonservice/api/getYunStorageParams"
+    };
+  }
+
+  //获取雪花ID
+  rpc GetSnowflakeID(mapgoo.paas.commonservice.data.GetSnowflakeIDReq)
+      returns (mapgoo.paas.commonservice.data.GetSnowflakeIDResp) {
+    option (google.api.http) = {
+      get : "/commonservice/api/getSnowflakeID"
+    };
+  }
+}

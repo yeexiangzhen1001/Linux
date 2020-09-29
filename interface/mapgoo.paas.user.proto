@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package mapgoo.paas.user;
+
+option java_package = "com.mapgoo.mill.pb";
+option java_outer_classname = "User";
+
+enum VerifyCodeType
+{
+	VCT_REGISTER = 0;
+	VCT_LOGIN = 1;
+	VCT_FORGET_PASSWORD = 2;
+}
+
+enum EnumUserQueryType
+{
+    APP_USER=0;
+    WX_USER=1;
+    ALL_IFNO=2;
+}
+
+message GetVerifyCodeReq
+{
+	VerifyCodeType type = 1;
+	string mobile = 2;
+}
+
+message UserRegisterInfo
+{
+    string mobile = 1;
+    string password = 2;
+    string verifyCode = 3;
+    uint32 appType=4;
+}
+
+message UserRegisterInfoWechat
+{
+	uint32 serviceId = 1;
+    string openid = 2;
+    string nickname = 3;
+    uint32 sex = 4;
+    string headimgurl = 5;
+    string language = 6;
+    string city = 7;
+    string province = 8;
+    string country = 9;
+    uint32 subscribeTime = 10;
+    string unionid = 11;
+    string remark = 12;
+}
+
+message SearchUserInfoReq
+{
+	repeated uint32 userid = 1;
+	repeated string openid = 2;
+	repeated string unionid = 3;
+	repeated string mobile = 4;
+	repeated string username = 5;
+	uint32 pageNo = 6;
+	uint32 pageSize = 7;
+	EnumUserQueryType queryType=8;
+}
+
+message UserBindDeviceReq
+{
+	string appType = 1;
+	uint32 userid = 2;
+	string imei = 3;
+	uint32 obejctId = 4;
+}
+
+message UserUnbindDeviceReq
+{
+	string appType = 1;
+	uint32 fromUserid = 2;			//发起解绑用户
+	uint32 toUserid = 3;			//被解除绑定的用户，为空则为解除fromUserid
+	string imei = 4;
+	uint32 obejctId = 5;
+}
+
+message EVerifyCodeInfo
+{
+    string mobile=1;
+    string verifyCode=2;
+    uint32 validTime=3;
+    uint32 requestCount=4;
+    uint32 expireTime=5;
+}
+
+message EUserIDAndWxID
+{
+    uint32 userID=1;
+    uint32 wxID=2;
+    uint32 serviceID=3;
+}

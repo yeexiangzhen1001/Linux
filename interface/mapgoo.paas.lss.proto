@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package mapgoo.paas.lss;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+import public "mapgoo.paas.lss.data.proto";
+
+//直播
+service LssProxy
+{
+	//获取直播地址
+    rpc getLiveUrl(mapgoo.paas.lss.data.GetLiveUrlReq) returns (mapgoo.paas.lss.data.GetLiveUrlResp) { };   
+	rpc getLiveUrlEx(mapgoo.paas.lss.data.GetLiveUrlReq) returns (mapgoo.paas.lss.data.GetLiveUrlResp) { };
+
+	//拉流开始通知
+	rpc onPlayNotify(mapgoo.paas.lss.data.OnPlayNotifyReq) returns (mapgoo.paas.lss.data.OnPlayNotifyResp) { };   
+
+	//推流开始通知
+	rpc onPublishNotify(mapgoo.paas.lss.data.OnPublishNotifyReq) returns (mapgoo.paas.lss.data.OnPublishNotifyResp) { };   
+
+	//拉流结束通知
+	rpc onPlayDoneNotify(mapgoo.paas.lss.data.OnPlayDoneNotifyReq) returns (mapgoo.paas.lss.data.OnPlayDoneNotifyResp) { };   
+
+	//推流结束通知
+	rpc onPublishDoneNotify(mapgoo.paas.lss.data.OnPublishDoneNotifyReq) returns (mapgoo.paas.lss.data.OnPublishDoneNotifyResp) { };   
+
+	//通过推流名获取播放统计信息
+	rpc getPlayStatisByStreamName(mapgoo.paas.lss.data.GetPlayStatisByStreamNameReq) returns (mapgoo.paas.lss.data.GetPlayStatisByStreamNameResp) { };
+}
+

@@ -1,0 +1,374 @@
+syntax = "proto3";
+
+package mapgoo.paas.dap.travel;
+
+option go_package = "api";
+
+import public "mapgoo.paas.travel.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DapTravelProxy
+{
+	//获取历史行程信息
+    rpc getHisTravel(mapgoo.paas.travel.data.GetHisTravelReq) returns (mapgoo.paas.travel.data.GetHisTravelResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/getHisTravel"
+        };
+    };
+
+    //获取行程统计信息
+    rpc getStatisticsTravel(mapgoo.paas.travel.data.GetStatisticsTravelReq) returns (mapgoo.paas.travel.data.GetStatisticsTravelResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/getStatisticsTravel"
+        };
+    };
+
+	//获取行程
+	rpc GetMinTravelDbInfo(GetMinTravelDbInfoReq) returns (GetMinTravelDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/GetMinTravelDbInfo"
+        };
+    };
+
+	//迁移行程
+	rpc MoveTravelDbInfo(MoveTravelDbInfoReq) returns (MoveTravelDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/MoveTravelDbInfo"
+        };
+    };
+
+    //删除行程
+    rpc DelTravelDbInfo(DelTravelDbInfoReq) returns (DelTravelDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/DelTravelDbInfo"
+        };
+    };
+
+	//获取行程事件
+	rpc GetMinTravelEventDbInfo(GetMinTravelEventDbInfoReq) returns (GetMinTravelEventDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/GetMinTravelEventDbInfo"
+        };
+    };
+
+	//迁移行程事件
+	rpc MoveTravelEventDbInfo(MoveTravelEventDbInfoReq) returns (MoveTravelEventDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/MoveTravelEventDbInfo"
+        };
+    };
+
+    //删除行程事件
+    rpc DelTravelEventDbInfo(DelTravelEventDbInfoReq) returns (DelTravelEventDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/DelTravelEventDbInfo"
+        };
+    };
+
+	//获取停留
+	rpc GetMinStopDetailDbInfo(GetMinStopDetailDbInfoReq) returns (GetMinStopDetailDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/GetMinStopDetailDbInfo"
+        };
+    };
+
+	//迁移停留
+	rpc MoveStopDetailDbInfo(MoveStopDetailDbInfoReq) returns (MoveStopDetailDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/MoveStopDetailDbInfo"
+        };
+    };
+
+    //删除停留
+    rpc DelStopDetailDbInfo(DelStopDetailDbInfoReq) returns (DelStopDetailDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/DelStopDetailDbInfo"
+        };
+    };
+
+	//获取里程
+	rpc GetMinMileAgeDetailDbInfo(GetMinMileAgeDetailDbInfoReq) returns (GetMinMileAgeDetailDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/GetMinMileAgeDetailDbInfo"
+        };
+    };
+
+	//迁移里程
+	rpc MoveMileAgeDetailDbInfo(MoveMileAgeDetailDbInfoReq) returns (MoveMileAgeDetailDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/MoveMileAgeDetailDbInfo"
+        };
+    };
+
+    //删除里程
+    rpc DelMileAgeDetailDbInfo(DelMileAgeDetailDbInfoReq) returns (DelMileAgeDetailDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/DelMileAgeDetailDbInfo"
+        };
+    };
+}
+
+//获取行程
+message GetMinTravelDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//用户id
+	uint32 hold_id = 2;
+
+    //用户级别
+	uint32 hold_level = 3;
+
+	//设备id
+	uint32 object_id = 4;
+
+	//获取比该值小的recid
+    uint64 max_rec_id = 5;
+
+	//条数
+	uint32 limit = 6;
+}
+
+message GetMinTravelDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+//迁移行程
+message MoveTravelDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//目标库名
+	string dest_db_name = 2;
+
+	//recid列表
+    repeated uint64 rec_id_list = 3;
+}
+
+message MoveTravelDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除行程原始数据
+message DelTravelDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+message DelTravelDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取行程事件
+message GetMinTravelEventDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//用户id
+	uint32 hold_id = 2;
+
+    //用户级别
+	uint32 hold_level = 3;
+
+	//设备id
+	uint32 object_id = 4;
+
+	//获取比该值小的recid
+    uint64 max_rec_id = 5;
+
+	//条数
+	uint32 limit = 6;
+}
+
+message GetMinTravelEventDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+//迁移行程事件
+message MoveTravelEventDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//目标库名
+	string dest_db_name = 2;
+
+	//recid列表
+    repeated uint64 rec_id_list = 3;
+}
+
+message MoveTravelEventDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除行程事件原始数据
+message DelTravelEventDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+message DelTravelEventDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取停留
+message GetMinStopDetailDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//用户id
+	uint32 hold_id = 2;
+
+    //用户级别
+	uint32 hold_level = 3;
+
+	//设备id
+	uint32 object_id = 4;
+
+	//获取比该值小的recid
+    uint64 max_rec_id = 5;
+
+	//条数
+	uint32 limit = 6;
+}
+
+message GetMinStopDetailDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+//迁移停留
+message MoveStopDetailDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//目标库名
+	string dest_db_name = 2;
+
+	//recid列表
+    repeated uint64 rec_id_list = 3;
+}
+
+message MoveStopDetailDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除停留原始数据
+message DelStopDetailDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+message DelStopDetailDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取里程
+message GetMinMileAgeDetailDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//用户id
+	uint32 hold_id = 2;
+
+    //用户级别
+	uint32 hold_level = 3;
+
+	//设备id
+	uint32 object_id = 4;
+
+	//获取比该值小的recid
+    uint64 max_rec_id = 5;
+
+	//条数
+	uint32 limit = 6;
+}
+
+message GetMinMileAgeDetailDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+//迁移里程
+message MoveMileAgeDetailDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//目标库名
+	string dest_db_name = 2;
+
+	//recid列表
+    repeated uint64 rec_id_list = 3;
+}
+
+message MoveMileAgeDetailDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除里程原始数据
+message DelMileAgeDetailDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+message DelMileAgeDetailDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}

@@ -1,0 +1,413 @@
+syntax = "proto2";
+
+package mapgoo.pass.dcs.data;
+option go_package = "api";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+message KafkaGeoPoint {
+    required int32 lng =1;
+    required int32 lat =2;
+}
+
+message KafkaGPSData
+{
+    required int32 gps_time =1;
+    required KafkaGeoPoint point =2;
+    required int32 mileage =3;
+    required int32 speed =4;
+    required int32 direction =5;
+    optional int32 altitude =6;
+    optional int32 battery =7;
+    optional int32 message_type =8;
+    optional int32 gsm_strength =9;
+    required int32 satellite_num =10;
+    required int32 gps_accuracy_type =11;
+    optional int32 gps_time_ms = 12;
+    optional int64 sys_time = 13;
+    optional int32 upload_gps_length = 14;
+}
+
+message KafkaOBDTravelInfo
+{
+    required int32 travel_flag =1;
+    repeated string seq_fault_code =2; //重复的OBD fault code
+    required int32 travel_mileage =3;
+    required int32 travel_oil =4;                  //Travel oil    
+    required int32 over_speed_count =5;             //Over speed count      
+    required int32 celerate_count =6;              //Celerate count        
+    required int32 decelerate_count=7;            //Decelerate count      
+    required int32 travel_period =8;               //Travel period, uint: second   
+    required int32 drive_period =9;                //Drive period, uint: second        
+    required int32 stop_accon_count=10;             //Stop but ACC ON count
+    required int32 start_lng=11;                   //Travels start longitude
+    required int32 start_lat=12;                   //Travels start latitude
+    required int32 start_time=13;                  //Travels start time
+}
+
+message KafkaDATA1
+{
+    required int32 object_id = 1;
+    optional int32 isobd = 2;
+    optional int32 isacc = 3;
+	required int32 rcv_time =4;
+    optional bytes cur_alarm = 5;
+    optional KafkaGPSData gpsdata = 6;
+    optional KafkaOBDTravelInfo obdinfo = 7;
+    optional bool is_online = 8;
+	optional bool has_status = 9;
+    required int32 state = 10;
+}
+
+//数据包类型
+enum MessageTypeV2 {
+    MSG_TYPE_NONE_V2 = 0;
+    MSG_TYPE_LOGIN_V2 = 0x0001;
+    MSG_TYPE_LOCATION_V2 = 0x0002;
+    MSG_TYPE_HEARTBEAT_V2 = 0x0004;
+    MSG_TYPE_OBD_PID_V2 = 0x0008;
+
+    MSG_TYPE_OBD_TRAVEL_START_EVENT_V2 = 0x0010;
+    MSG_TYPE_OBD_TRAVEL_STOP_EVENT_V2 = 0x0020;
+    MSG_TYPE_ODB_TRAVEL_V2 = 0x0040;
+    MSG_TYPE_ALARM_V2 = 0x0080;
+
+    MSG_TYPE_STATUS_V2 = 0x0100;
+    MSG_TYPE_REPLY_V2 = 0x0200;
+    MSG_TYPE_ARGS_V2 = 0x0400;
+    MSG_TYPE_REQ_INFO_V2 = 0x0800;
+
+    MSG_TYPE_MEDIA_EVENT_V2 = 0x1000;
+    MSG_TYPE_DRIVE_EVENT_V2 = 0x2000;
+    MSG_TYPE_DEVICE_SELF_REG_V2 = 0x4000;
+    MSG_TYPE_SSVINFO_REPORT_V2 = 0x8000;
+
+    MSG_TYPE_DEVICE_CACPCITY_V2 = 0x10000;
+	MSG_TYPE_BS_DATA_V2 = 0x20000;
+	MSG_TYPE_WIFI_DATA_V2 = 0x40000;
+	MSG_TYPE_CMD_ACK_V2 = 0x80000;
+}
+
+enum CaptureTypeV2 {
+  CAPTURE_TYPE_VERY_OLD_V2 = 0;        //最老的方案，麦谷智云下发通道，抓拍保存到七牛，然后上传到后台
+  CAPTURE_TYPE_SS_V2 = 1;              //塞尚方案
+  CAPTURE_TYPE_VIDEO3_V2 = 2;          //视频3.0方案
+  CAPTURE_TYPE_NONE_V2 = -1;
+}
+
+//定位类型
+enum LocationaTypeV2 {
+	EM_ACCURATEGPS_TYPE_V2 = 0;
+	EM_NOACCURATEGPS_TYPE_V2 = 1;
+	EM_BS_TYPE_V2 = 2;
+	EM_WIFI_TYPE_V2 = 3;
+	EM_MIXED_TYPE_V2 = 4;
+    EM_NONE_TYPE_V2 = -1;
+}
+
+enum DeviceReqTypeV2 {
+	REQ_TYPE_GPS_ADDR_PARSE_V2 = 0;
+	REQ_TYPE_LBS_ADDR_PARSE_V2 = 1;
+    REQ_TYPE_UNKNOW_V2 = -1;
+}
+
+//事件类型
+enum MediaEventTypeV2
+{
+    MED_EVENT_TYPE_UNKNOWN_V2 = 0;
+	MED_EVENT_TYPE_ACC_ON_V2 = 1;
+	MED_EVENT_TYPE_ACC_OFF_V2 = 2;
+	MED_EVENT_TYPE_BRAKE_V2 = 3;
+	MED_EVENT_TYPE_LOCK_SHADOW_V2 = 4;
+	MED_EVENT_TYPE_OVER_SPEED_V2 = 5;
+	MED_EVENT_TYPE_IDLE_SPEED_V2 = 6;
+	MED_EVENT_TYPE_NORMAL_V2 = 7;
+	MED_EVENT_TYPE_REMOTE_PHOTO_V2 = 101;
+	MED_EVENT_TYPE_SHAKE_ALARM_PHOTO_V2 = 102;
+	MED_EVENT_TYPE_REMOTE_VEDIO_V2 = 103;
+	MED_EVENT_TYPE_CAR_ABNORMAL_PHOTO_V2 = 104;
+	MED_EVENT_TYPE_SHAKE_ALARM_VEDIO_V2 = 105;
+	MED_EVENT_TYPE_CAR_ABNORMAL_VEDIO_V2 = 106;
+	MED_EVENT_TYPE_SOS_ALARM_V2 = 107;
+	MED_EVENT_TYPE_FACE_RECOGNITION_V2 = 120;
+	MED_EVENT_TYPE_DRIVE_BEHAVIOR_V2 = 150;
+	MED_EVENT_TYPE_SAISHANG_TAKE_V2 = 160;
+}
+
+//视频图片文件类型
+enum MediaFileTypeV2
+{
+    MED_FILE_TYPE_UNKNOWN_V2 = 0;      //未知类型
+	MED_FILE_TYPE_PHOTO_V2 = 1;		//图片
+	MED_FILE_TYPE_VEDIO_V2 = 2;		//视频
+	MED_FILE_TYPE_AUDIO_V2 = 3;		//音频
+}
+
+enum CoordTypeV2
+{
+	COORD_TYPE_WGS84_V2 = 0;			//地理坐标
+	COORD_TYPE_GCJ02_V2 = 1;			//国测局加密坐标
+	COORD_TYPE_BD09LL_V2 = 2;			//百度坐标
+	COORD_TYPE_SOUGO_V2 = 3;			//搜狗坐标
+	COORD_TYPE_TUBA_V2 = 4;			//图吧坐标
+}
+
+enum GatewayTypeV2
+{
+	GATEWAY_IAS_V2 = 0;				//IAS网关
+	GATEWAY_SSVP_V2 = 1;			//塞尚SSVP
+	GATEWAY_HUAWEI_OC_V2 = 2;		//华为Ocean Connect
+	GATEWAY_BLACKHOLE_V2 = 3;		//Blackhole网关
+	GATEWAY_SOCOL_EXPIRED_V2 = 4;	//数据平台-过期路由
+	GATEWAY_SOCOL_PERSIST_V2 = 5;	//数据平台-永久路由
+	GATEWAY_ALI_IOTHUB_V2 = 6;			//阿里IoTHub
+}
+
+//设备信息
+message KafkaDeviceInfo
+{
+    required string imei = 1;           //设备IMEI
+    optional uint32 objId = 2;          //设备ID
+    optional uint32 holdId = 3;         //HoldId
+    optional uint32 mdtTypeId = 4;      //设备类型ID
+    optional string iccid = 5;          //卡ICCID
+    optional string sim = 6;            //SIM卡号
+    optional string factory = 7;        //厂商
+    optional string brand = 8;          //品牌
+    optional string ssvid= 9;           //塞尚平台的设备ID
+    optional uint32 ssvcount = 10;      //塞尚平台设备摄像头个数
+	optional string protocol = 11;
+}
+
+//定位信号强
+message KafkaGPSSignal {
+	optional uint32 gps_satelite_num = 1;       //GPS卫星颗数
+    optional uint32 beidou_satelite_num = 2;    //北斗卫星颗数
+}
+
+//位置数据
+message KafkaPosInfo {
+	required uint64 gps_time = 1;           //定位时间(单位：毫秒）
+	required int32 lat = 2;                //纬度(十进制) * 1000000
+	required int32 lng = 3;                //经度(十进制) * 1000000
+	required uint32 speed = 4;              //速度
+	required uint32 direct = 5;             //方向
+	required LocationaTypeV2 gps_flag = 6;    //定位类型
+	optional uint32 mileage = 7;            //里程（单位：m）
+    optional int32 altiude = 8;             //海拔
+	optional KafkaGPSSignal signal = 9;          //GPS(北斗)卫星颗数
+	optional CoordTypeV2 coordType = 10;		//位置坐标系
+	optional uint64 system_time = 11;		//设备定位时的系统时间
+	optional uint32 pos_data_size = 12;		//单个轨迹点的大小
+}
+
+//状态数据
+message KafkaStatusInfo {
+	optional uint32 gsm_signal = 1;             //GSM信号强度
+	optional uint32 battery = 2;                //电池电量
+	optional bool invalidBatteryForG9A = 3;     //G9A设备是否带电量
+	optional bool powerOn = 4;                  //是否断电
+	optional bool accOn = 5;                    //ACC状态
+}
+
+//单个基站数据
+message KafkaCellInfo {
+	required uint32 lac = 1;                    //小区号
+	required uint32 cell_id = 2;                //基站号
+	optional uint32 signal = 3;                 //信号强度
+}
+
+//基站数据
+message KafkaBSInfo {
+	required uint32 mcc = 1;                    //国家代码
+	required uint32 mnc = 2;                    //运营商代码
+	repeated KafkaCellInfo bs_infos = 3;              //基站数据
+}
+
+//WIFI数据
+message KafkaWIFIData {
+	required string mac = 1;                    //mac地址
+	required uint32 signal = 2;                 //信号强度
+}
+
+message KafkaWIFIInfo {
+	optional uint32 timingAdvanceValue = 1;
+	optional KafkaBSInfo bsInfo = 2;
+	repeated KafkaWIFIData wifiDataList = 3;
+}
+
+//报警数据
+message KafkaAlarmInfo {
+	repeated uint32 alarm_list = 1;              //告警标志位
+}
+
+message KafkaOBDPID 
+{
+	required  string pid = 1;
+	required  string value = 2;
+}
+
+message KafkaDeviceReqInfo {
+	required DeviceReqTypeV2 req_type = 1;
+	optional KafkaPosInfo gps_info = 2;
+	optional KafkaBSInfo lbs_info = 3;
+}
+
+message KafkaDeviceParams {
+	required string paramKey = 1;		// 设备参数key
+	required string paramValue = 2;		// 设备参数value
+}
+
+message KafkaCarRate {
+	required uint32 beginTime = 1;		// 开始时间
+	required uint32 endTime = 2;		// 结束时间 
+	repeated uint32 speed = 3;			// 期间的速率列表
+	repeated uint32 direct = 4;			// 期间的方向列表
+}
+
+message KafkaMediaInfo
+{
+	required MediaFileTypeV2 type = 1;		//类型： 1 - 图片 2 - 视频
+	required string url = 2;				//url
+	optional bool has_watermark = 4;		//是否有水印
+	optional KafkaPosInfo position = 6;			//位置信息
+}
+
+message KafkaMediaEventInfo
+{
+	required MediaEventTypeV2 event_type = 1;
+	repeated KafkaMediaInfo mediaInfoList = 2;
+	required uint32 eventTime = 3;			//触发时间
+	optional uint32 snapSeq = 4; 			//抓拍流水号
+	optional uint32 snapRes = 5;			//抓拍结果
+}
+
+message KafkaDriveEventInfoV2
+{
+	required uint32 drive_event_type = 1;		// 驾驶行为事件类型
+	required string start_time = 2;			// 开始时间
+	required string stop_time = 3;			// 结束时间
+	required KafkaPosInfo start_pos = 4;			// 开始位置
+	required KafkaPosInfo stop_pos = 5;			// 结束位置
+}
+
+message KafkaDeviceRegister
+{
+	optional string lincese = 1;		//渠道标识改为软件版本号
+	optional uint32 isModify = 2;		//是否为修改：1-修改 0-新增
+	optional string appKey = 3;
+}
+
+message KafkaSSVInfo
+{
+  required string ssvid = 1;
+  optional string ssvid_count = 2;
+}
+
+message KafkaDeviceCapacity
+{
+  required CaptureTypeV2 capture_type = 1;     //抓拍支持模式
+  optional uint32 camera_status = 2;         //摄像头状态
+  optional bool isDrivingBehavior = 3;      //是否支持驾驶行为上传
+  optional string camera_type = 4;           //摄像头
+}
+
+message KafkaCmdAck
+{
+	required string seq = 1;
+	optional string source = 2;
+}
+
+message KafkaRouterInfo
+{
+	required string gateway_ip = 1;				//网关IP
+	required uint32 gateway_device_port = 2;	//网关长连接监听端口
+	required uint32 gateway_cmd_port = 3;		//网关指令发送监听端口
+	required GatewayTypeV2 gateway_type = 4;	//网关类型
+	optional string device_ip = 5;				//设备端IP
+	optional uint32 device_port = 6;			//设备端Port
+}
+
+message KafkaActiveSafetyInfo
+{
+	required uint32 event_type = 1;		// 事件类型
+	required uint32 event_time = 2;		// 事件时间
+	required string annex_id = 3;		// 附件标识码
+	required string annex_number = 4;	// 附件编号
+	required uint32 speed = 5;			// 速度
+	required uint32 lng = 6;			// 经度
+	required uint32 lat = 7;			// 维度
+}
+
+message KafkaVideoInfo
+{
+	required uint32 channel = 1;		// 通道
+	required string begin_time = 2;		// 开始时间
+	required string end_time = 3;		// 结束时间
+	required uint64 alarm_type = 4;		// 告警类型
+	required uint32 resource_type = 5;	// 音视频资源类型
+	required uint32 stream_type = 6;		// 码流类型
+	required uint32 storage_type = 7;	// 存储器类型
+	required uint32 fileSize = 8;		// 文件大小
+}
+
+message KafkaVideoResponseInfo
+{
+	required uint32 seq = 1;			// 流水号
+	optional uint32 result = 2;			// 录像上传结果
+	repeated KafkaVideoInfo lists = 3;		// 录像列表
+}
+
+message KafkaDirectoryUpdate
+{
+    required int32 objectid = 1;        // 设备id
+    required int32 seq = 2;             // 流水号
+    repeated KafkaVideoInfo lists = 3;       // 目录信息
+}
+
+message KafkaDeviceReportData
+{
+    required uint64 seq = 1;						//上报流水号
+	required KafkaDeviceInfo device_info = 2;		//设备信息
+	required uint64 msg_type = 3;					//消息类型
+	optional uint32 rcv_time = 4;					//接受时间
+	optional string status_desc = 5;					//状态描述
+	repeated KafkaPosInfo pos_info_list = 6;			//位置数据
+	repeated KafkaDeviceParams dev_param_list = 7;	//设备参数数据
+	optional KafkaBSInfo bs_info = 8;						//基站数据
+	optional KafkaWIFIInfo wifi_info = 9;					//wifi数据
+	optional KafkaStatusInfo status_info = 10;			//状态数据
+	optional KafkaAlarmInfo alarm_info = 11;				//报警数据
+	optional KafkaOBDTravelInfo obd_travel_info = 12;		//OBD行程数据
+	optional KafkaDeviceReqInfo dev_req_info = 13;		//设备请求数据
+	optional KafkaCarRate car_rate = 14;					//车率数据
+	optional KafkaMediaEventInfo media_event_info = 15;	//多媒体事件数据
+	optional KafkaDriveEventInfoV2 drive_event_info = 16;	//驾驶行为数据
+	optional KafkaDeviceRegister device_self_ref = 17;	//设备自注册
+    optional KafkaSSVInfo ssv_info = 18;                 //SSVID上报
+    optional KafkaDeviceCapacity device_capacity = 19;  //设备能力上报
+	repeated KafkaOBDPID obd_pids = 20;					//OBD PID上报
+	optional KafkaCmdAck cmd_ack = 21;					//指令回复
+	optional KafkaRouterInfo router_info = 22;			//设备路由信息
+	optional KafkaActiveSafetyInfo as_info = 23;			//主动安全信息
+	optional KafkaVideoResponseInfo video_info = 24;		//部标远程调阅信息
+}
+
+message KafkaDeviceGateway
+{
+	required string gateway_ip = 1;
+	required uint32 gateway_cmd_port = 2;
+	optional uint32 gateway_tcp_port = 3;
+	optional string device_ip = 4;
+	optional uint32 device_port = 5;
+	required uint32 type = 6;
+}
+
+message KafkaDeviceStatusData
+{
+	required string imei = 1;
+	required bool is_online = 2;
+	required uint32 rcvtime = 3;
+	optional KafkaDeviceGateway gateway = 4;
+}
+

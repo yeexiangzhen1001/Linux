@@ -1,0 +1,247 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.device;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.device.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DeviceCacheProxy {
+    // 根据IMEI获取ObjectID
+    rpc GetObjectIDByImeiCache(GetObjectIDByImeiCacheReq) returns (GetObjectIDByImeiCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/getObjectIDByImei"
+        };
+    }
+    
+    // 设备能力上传数据缓存
+    rpc SetDeviceParamsCache(mapgoo.paas.device.SetDeviceParamsReq) returns (SetDeviceParamsCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/setDeviceParamsCache"
+        };
+    }
+
+    // 获取设备参数缓存数据
+    rpc GetDeviceParamsCache(GetDeviceParamsCacheReq) returns (GetDeviceParamsCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/getDeviceParamsCache"
+        };
+    }
+
+    // 获取设备基本信息缓存接口
+    rpc GetDeviceBaseInfoCache(GetDeviceBaseInfoCacheReq) returns (GetDeviceBaseInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/getDeviceBaseInfoCache"
+        };
+    }
+
+    // 获取设备信息缓存接口
+    rpc GetDeviceInfoCache(GetDeviceInfoCacheReq) returns (GetDeviceInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/getDeviceInfoCache"
+        };
+    }
+
+    // 设置设备信息缓存接口
+    rpc SetDeviceInfoCache(SetDeviceInfoCacheReq) returns (SetDeviceInfoCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/setDeviceInfoCache"
+        };
+    }
+
+    // 设置IMEI对应ObjectID关系缓存
+    rpc SetImeiObjectIdCache(SetImeiObjectIdCacheReq) returns (SetImeiObjectIdCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/setImeiObjectIdCache"
+        };
+    }
+
+    // 根据车辆ID获取对应ObjectID关系缓存
+    rpc GetDeviceIdsByVehicleIdCache(GetDeviceIdsByVehicleIdCacheReq) returns (GetDeviceIdsByVehicleIdCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/getDeviceIdsByVehicleIdCache"
+        };
+    }
+
+    //保存设备配置信息
+    rpc UpdateDeviceConfigCache(UpdateDeviceConfigCacheReq) returns (UpdateDeviceConfigCacheResp) {
+       option (google.api.http) = {
+           post:"/cap/device/UpdateDeviceConfigCache"
+       };
+   }
+
+    //删除设备配置信息
+    rpc DelDeviceConfigCache(DelDeviceConfigCacheReq) returns (DelDeviceConfigCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/DelDeviceConfigCache"
+        };
+    }
+
+    //获取设备配置缓存参数
+    rpc GetDeviceConfigCache(GetDeviceConfigCacheReq) returns (GetDeviceConfigCacheResp) {
+        option (google.api.http) = {
+            post:"/cap/device/GetDeviceConfigCache"
+        };
+    }
+
+    //设置设备摄像头信息缓存
+    rpc SetObjectCameraInfoCache(mapgoo.paas.device.SetObjectCameraInfoCacheReq)
+        returns (mapgoo.paas.device.SetObjectCameraInfoCacheResp) {
+      option (google.api.http) = {
+        post : "/cap/device/SetObjectCameraInfo"
+      };
+    }
+
+    //获取设备摄像头信息缓存
+    rpc GetObjectCameraInfoCache(mapgoo.paas.device.GetObjectCameraInfoCacheReq)
+        returns (mapgoo.paas.device.GetObjectCameraInfoCacheResp) {
+      option (google.api.http) = {
+        get : "/cap/device/GetObjectCameraInfo"
+      };
+    }
+}
+
+// get imei:obj:353327022481675
+// 返回 ObjectID
+message GetObjectIDByImeiCacheReq
+{
+    // 设备IMEI号
+    string imei = 1 [(gogoproto.jsontag) = 'imei'];
+}
+message GetObjectIDByImeiCacheResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    // 设备id, 若没有，则返回0
+    uint32 object_id = 2 [(gogoproto.jsontag) = 'object_id'];
+}
+
+// 设置IMEI对应ObjectID关系缓存请求
+message SetImeiObjectIdCacheReq
+{
+    // 设备IMEI号
+    string imei = 1 [(gogoproto.jsontag) = 'imei'];
+    // 设备id
+    uint32 object_id = 2 [(gogoproto.jsontag) = 'object_id'];
+}
+// 设置IMEI对应ObjectID关系缓存响应
+message SetImeiObjectIdCacheResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+message SetDeviceParamsCacheResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+message GetDeviceParamsCacheReq
+{
+    // 设备id
+    uint32 object_id = 1 [(gogoproto.jsontag) = 'object_id'];
+}
+message GetDeviceParamsCacheResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    // 设备参数数据
+    repeated mapgoo.paas.base.DeviceParam dev_params = 2 [(gogoproto.jsontag) = 'dev_params'];
+}
+
+//设备基本信息缓存请求
+message GetDeviceBaseInfoCacheReq
+{
+    // 设备id
+    uint32 object_id = 1 [(gogoproto.jsontag) = 'object_id'];
+}
+//设备基本信息缓存响应(多个)
+message GetDeviceBaseInfoCacheResp
+{
+    // 返回统一请求结果状态实例
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    // 设备基础信息
+	mapgoo.paas.base.DeviceBaseInfo info = 2 [(gogoproto.jsontag) = 'info'];
+}
+
+//设备信息缓存请求
+message GetDeviceInfoCacheReq
+{
+    // 设备id
+    uint32 object_id = 1 [(gogoproto.jsontag) = 'object_id'];
+}
+//设备信息缓存响应(多个)
+message GetDeviceInfoCacheResp
+{
+    // 返回统一请求结果状态实例
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    // 设备信息
+	mapgoo.paas.base.DeviceInfo info = 2 [(gogoproto.jsontag) = 'info'];
+}
+
+// 设置设备信息缓存请求
+message SetDeviceInfoCacheReq
+{
+    // 设备基础信息
+	mapgoo.paas.base.DeviceInfo info = 1 [(gogoproto.jsontag) = 'info'];
+}
+// 设置设备信息缓存响应
+message SetDeviceInfoCacheResp
+{
+    // 返回统一请求结果状态实例
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+// 根据车辆ID获取设备ID缓存请求
+message GetDeviceIdsByVehicleIdCacheReq {
+    // 设备id
+    uint32 vehicle_id = 1 [(gogoproto.jsontag) = 'vehicle_id'];
+}
+
+// 根据车辆ID获取设备ID缓存响应
+message GetDeviceIdsByVehicleIdCacheResp {
+    // 返回统一请求结果状态实例
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    //设备列表
+    repeated uint32 device_list = 2;
+}
+
+//保存和更新设备缓存配置参数
+message UpdateDeviceConfigCacheReq {
+    //配置信息
+    mapgoo.paas.device.DeviceConfigInfo config_info = 1;
+}
+
+message UpdateDeviceConfigCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除设备配置缓存参数
+message DelDeviceConfigCacheReq {
+    //设备id
+    uint32 object_id = 1;
+}
+
+message DelDeviceConfigCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取设备配置缓存参数
+message GetDeviceConfigCacheReq {
+    //设备id
+    uint32 object_id = 1;
+}
+
+message GetDeviceConfigCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //配置信息
+    mapgoo.paas.device.DeviceConfigInfo config_info = 2;
+}

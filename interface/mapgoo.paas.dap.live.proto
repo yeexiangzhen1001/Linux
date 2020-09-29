@@ -1,0 +1,275 @@
+syntax = "proto3";
+
+package mapgoo.paas.dap.live;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+import public "mapgoo.paas.live.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DapLiveProxy
+{
+	//查询事件标签
+	rpc getDriveEventInfo(mapgoo.paas.live.data.GetDriveEventInfoReq) returns (mapgoo.paas.live.data.GetDriveEventInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/live/getDriveEventInfo"
+        };
+    }; 
+
+	//保存事件标签
+	rpc saveDriveEventInfo(mapgoo.paas.live.data.SaveDriveEventInfoReq) returns (mapgoo.paas.live.data.SaveDriveEventInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/live/saveDriveEventInfo"
+        };
+    }; 
+
+	//获取默认摄像头
+	rpc getDefaultChannel(mapgoo.paas.live.data.GetDefaultChannelReq) returns (mapgoo.paas.live.data.GetDefaultChannelResp) {
+		option (google.api.http) = {
+			post:"/dap/live/getDefaultChannel"
+		};
+	};
+
+	//设备事件信息
+	rpc getDeviceEvent(mapgoo.paas.live.data.GetDeviceEventReq) returns (mapgoo.paas.live.data.GetDeviceEventResp) {
+		option (google.api.http) = {
+			post:"/dap/live/getDeviceEvent"
+		};
+	};
+
+	//保存事件信息
+	rpc saveDeviceEvent(mapgoo.paas.live.data.SaveDeviceEventReq) returns (mapgoo.paas.live.data.SaveDeviceEventResp) {
+		option (google.api.http) = {
+			post:"/dap/live/saveDeviceEvent"
+		};
+	};
+
+	//更新事件的分享状态
+	rpc updateEventShare(mapgoo.paas.live.data.UpdateEventShareReq) returns (mapgoo.paas.live.data.UpdateEventShareResp) {
+		option (google.api.http) = {
+			post:"/dap/live/updateEventShare"
+		};
+	};
+
+	//获取视频打水印
+	rpc getMdeiaWatermak(mapgoo.paas.live.data.GetMdeiaWatermakReq) returns (mapgoo.paas.live.data.GetMdeiaWatermakResp) {
+		option (google.api.http) = {
+			post:"/dss/getMdeiaWatermak"
+		};
+	};
+
+	//更新视频打水印
+	rpc updateMdeiaWatermak(mapgoo.paas.live.data.UpdateMdeiaWatermakReq) returns (mapgoo.paas.live.data.UpdateMdeiaWatermakResp) {
+		option (google.api.http) = {
+			post:"/dap/live/updateMdeiaWatermak"
+		};
+	};
+
+	//保存视频打水印
+	rpc saveMdeiaWatermak(mapgoo.paas.live.data.SaveMdeiaWatermakReq) returns (mapgoo.paas.live.data.SaveMdeiaWatermakResp) {
+		option (google.api.http) = {
+			post:"/dss/saveMdeiaWatermak"
+		};
+	};
+
+	//视频已分享到广场
+	rpc saveSqureInfo(mapgoo.paas.live.data.SaveSqureInfoReq) returns (mapgoo.paas.live.data.SaveSqureInfoResp) {
+		option (google.api.http) = {
+			post:"/dap/live/saveSqureInfo"
+		};
+	};
+
+	//获取随手拍信息
+	rpc getPeccancyReport(mapgoo.paas.live.data.GetPeccancyReportReq) returns (mapgoo.paas.live.data.GetPeccancyReportResp) {
+		option (google.api.http) = {
+			post:"/dap/live/getPeccancyReport"
+		};
+	};
+
+	//更新随手拍信息
+	rpc updatePeccancyReport(mapgoo.paas.live.data.UpdatePeccancyReportReq) returns (mapgoo.paas.live.data.UpdatePeccancyReportResp) {
+		option (google.api.http) = {
+			post:"/dap/live/updatePeccancyReport"
+		};
+	};
+
+	//保存随手拍信息
+	rpc savePeccancyReport(mapgoo.paas.live.data.SavePeccancyReportReq) returns (mapgoo.paas.live.data.SavePeccancyReportResp) {
+		option (google.api.http) = {
+			post:"/dap/live/savePeccancyReport"
+		};
+	};
+
+	//获取事件类型字典
+	rpc getDictDetail(mapgoo.paas.live.data.GetDictDetailReq) returns (mapgoo.paas.live.data.GetDictDetailResp) {
+		option (google.api.http) = {
+			post:"/dap/live/getDictDetail"
+		};
+	};
+
+	//获取用户附加信息
+	rpc getUserAppend(mapgoo.paas.live.data.GetUserAppendReq) returns (mapgoo.paas.live.data.GetUserAppendResp) {
+		option (google.api.http) = {
+			post:"/dap/live/getUserAppend"
+		};
+	};
+  //上报视频异常信息
+  rpc ReportBadVideoInfo(mapgoo.paas.live.data.ReportBadVideoInfoDBReq)
+      returns (mapgoo.paas.live.data.ReportBadVideoInfoDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/ReportBadVideoInfo"
+    };
+  }
+
+  // APP拉取文件列表
+  rpc GetIndex(mapgoo.paas.live.data.GetIndexDBReq)
+      returns (mapgoo.paas.live.data.GetIndexDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/getIndex"
+    };
+  }
+
+  //设备端视频文件上传
+  rpc UploadIndex(mapgoo.paas.live.data.UploadIndexDBReq)
+      returns (mapgoo.paas.live.data.UploadIndexDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/uploadIndex"
+    };
+  }
+
+  //分页查询获取云记录仪视频时段记录
+  rpc GetIndexTravel(mapgoo.paas.live.data.GetIndexTravelDBReq)
+      returns (mapgoo.paas.live.data.GetIndexTravelDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/GetIndexTravel"
+    };
+  }
+
+  //添加云记录仪视频时段记录
+  rpc AddIndexTravel(mapgoo.paas.live.data.AddIndexTravelDBReq)
+      returns (mapgoo.paas.live.data.AddIndexTravelDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/AddIndexTravel"
+    };
+  }
+
+  //修改云记录仪视频时段记录
+  rpc UpdateIndexTravel(mapgoo.paas.live.data.UpdateIndexTravelDBReq)
+      returns (mapgoo.paas.live.data.UpdateIndexTravelDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/UpdateIndexTravel"
+    };
+  }
+
+  //分页查询获取云记录仪视频日历
+  rpc GetRecorderDaySummary(mapgoo.paas.live.data.GetRecorderDaySummaryDBReq)
+      returns (mapgoo.paas.live.data.GetRecorderDaySummaryDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/GetRecorderDaySummary"
+    };
+  }
+
+  //增量拉取目录树
+  rpc GetCloudStorageIndex(mapgoo.paas.live.data.GetCloudStorageIndexDBReq)
+      returns (mapgoo.paas.live.data.GetCloudStorageIndexDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/GetCloudStorageIndex"
+    };
+  }
+
+  //添加目录树
+  rpc AddCloudStorageIndex(mapgoo.paas.live.data.AddCloudStorageIndexDBReq)
+      returns (mapgoo.paas.live.data.AddCloudStorageIndexDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/AddCloudStorageIndex"
+    };
+  }
+
+  //更新目录树
+  rpc UpdateCloudStorageIndex(
+      mapgoo.paas.live.data.UpdateCloudStorageIndexDBReq)
+      returns (mapgoo.paas.live.data.UpdateCloudStorageIndexDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/UpdateCloudStorageIndex"
+    };
+  }
+
+  //删除本地目录树
+  rpc DeleteCloudStorageIndex(
+      mapgoo.paas.live.data.DeleteCloudStorageIndexDBReq)
+      returns (mapgoo.paas.live.data.DeleteCloudStorageIndexDBResp) {
+    option (google.api.http) = {
+      post : "/dap/live/DeleteCloudStorageIndex"
+    };
+  }
+
+    //获取Ssvid的信息
+    rpc GetSsvidInfoDb(mapgoo.paas.live.data.GetSsvidInfoDbReq) returns (mapgoo.paas.live.data.GetSsvidInfoDbResp) {
+        option (google.api.http) = {
+            post:"/dap/live/GetSsvidInfoDb"
+        };
+    };
+
+    //保存Ssvid的信息
+    rpc SaveSsvidInfoDb(mapgoo.paas.live.data.UpdateSsvidInfoDbReq) returns (mapgoo.paas.live.data.UpdateSsvidInfoDbResp) {
+        option (google.api.http) = {
+            post:"/dap/live/SaveSsvidInfoDb"
+        };
+    };
+
+    //更新Ssvid的信息
+    rpc UpdateSsvidInfoDb(mapgoo.paas.live.data.UpdateSsvidInfoDbReq) returns (mapgoo.paas.live.data.UpdateSsvidInfoDbResp) {
+        option (google.api.http) = {
+            post:"/dap/live/UpdateSsvidInfoDb"
+        };
+    };
+
+    //更新设备事件
+    rpc UpdateDeviceEvent(mapgoo.paas.live.data.UpdateDeviceEventReq) returns (mapgoo.paas.live.data.UpdateDeviceEventResp) {
+        option (google.api.http) = {
+            post:"/dap/live/UpdateDeviceEvent"
+        };
+    };
+    //添加记录仪视频日历统计
+    rpc AddRecorderDaySummary(mapgoo.paas.live.data.AddRecorderDaySummaryDBReq)
+        returns (mapgoo.paas.live.data.AddRecorderDaySummaryDBResp) {
+      option (google.api.http) = {
+        post : "/dap/live/AddRecorderDaySummary"
+      };
+    }
+
+    //获取驾驶事件统计明细
+    rpc GetDriveEventCount(mapgoo.paas.live.data.GetDriveEventCountDBReq)
+        returns (mapgoo.paas.live.data.GetDriveEventCountDBResp) {
+      option (google.api.http) = {
+        post : "/dap/live/GetDriveEventCount"
+      };
+    }
+
+    //更新记录仪视频状态
+    rpc UpdateIndexState(mapgoo.paas.live.data.UpdateIndexStateDBReq)
+        returns (mapgoo.paas.live.data.UpdateIndexStateDBResp) {
+      option (google.api.http) = {
+        post : "/dap/live/UpdateIndexState"
+      };
+    }
+
+    //获取记录仪视频数据的设备列表
+    rpc GetIndexObjects(mapgoo.paas.live.data.GetIndexObjectsDBReq)
+        returns (mapgoo.paas.live.data.GetIndexObjectsDBResp) {
+      option (google.api.http) = {
+        post : "/dap/live/GetIndexObjects"
+      };
+    }
+
+    //更新记录仪视频日历统计
+    rpc UpdateRecorderDaySummary(
+        mapgoo.paas.live.data.UpdateRecorderDaySummaryDBReq)
+        returns (mapgoo.paas.live.data.UpdateRecorderDaySummaryDBResp) {
+      option (google.api.http) = {
+        post : "/dap/live/UpdateRecorderDaySummary"
+      };
+    }
+}

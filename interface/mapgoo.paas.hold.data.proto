@@ -1,0 +1,1548 @@
+syntax = "proto3";
+
+import "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.hold.data;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+// DAP获取渠道配置的参数
+message GetHoldApkConfigReq {
+  //渠道key
+  string appKey = 1 [ (gogoproto.moretags) = 'form:"appkey"' ];
+
+  //版本号
+  uint64 rv = 2 [ (gogoproto.moretags) = 'form:"rv"' ];
+
+  //更新时间
+  uint32 update_time = 3 [ (gogoproto.moretags) = 'form:"update"' ];
+
+  //渠道ID
+  uint32 hold_id = 4 [ (gogoproto.moretags) = 'form:"hold_id"' ];
+}
+
+// DAP获取渠道配置的结果
+message GetHoldApkConfigResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //配置详情
+  repeated ApkConfigInfo record_list = 2;
+}
+
+//渠道详情
+message ApkConfigInfo {
+  //是否启用fota
+  uint32 is_enable_fota = 1 [ (gogoproto.jsontag) = 'isEnableFota' ];
+
+  //是否支持wifi方向
+  uint32 is_enable_wifi_direct = 2
+      [ (gogoproto.jsontag) = 'isEnableWifiDirect' ];
+
+  //是否支持视频远程调阅
+  uint32 is_enable_video_remote_access = 3
+      [ (gogoproto.jsontag) = 'isEnableVedioRemoteAccess' ];
+
+  //是否支持全天录音
+  uint32 is_enable_full_day_sound_record = 4
+      [ (gogoproto.jsontag) = 'isEnableFullDaySoundRecord' ];
+
+  //是否显示水印
+  uint32 is_show_water_mark = 5 [ (gogoproto.jsontag) = 'isShowWatermark' ];
+
+  //是否显示网络权限
+  uint32 is_show_net_privilege = 6
+      [ (gogoproto.jsontag) = 'isShowNetPrivilege' ];
+
+  //剩余流量单位
+  uint32 left_flow_unit = 7 [ (gogoproto.jsontag) = 'leftFlowUnit' ];
+
+  //是否支持分离计费
+  uint32 is_enable_split_charge = 8
+      [ (gogoproto.jsontag) = 'isEnableSplitCharge' ];
+
+  //是否支持socol
+  uint32 is_enable_cloud_socol = 9
+      [ (gogoproto.jsontag) = 'isEnableCouldSocol' ];
+
+  //显示水印位置
+  uint32 show_water_mark_position = 10
+      [ (gogoproto.jsontag) = 'showWatermarkPosition' ];
+
+  //碰撞检测
+  uint32 collide_agile = 11 [ (gogoproto.jsontag) = 'collideAgile' ];
+
+  //渠道Key
+  string app_key = 12 [ (gogoproto.jsontag) = 'appkey' ];
+
+  //渠道ID
+  uint32 hold_id = 13 [ (gogoproto.jsontag) = 'holdid' ];
+
+  //授权厂商名称
+  string licensedtv_tag = 14 [ (gogoproto.jsontag) = 'licensedtv_tag' ];
+
+  //设备类型ID
+  uint32 mdt_type_id = 15 [ (gogoproto.jsontag) = 'mdttypeid' ];
+
+  //媒体上传地址
+  string media_upload_url = 16;
+
+  //导航地址
+  uint32 navi_need_address = 17;
+
+  //百度导航
+  uint32 navi_use_baidu = 18;
+
+  //震动监听
+  uint32 need_shake_listern = 19;
+
+  //使用TTS ROM
+  uint32 tts_use_rom = 20;
+
+  //更新时间
+  uint32 update_time = 21 [ (gogoproto.jsontag) = 'updatetime' ];
+
+  //视频目录
+  string video_dir_path = 22;
+
+  //视频锁定类型
+  uint32 video_lock_type = 23;
+
+  //微信二维码key
+  string wx_qrcode_key = 24 [ (gogoproto.jsontag) = 'wxqrcodekey' ];
+
+  // IMEI或序列号
+  uint32 imei_or_seria = 25;
+
+  //流媒体IP
+  string stream_ip = 26;
+
+  // acc关闭拍照
+  uint32 take_photo_accoff = 27;
+
+  //是否支持命令状态上传
+  uint32 upload_cmd_status_enabled = 28;
+
+  //水印位置类型
+  uint32 watermark_location_type = 29;
+
+  //激活引导流程图
+  string activation_guide_img = 30
+      [ (gogoproto.jsontag) = 'activationguideimg' ];
+
+  //是否支持激活引导
+  uint32 is_activation_guide = 31
+      [ (gogoproto.jsontag) = 'is_activationguide' ];
+
+  // socol重试次数
+  uint32 socol_retry_count = 32 [ (gogoproto.jsontag) = 'socolRetryCount' ];
+
+  //是否支持驾驶行为
+  uint32 is_enable_drv_bhv_alg = 33
+      [ (gogoproto.jsontag) = 'isEnableDrvBhvAlg' ];
+
+  //是否启用碰撞报警？
+  uint32 is_enable_collision_alg = 34
+      [ (gogoproto.jsontag) = 'isEnableCollisionAlg' ];
+
+  //是否支持ACC开时抓拍
+  uint32 is_enable_capture_for_acc_on = 35
+      [ (gogoproto.jsontag) = 'IsEnableCapture4AccOn' ];
+
+  // ACC开时抓拍模式
+  uint32 capture_for_acc_on_mode = 36
+      [ (gogoproto.jsontag) = 'Capture4AccOnMode' ];
+
+  // ACC开时时抓拍间隔
+  uint32 capture_for_acc_on_span = 37
+      [ (gogoproto.jsontag) = 'Capture4AccOnSpan' ];
+
+  // JT808备用IP
+  string jt808_second_ip = 38 [ (gogoproto.jsontag) = 'JTT808SecondIP' ];
+
+  // JT808备用端口
+  uint32 jt808_second_port = 39 [ (gogoproto.jsontag) = 'JTT808SecondPort' ];
+
+  //是否支持账单弹出？
+  uint32 is_enable_sep_bill_exp_pop = 40
+      [ (gogoproto.jsontag) = 'IsEnableSepBillExpPop' ];
+
+  //是否支持WIFI直播
+  uint32 is_enable_wifi_live = 41 [ (gogoproto.jsontag) = 'IsEnableWifiLive' ];
+
+  //震动时间过滤
+  uint32 shake_time_filter = 42 [ (gogoproto.jsontag) = 'shakeTimeFilter' ];
+
+  // ACC关抓拍延迟间隔
+  uint32 acc_off_capture_delay_time = 43
+      [ (gogoproto.jsontag) = 'accoffCaptureDelayTime' ];
+
+  //热点设备
+  string hotspot_device = 44 [ (gogoproto.jsontag) = 'HotspotDevice' ];
+
+  //移动设备
+  string cellular_device = 45 [ (gogoproto.jsontag) = 'CellularDevice' ];
+
+  // wifi设备
+  string wifi_device = 46 [ (gogoproto.jsontag) = 'WIFIDevice' ];
+
+  //是否可控热点
+  string is_controle_hotspot = 47 [ (gogoproto.jsontag) = 'isControlHotspot' ];
+
+  //是否支持GPS上传策略
+  string gps_upload_policy = 48 [ (gogoproto.jsontag) = 'GpsUploadPolicy' ];
+
+  //支持协议类型
+  uint32 support_protocol_type = 49;
+
+  //需要通知微信绑定类型
+  uint32 need_notify_wxbind_type = 50
+      [ (gogoproto.jsontag) = 'neednotify_wxbind_type' ];
+
+  //是否支持摄像头SDK
+  uint32 is_camerasdk_available = 51;
+
+  //是否经济模式
+  uint32 is_economical_model = 52;
+
+  //是否存储类型
+  uint32 is_store_category = 53 [ (gogoproto.jsontag) = 'is_StoreCategory' ];
+
+  //交通上传类型
+  uint32 traffic_upload_type = 54 [ (gogoproto.jsontag) = 'trafficUploadType' ];
+
+  // GPS上传间隔
+  uint32 gps_upload = 55 [ (gogoproto.jsontag) = 'gpsUpload' ];
+
+  //码率
+  uint32 code_rate = 56 [ (gogoproto.jsontag) = 'codeRate' ];
+
+  //网关IP
+  string ip = 57;
+
+  //网关端口
+  uint32 port = 58;
+
+  //基站
+  uint32 lbs = 59;
+
+  // wifi
+  uint32 wifi = 60;
+
+  //网关间隔
+  uint32 interval = 61;
+
+  //白名单
+  string white_list = 62;
+
+  //弹出窗口设置
+  string eject_window = 63 [ (gogoproto.jsontag) = 'EjectWindow' ];
+
+  //码率设置
+  string code_rate_setting = 64 [ (gogoproto.jsontag) = 'codeRateSetting' ];
+
+  //违章抓拍间隔
+  uint32 peccancy_snap_second = 65
+      [ (gogoproto.jsontag) = 'peccancySnapSecond' ];
+
+  //违章抓拍个数
+  uint32 peccancy_snap_number = 66
+      [ (gogoproto.jsontag) = 'peccancySnapNumber' ];
+
+  //违章抓拍命令
+  string peccancy_snap_cmd = 67 [ (gogoproto.jsontag) = 'peccancySnapCmd' ];
+
+  //休眠时长
+  uint32 sleep_second = 68 [ (gogoproto.jsontag) = 'sleepSecond' ];
+
+  //防火墙
+  uint32 firewall = 69;
+
+  //启用视频
+  uint32 video_enable = 70 [ (gogoproto.jsontag) = 'videoEnable' ];
+
+  //飘移过滤
+  uint32 is_drift_filter = 71;
+
+  // GPS数据收集
+  uint32 gps_collect_interval = 72
+      [ (gogoproto.jsontag) = 'GPSCollectInterval' ];
+
+  uint32 enable_window_config = 73
+      [ (gogoproto.jsontag) = 'EnableWindowConfig' ];
+
+  //版本号
+  uint64 rv = 74;
+
+  //交通信息
+  ApkCTrafficEntity traffic_control = 75;
+
+  //位置信息
+  ApkLocationEntity location_control = 76;
+
+  //帧率
+  uint32 frame_percent = 79 [ (gogoproto.jsontag) = 'framePercent' ];
+
+  // Socol成功机率
+  string socol_success_rate_threshold = 80
+      [ (gogoproto.jsontag) = 'SocolSuccessRateThreshold' ];
+
+  //启用Acc开时抓拍
+  uint32 is_open_capture_for_acc_on = 81
+      [ (gogoproto.jsontag) = 'IsOpenCapture4AccOn' ];
+
+  // Acc开时抓拍个数
+  uint32 capture_for_acc_on_count = 82
+      [ (gogoproto.jsontag) = 'Capture4AccOnCount' ];
+
+  // Acc开时抓拍间隔
+  uint32 capture_for_acc_on_interval = 83
+      [ (gogoproto.jsontag) = 'Capture4AccOnInterval' ];
+
+  // Acc开时抓拍通道
+  uint32 capture_for_acc_on_channel = 84
+      [ (gogoproto.jsontag) = 'Capture4AccOnChannel' ];
+
+  //是否有激活设备享受套餐福利
+  uint32 is_package_name = 85;
+
+  //蓝牙控制设置
+  string Ble_Ctrller_Setting = 86 [ (gogoproto.jsontag) = 'BleCtrllerSetting' ];
+
+  //应用内未绑定弹窗：选项1-弹出，0-不弹出。
+  uint32 is_popup_for_unbind = 87 [ (gogoproto.jsontag) = 'IsPopup4Unbind' ];
+
+  //应用内未领取活动弹窗：选项1-弹出，0-不弹出。
+  uint32 is_popup_for_unclaimed = 88
+      [ (gogoproto.jsontag) = 'IsPopup4Unclaimed' ];
+
+  // socol差异设置
+  string SocolDiffSet = 89;
+}
+
+//交通信息
+message ApkCTrafficEntity {
+  //启用
+  uint32 enabled = 1;
+
+  //阈值
+  uint32 threshold = 2;
+
+  //工作模式
+  uint32 work_mode = 3;
+
+  //包名
+  string package_name = 4;
+}
+
+//位置信息
+message ApkLocationEntity {
+  //是否真实定位
+  uint32 is_realLocation = 1 [ (gogoproto.jsontag) = 'Is_realLocation' ];
+
+  //是否启动上报一次
+  uint32 is_boot_report_once = 2 [ (gogoproto.jsontag) = 'Is_bootReport_Once' ];
+
+  //位置上报时间
+  uint32 location_report_time = 3
+      [ (gogoproto.jsontag) = 'locationReport_Time' ];
+}
+
+// hms获取渠道配置的参数
+message GetApkConfigReq {
+  //渠道key
+  string app_key = 1;
+  //更新时间
+  uint32 update_time = 2;
+}
+
+// hms获取渠道配置的结果
+message GetApkConfigResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  //渠道配置json
+  string apk_config = 2 [ (gogoproto.jsontag) = 'apk_config' ];
+}
+
+//删除普通用户参数
+message DeleteCacheInfoReq {
+  //缓存key
+  string key = 1;
+}
+
+//删除普通用户结果
+message DeleteCacheInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取渠道配置缓存接口参数
+message GetApkConfigCacheReq {
+  //渠道key
+  string app_key = 1;
+}
+
+//获取渠道配置缓存接口结果
+message GetApkConfigCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //渠道key
+  string app_key = 2;
+  //缓存信息
+  ApkConfigCacheInfo cache_info = 3;
+}
+
+//更新渠道配置缓存参数
+message UpdateApkConfigCacheReq {
+  //渠道key
+  string app_key = 1;
+  //缓存信息
+  ApkConfigCacheInfo cache_info = 2;
+}
+
+//缓存实体
+message ApkConfigCacheInfo {
+  //配置详情json
+  string apk_config = 1;
+  //配置更新时间
+  uint32 update_time = 2;
+}
+
+//更新渠道配置缓存结果
+message UpdateApkConfigCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取渠道配置版本号参数
+message GetApkConfigCacheVersionReq {
+  //缓存key
+  string key = 1;
+}
+
+//获取渠道配置版本号结果
+message GetApkConfigCacheVersionResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //版本号
+  uint64 rv = 2;
+}
+
+//设置渠道配置缓存参数
+message SetApkConfigCacheVersionReq {
+  //缓存key
+  string key = 1;
+
+  //版本号
+  uint64 rv = 2;
+}
+
+//设置渠道配置缓存结果
+message SetApkConfigCacheVersionResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//清空缓存参数
+message ClearApkConfigCacheReq {
+  //清空密码
+  string pwd = 1;
+}
+
+//清空缓存结果
+message ClearApkConfigCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+/*****************************新版渠道配置CAP接口***************************/
+//新版设置缓存版本参数
+message SetCacheVersionReq {
+  //缓存key
+  string cache_key = 1;
+
+  //缓存内容
+  uint64 version = 2;
+}
+
+//新版设置缓存版本结果
+message SetCacheVersionResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//新版获取缓存版本参数
+message GetCacheVersionReq {
+  //缓存key
+  string cache_key = 1;
+}
+
+//新版获取缓存版本结果
+message GetCacheVersionResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //缓存内容
+  uint64 version = 2;
+}
+
+//获取渠道key参数
+message GetAppKeyByHoldIDReq {
+  //渠道ID
+  uint32 hold_id = 1;
+}
+
+//获取渠道key结果
+message GetAppKeyByHoldIDResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //渠道key
+  string app_key = 2;
+}
+
+//渠道配置信息结构
+message ApkSettingInfo {
+  //属性名称
+  string setting_name = 1 [ (gogoproto.jsontag) = 'name' ];
+
+  //配置值
+  string setting_value = 2 [ (gogoproto.jsontag) = 'value' ];
+}
+
+//缓存渠道对象结构
+message ApkConfigItemInfo {
+  //基本信息
+  HoldApkBaseInfo apk_info = 1;
+
+  //配置列表
+  repeated ApkSettingInfo setting_list = 2;
+}
+
+//设置缓存渠道配置列表参数
+message SaveApkConfigListCacheReq {
+  //缓存信息
+  ApkConfigItemInfo apk_config = 1;
+}
+
+//设置缓存渠道配置列表结果
+message SaveApkConfigListCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取缓存渠道配置列表参数
+message GetApkConfigListCacheReq {
+  //渠道key
+  string app_key = 1;
+}
+
+//缓存渠道配置列表结果
+message GetApkConfigListCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //配置信息
+  ApkConfigItemInfo config_item_info = 2;
+}
+
+//缓存渠道配置字典参数
+message SaveApkSettingDictCacheReq {
+  //缓存key
+  string cache_key = 1;
+
+  //配置字典
+  map<string, ApkDictInfo> setting_map = 2;
+}
+
+//缓存渠道配置字典结果
+message SaveApkSettingDictCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取渠道配置字典参数
+message GetApkSettingDictCacheReq {
+  //缓存key
+  string cache_key = 1;
+}
+
+//获取渠道配置字典结果
+message GetApkSettingDictCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //配置字典
+  map<string, ApkDictInfo> setting_map = 2;
+}
+
+/******************************以下是dap方法说明**************************/
+enum HoldDataState {
+  //无效
+  INVALID = 0;
+
+  //有效
+  VALID = 1;
+}
+
+//配置分组表
+message ApkConfigGroupInfo {
+  //分组ID
+  uint32 group_id = 1;
+
+  //分组标题
+  string group_title = 2;
+
+  //父分组ID
+  uint32 parent_group_id = 3;
+
+  //分组提示
+  string group_tips = 4;
+
+  //界面排序
+  uint32 ui_order = 5;
+
+  //状态 0无效，1有效
+  HoldDataState state = 6;
+}
+
+//获取配置分组表参数
+message GetApkConfigGroupInfoDBReq {
+  //排序类型
+  bool isDesc = 1;
+
+  //状态 0无效，1有效
+  HoldDataState state = 2;
+}
+
+//获取配置分组表结果
+message GetApkConfigGroupInfoDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分组信息
+  repeated ApkConfigGroupInfo group_info = 2;
+}
+
+enum SettingDataType {
+  //数字
+  NUM = 0;
+  //字符串
+  STR = 1;
+
+  //对象
+  OBJ = 2;
+
+  //数组
+  ARR = 3;
+
+  // JSON
+  JSON = 4;
+
+  //列表
+  LIST = 5;
+}
+
+enum SettingUIType {
+  //单选
+  RADIO = 0;
+
+  //多选
+  CHECKBOX = 1;
+
+  //文本框
+  TEXT = 2;
+
+  //文本域
+  TEXT_AREA = 3;
+
+  //下拉框
+  OPTION = 4;
+
+  //联动
+  COMBO = 5;
+
+  //特殊
+  SPECIAL = 6;
+}
+
+enum SettingUIState {
+  //隐藏
+  HIDE = 0;
+
+  //只读
+  READONLY = 1;
+
+  //编辑
+  EDITABLE = 2;
+}
+
+//配置字典表
+message ApkItemConfig {
+  //配置ID
+  uint32 setting_id = 1;
+
+  //可选值数组json
+  string option_value = 2;
+
+  //数据层次关系
+  uint32 data_parent_id = 3;
+
+  // json嵌套关系
+  //状态 0无效，1有效
+  HoldDataState state = 4;
+
+  //分组ID
+  uint32 group_id = 5;
+
+  //配置名称
+  string setting_name = 6;
+
+  //配置项数据类型
+  SettingDataType data_type = 7;
+
+  //界面标题
+  string ui_title = 8;
+
+  //界面提示
+  string ui_tips = 9;
+
+  //渲染类型
+  SettingUIType ui_type = 10;
+
+  //界面状态
+  SettingUIState ui_state = 11;
+
+  //默认值
+  string default_value = 12;
+
+  //是否必填
+  bool required = 13;
+
+  //表单单位
+  string form_unit = 14;
+
+  //界面排序
+  uint32 ui_order = 15;
+
+  //是否在结果返回
+  bool json_visible = 16;
+
+  //版本号
+  uint64 rv = 17;
+
+  //检查表达式
+  string check_regex = 18;
+
+  //0渠道级字典，1设备级字典, 2渠道和设备级字典
+  uint32 setting_type = 19;
+
+  //更新时间
+  uint64 update_time = 20;
+}
+
+//获取配置字典表
+message GetApkItemConfigDBReq {
+  //排序类型
+  bool isDesc = 1;
+
+  //状态 0无效，1有效
+  HoldDataState state = 2;
+
+  //版本号
+  uint64 rv = 3;
+}
+
+//获取配置字典表
+message GetApkItemConfigDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //结果列表
+  repeated ApkItemConfig list = 2;
+}
+
+//渠道配置结构
+message HoldApkConfigEntity {
+  //配置记录ID
+  uint32 config_id = 1;
+
+  //配置字典ID
+  uint32 setting_id = 2;
+
+  //状态
+  HoldDataState state = 3;
+
+  //属性名称
+  string setting_name = 4;
+
+  //配置值
+  string setting_value = 5;
+}
+
+//渠道基本信息
+message HoldApkBaseInfo {
+  //渠道ID
+  uint32 hold_id = 1;
+
+  //渠道Key
+  string app_key = 2;
+
+  //公众号key
+  string wechat_app_key = 3;
+
+  //设备类型
+  uint32 mdt_type_id = 4;
+
+  //方案商
+  string scheme = 5;
+
+  //授权厂商
+  string license_tv_tag = 6;
+
+  //创建人ID
+  uint32 create_user_id = 7;
+
+  //任车行类型
+  uint32 rcx_ui_type = 8;
+
+  // Fota升级
+  uint32 is_enable_fota = 9;
+
+  //云存储设置
+  uint32 is_store_category = 10;
+
+  //状态
+  HoldDataState state = 11;
+
+  //更新时间
+  uint32 update_time = 12;
+
+  //版本号
+  uint64 rv = 13;
+
+  //备注
+  string remark = 14;
+
+  //创建人
+  string create_user_name = 15;
+}
+
+//设置DB渠道配置列表参数
+message SaveApkConfigListDBReq {
+  //渠道基本信息
+  HoldApkBaseInfo base_info = 1;
+
+  //保存配置列表对象
+  repeated HoldApkConfigEntity setting_list = 2;
+
+  //操作类型(0添加，1修改)
+  EnumSaveApkType save_type = 3;
+}
+
+//设置渠道配置列表结果
+message SaveApkConfigListDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取渠道配置列表参数
+message GetApkConfigListDBReq {
+  //渠道holdID
+  uint32 hold_id = 1;
+
+  //渠道key
+  string app_key = 2;
+
+  //更新时间
+  string update_time = 3;
+  //版本号
+  uint64 rv = 4;
+}
+
+//获取渠道配置列表结果
+message GetApkConfigListDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  repeated HoldApkBaseInfoAndSetting list = 2;
+}
+
+//基本信息及配置列表
+message HoldApkBaseInfoAndSetting {
+  //渠道基本信息
+  HoldApkBaseInfo base_info = 2;
+
+  //配置信息
+  repeated HoldApkConfigEntity setting_list = 3;
+}
+
+//查询渠道配置列表参数
+message SearchApkConfigListDBReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //查询条件
+  SearchApkConfigCondtion search_condition = 2;
+}
+
+//查询渠道配置列表结果
+message SearchApkConfigListDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //查询列表
+  repeated ApkConfigListInfo record_list = 2;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 3;
+}
+
+//保存渠道配置字典数据参数
+message SaveApkConfigDictDBReq {
+  //配置数据
+  repeated ApkItemConfig config_dict = 1;
+  //操作类型(0添加，1修改)
+  EnumSaveApkType save_type = 2;
+}
+
+//保存渠道配置字典数据结果
+message SaveApkConfigDictDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除渠道配置字典数据参数
+message DeleteApkConfigDictDBReq {
+  //删除ID列表
+  repeated uint32 setting_id_list = 1;
+}
+
+//删除渠道配置字典数据结果
+message DeleteApkConfigDictDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分页查询渠道配置字典信息参数
+message SearchApkConfigDictDBReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //状态
+
+  //状态 0无效，1有效
+  HoldDataState state = 2;
+
+  //版本号
+  uint64 rv = 3;
+
+    //分组ID
+  uint32 group_id=4;
+
+  //字典类型
+  string setting_type = 5;
+
+  //配置名称
+  repeated string setting_name_list = 6;
+}
+
+//分页查询渠道配置字典信息结果
+message SearchApkConfigDictDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //查询列表
+  repeated ApkItemConfig record_list = 3;
+}
+
+//保存渠道配置分组信息参数
+message SaveApkConfigGroupDBReq {
+  //分组信息列表
+  repeated ApkConfigGroupInfo group_info = 1;
+  //操作类型(0添加，1修改)
+  EnumSaveApkType save_type = 2;
+}
+
+//保存渠道配置分组信息结果
+message SaveApkConfigGroupDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除渠道配置分组数据参数
+message DeleteApkConfigGroupDBReq {
+  //删除ID列表
+  repeated uint32 group_id_list = 1;
+}
+
+//删除渠道配置分组数据结果
+message DeleteApkConfigGroupDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分页查询渠道配置分组信息参数
+message SearchApkConfigGroupDBReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //状态 0无效，1有效
+  HoldDataState state = 2;
+}
+
+//分页查询渠道配置分组信息结果
+message SearchApkConfigGroupDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //查询列表
+  repeated ApkConfigGroupInfo record_list = 3;
+}
+
+//删除渠道配置参数
+message DeleteApkConfigDBReq {
+  //删除渠道ID列表
+  uint32 hold_id = 1;
+  //渠道key
+  string app_key = 2;
+}
+
+//删除渠道配置结果
+message DeleteApkConfigDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+/***********************************以下是HMS结构声明*********************************/
+//获取UI界面配置参数
+message GetApkConfigUIListHMSReq {
+  //是否倒序排序
+  bool is_desc = 1 [ (gogoproto.moretags) = 'form:"is_desc"' ];
+
+  //字典类型 空：全部 0：渠道 1：设备
+  string setting_type = 2 [ (gogoproto.moretags) = 'form:"setting_type"' ];
+}
+
+//获取UI界面配置结果
+message GetApkConfigUIListHMSResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分组列表
+  repeated ApkConfigGroupInfo group_list = 2;
+
+  //配置列表
+  repeated ApkItemConfig setting_list = 3;
+}
+
+enum EnumSaveApkType {
+  Add = 0;
+  Update = 1;
+}
+
+//保存渠道配置参数
+message SaveApkConfigHMSReq {
+
+  //渠道基本信息
+  HoldApkBaseInfo apk_info = 1;
+
+  //渠道配置列表
+  repeated HoldApkConfigEntity setting_list = 2;
+
+  //操作类型(0添加，1修改)
+  EnumSaveApkType save_type = 3;
+}
+
+//保存渠道配置结果
+message SaveApkConfigHMSResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//查询渠道配置信息参数
+message GetApkConfigHMSReq {
+  //渠道key
+  string app_key = 1 [ (gogoproto.moretags) = 'form:"app_key"' ];
+
+  //更新时间
+  uint64 update_time = 2 [ (gogoproto.moretags) = 'form:"update_time"' ];
+
+  //渠道ID
+  uint32 hold_id = 3 [ (gogoproto.moretags) = 'form:"hold_id"' ];
+}
+
+//查询渠道配置信息结果
+message GetApkConfigHMSResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //基本信息
+  repeated ApkSettingInfo info_list = 2;
+  //结果内容
+  repeated ApkSettingInfo setting_list = 3;
+}
+
+//查询渠道基本信息及渠道配置信息参数
+message GetApkInfoAndConfigHmsReq {
+  //渠道key
+  string app_key = 1 [ (gogoproto.moretags) = 'form:"app_key"' ];
+
+  //渠道ID
+  uint32 hold_id = 2 [ (gogoproto.moretags) = 'form:"hold_id"' ];
+
+  //更新时间
+  uint64 update_time = 3 [ (gogoproto.moretags) = 'form:"update_time"' ];
+
+  //版本号
+  uint64 rv = 4 [ (gogoproto.moretags) = 'form:"rv"' ];
+}
+
+//查询渠道基本信息及渠道配置信息结果
+message GetApkInfoAndConfigHmsResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //渠道基本信息
+  HoldApkBaseInfo apk_info = 2;
+
+  //配置信息列表
+  repeated HoldApkConfigEntity setting_list = 3;
+}
+
+//获取渠道配置字典基本信息参数
+message GetApkSettingDictReq {}
+
+message ApkDictInfo {
+  //配置项数据类型
+  SettingDataType data_type = 1;
+
+  //是否在结果返回
+  bool json_visible = 2;
+
+  //是否必埴
+  bool Required = 3;
+
+  //默认值
+  string default_value = 4;
+
+  //更新时间
+  uint64 update_time = 5;
+}
+
+//获取渠道配置字典基本信息结果
+message GetApkSettingDictResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //配置字典
+  map<string, ApkDictInfo> setting_map = 2;
+}
+
+enum EnumSearchApkType {
+  NONE = 0;
+  HOLD_NAME = 1;
+  HOLD_ID = 2;
+  CREATOR_ID = 3;
+  WECHAT_KEY = 4;
+  APP_KEY = 5;
+}
+
+//查询渠道条件
+message SearchApkConfigCondtion {
+
+  //设备类型
+  uint32 mdt_type_id = 1;
+  //方案商
+  string scheme = 2;
+
+  //授权商
+  string licensed_tv_tag = 3;
+
+  //公众号
+  string wechat_key = 4;
+
+  //任车行类型
+  uint32 rcx_ui_type = 5;
+
+  //关键字类型  NONE = 0  HOLD_NAME = 1  HOLD_ID = 2  CREATOR_ID = 3  WECHAT_KEY
+  //= 4  APP_KEY = 5;
+  EnumSearchApkType key_type = 6;
+
+  //关键字值
+  string key_value = 7;
+
+  //记录id
+  uint32 info_id = 8;
+}
+
+//查询渠道配置列表参数
+message SearchApkConfigListHmsReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+  //查询条件
+  SearchApkConfigCondtion search_condition = 2;
+}
+
+//渠道配置实体
+message ApkConfigListInfo {
+  //渠道ID
+  uint32 hold_id = 1;
+
+  //渠道名称
+  string hold_name = 2;
+
+  //授权厂商
+  string licensed_tv_tag = 3;
+
+  //公众号key
+  string wechat_key = 4 [ (gogoproto.jsontag) = 'wxqrcodekey' ];
+
+  //任车行类型
+  uint32 rcx_ui_type = 5;
+
+  //设备类型
+  uint32 mdt_type_id = 6;
+
+  //创建人
+  uint32 create_user_id = 7;
+
+  //创建时间
+  string create_time = 8;
+  //修改时间
+  string update_time = 9;
+
+  //渠道key
+  string app_key = 10;
+
+  //方案商
+  string scheme = 11;
+
+  //设备类型名称
+  string mdt_type_name = 12;
+
+  //记录id
+  uint32 info_id = 13;
+
+  //备注
+  string remark = 14;
+
+  //创建人
+  string create_user = 15;
+}
+
+//查询渠道配置列表结果
+message SearchApkConfigListHmsResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //查询列表
+  repeated ApkConfigListInfo record_list = 3;
+}
+
+//删除渠道配置参数
+message DeleteApkConfigReq {
+  //删除渠道ID列表
+  uint32 hold_id = 1 [ (gogoproto.moretags) = 'form:"hold_id"' ];
+
+  //渠道key
+  string app_key = 2 [ (gogoproto.moretags) = 'form:"app_key"' ];
+}
+
+//删除渠道配置结果
+message DeleteApkConfigResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//保存渠道配置字典数据结果
+message SaveApkConfigDictReq {
+  //配置数据
+  repeated ApkItemConfig config_dict = 1;
+  //操作类型(0添加，1修改)
+  EnumSaveApkType save_type = 2;
+}
+
+//保存渠道配置字典数据结果
+message SaveApkConfigDictResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除渠道配置字典数据参数
+message DeleteApkConfigDictReq {
+  //删除ID列表
+  repeated uint32 setting_id_list = 1;
+}
+
+//删除渠道配置字典数据结果
+message DeleteApkConfigDictResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//保存渠道配置分组信息参数
+message SaveApkConfigGroupReq {
+  //分组信息列表
+  repeated ApkConfigGroupInfo group_info = 1;
+  //操作类型(0添加，1修改)
+  EnumSaveApkType save_type = 2;
+}
+
+//保存渠道配置分组信息结果
+message SaveApkConfigGroupResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除渠道配置分组数据参数
+message DeleteApkConfigGroupReq {
+  //删除ID列表
+  repeated uint32 group_id_list = 1;
+}
+
+//删除渠道配置分组数据结果
+message DeleteApkConfigGroupResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分页查询渠道配置字典信息参数
+message SearchApkConfigDictReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //状态 0无效，1有效
+  HoldDataState state = 2;
+
+  //版本号
+  uint64 rv = 3;
+
+  //分组ID
+  uint32 group_id=4;
+
+    //空：全部 0：渠道级字典，1：设备级字典
+    string setting_type = 5;
+}
+
+//分页查询渠道配置字典信息结果
+message SearchApkConfigDictResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //查询列表
+  repeated ApkItemConfig record_list = 3;
+}
+
+//分页查询渠道配置分组信息参数
+message SearchApkConfigGroupReq {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //状态 0无效，1有效
+  HoldDataState state = 2;
+}
+
+//分页查询渠道配置分组信息结果
+message SearchApkConfigGroupResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //查询列表
+  repeated ApkConfigGroupInfo record_list = 3;
+}
+
+//同步新老渠道数据参数
+message SyncApkConfigDataDBReq {
+  //同步类型:0从老到新，1从新到老
+  uint32 sync_type=1;
+
+  //渠道ID
+  uint32 hold_id=2;
+}
+
+
+//同步新老渠道数据结果
+message SyncApkConfigDataDBResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+
+//同步新老渠道数据参数
+message SyncApkConfigDataReq {
+  //同步类型:0从老到新，1从新到老
+  uint32 sync_type=1 [(gogoproto.moretags)='form:"sync_type"'];
+
+  //渠道ID
+  uint32 hold_id=2[(gogoproto.moretags)='form:"hold_id"'];
+}
+
+
+//同步新老渠道数据结果
+message SyncApkConfigDataResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+//查询渠道信息列表参数结构
+message SearchHoldInfoParam {
+  //被查询人（姓名）;
+  string name = 1;
+  //组织ID;
+  uint32 hold_id = 2;
+}
+
+//分页查询查询渠道信息列表参数
+message SearchHoldInfoDBReq {
+  //查询参数
+  SearchHoldInfoParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询渠道信息列表返回结果结构
+message SearchHoldInfoEntity {
+  //组织ID;
+  uint32 hold_id = 1;
+  //用户名称;
+  string name = 2;
+  //联系人;
+  string contacter = 3;
+  //用户类型;
+  uint32 hold_type = 4;
+  //用户路径;
+  string hold_tree_path = 5;
+  //所属用户ID;
+  uint32 parent_hold_id = 6;
+  //创建时间;
+  string create_time = 7;
+  //删除标识;
+  bool is_deleted = 8;
+  //修改时间;
+  string update_time = 9;
+  //备注;
+  string remark = 10;
+}
+
+//查询渠道信息列表结果
+message SearchHoldInfoDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchHoldInfoEntity record_list = 3;
+}
+
+//分页查询查询渠道信息列表参数
+message SearchHoldInfoReq {
+  //查询参数
+  SearchHoldInfoParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//查询渠道信息列表结果
+message SearchHoldInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated SearchHoldInfoEntity record_list = 3;
+}
+
+//获取渠道目录树参数
+message GetHoldTreePathDBReq {
+  //组织ID;
+  uint32 hold_id = 1;
+}
+//获取渠道目录树结果
+message GetHoldTreePathDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //用户路径
+  repeated uint32 parent_hold_id = 2;
+}
+
+//获取渠道目录树缓存参数
+message GetHoldTreePathCacheReq {
+  //组织ID
+  uint32 hold_id = 1;
+}
+//获取渠道目录树缓存结果
+message GetHoldTreePathCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //用户路径
+  repeated uint32 parent_hold_id = 2;
+}
+
+//保存渠道目录树缓存
+message SetHoldTreePathCacheReq{
+  //组织ID
+  uint32 hold_id = 1;
+  //用户路径
+  repeated uint32 parent_hold_id = 2;
+}
+//保存渠道目录树缓存
+message SetHoldTreePathCacheResp{
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取渠道目录树缓存参数
+message GetHoldTreePathReq {
+  //组织ID;
+  uint32 hold_id = 1;
+}
+//获取渠道目录树缓存结果
+message GetHoldTreePathResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //用户路径
+  repeated uint32 parent_hold_id = 2;
+}
+
+//渠道对应分库信息
+message HoldDataRouter {
+	//自增id
+	uint64 rec_id = 1;			
+
+	//用户ID
+	uint32 hold_id = 3;		
+
+	//库名
+	string name = 4;
+	
+	//是否删除 0-未删除 1-已删除'
+	uint32 is_deleted = 5;	
+
+	//状态 1-拆分未迁移完成 2-拆分迁移完成 3-合并未迁移完成
+	uint32 status = 6;	
+
+	//记录创建时间
+	uint64 create_time = 7;	
+}

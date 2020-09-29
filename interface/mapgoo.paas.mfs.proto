@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package mapgoo.paas.mfs;
+
+option go_package = "api";
+
+import public "mapgoo.paas.mfs.data.proto";
+
+//轨迹
+service MfsProxy
+{
+	//获取历史轨迹
+	rpc getHisTrack(mapgoo.paas.mfs.data.GetHisTrackReq) returns (mapgoo.paas.mfs.data.GetHisTrackResp) { };
+
+	//获取历史轨迹
+	rpc saveHisTrack(mapgoo.paas.mfs.data.SaveHisTrackReq) returns (mapgoo.paas.mfs.data.SaveHisTrackResp) { };
+}
+

@@ -1,0 +1,784 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "mapgoo.paas.device.proto";
+import "mapgoo.paas.ecode.proto";
+import "mapgoo.paas.live.data.proto";
+import "mapgoo.paas.packagemanager.data.proto";
+
+package mapgoo.paas.openplatform.api.data;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+//获取设备在线状态参数
+message GetDeviceOnlineStatusReq {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.moretags) = 'form:"device_id"' ];
+  // appKey
+  string appkey = 2 [ (gogoproto.moretags) = 'form:"appkey"' ];
+}
+
+//获取设备在线状态实体
+message GetDeviceOnlineStatus {
+  //设备ID，即imei
+  string device_id = 1;
+
+  //设备是否在线， 0-离线，1-在线
+  uint32 is_online = 2 [ (gogoproto.jsontag) = 'isonline' ];
+}
+
+//获取设备在线状态结果
+message GetDeviceOnlineStatusResp {
+
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  GetDeviceOnlineStatus result = 3;
+}
+
+//获取设备直播拉流地址参数
+message GetOpenDeviceLiveAddrReq {
+  //设备ID
+  string device_id = 1 [ (gogoproto.moretags) = 'form:"device_id"' ];
+
+  //客户端识别码
+  uint32 client_code = 2 [ (gogoproto.moretags) = 'form:"client_code"' ];
+
+  //需要观看的设备摄像头通道
+  uint32 channel = 3 [ (gogoproto.moretags) = 'form:"channel"' ];
+
+  //之前观看的设备摄像头通道号，用来在多通道之间切换
+  uint32 prechannel = 4 [ (gogoproto.moretags) = 'form:"prechannel"' ];
+
+  // appKey
+  string appkey = 5 [ (gogoproto.moretags) = 'form:"appkey"' ];
+
+  //直播类型
+  uint32 source_type = 6;
+}
+
+//获取设备直播拉流地址实体
+message OpenDeviceLiveAddrInfo {
+  //设备ID
+  string device_id = 1;
+
+  //直播地址
+  string live_addr = 2;
+
+  //当前通道号
+  uint32 channel = 3;
+}
+
+//获取设备直播拉流地址结果
+message GetOpenDeviceLiveAddrResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  OpenDeviceLiveAddrInfo result = 3;
+}
+
+//获取设备基本信息结果
+message GetObjectBaseInfoResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  mapgoo.paas.device.GetDeviceBaseInfoEntity result = 3;
+}
+
+//获取设备正在直播的观看列表参数
+message GetDeviceLiveStatusReq {
+  //设备ID
+  string device_id = 1 [ (gogoproto.moretags) = 'form:"device_id"' ];
+
+  //观看通道号
+  uint32 channel = 2 [ (gogoproto.moretags) = 'form:"channel"' ];
+
+  // APPKEY
+  string appkey = 3 [ (gogoproto.moretags) = 'form:"appkey"' ];
+}
+
+//观看列表结构
+message DeviceLiveWatchEntity {
+  //观看端用户
+  uint32 client_code = 1 [ (gogoproto.jsontag) = 'client_code' ];
+
+  //观看开始时间
+  string start_time = 2 [ (gogoproto.jsontag) = 'start_time' ];
+
+  //观看结束时间
+  string stop_time = 3 [ (gogoproto.jsontag) = 'stop_time' ];
+
+  //是否在观看
+  uint32 is_watching = 4 [ (gogoproto.jsontag) = 'is_watching' ];
+}
+
+//获取设备正在直播的观看列表结果
+message GetDeviceLiveStatusEntity {
+  //设备ID
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+
+  //观看通道号
+  uint32 channel = 2 [ (gogoproto.jsontag) = 'channel' ];
+
+  //当前观看总人数
+  uint32 total = 3 [ (gogoproto.jsontag) = 'total' ];
+
+  repeated DeviceLiveWatchEntity watch_list = 4
+      [ (gogoproto.jsontag) = 'watch_list' ];
+}
+
+message GetDeviceLiveStatusResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  GetDeviceLiveStatusEntity result = 3;
+}
+
+//图片/视频抓拍参数
+message SnapReq {
+  //设备ID;
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //客户端识别码;
+  string client_code = 2 [ (gogoproto.jsontag) = 'client_code' ];
+  //通道号;
+  int32 channel = 3 [ (gogoproto.jsontag) = 'channel' ];
+  //抓拍类型;
+  int32 type = 4 [ (gogoproto.jsontag) = 'type' ];
+  //图片抓拍参数;
+  mapgoo.paas.live.data.SnapPicParam image_params = 5
+      [ (gogoproto.jsontag) = 'image_params' ];
+  //视频抓拍参数;
+  mapgoo.paas.live.data.SnapVideoParam video_params = 6
+      [ (gogoproto.jsontag) = 'video_params' ];
+  //抓拍结果回调地址;
+  string notify_callback = 7 [ (gogoproto.jsontag) = 'notify_callback' ];
+  // appkey;
+  string appkey = 8 [ (gogoproto.jsontag) = 'appkey' ];
+}
+
+//图片/视频抓拍结果
+message SnapResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+}
+
+//获取实时轨迹信息
+message GetRealtimeTrackListReq {
+  //设备ID列表
+  repeated string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //返回属性名称列表,没在数组；为空初始化所有属性
+  repeated string property_list = 2 [ (gogoproto.jsontag) = 'property_list' ];
+}
+
+message DeviceRealtimeTrack {
+  //设备id
+  string device_id = 2 [ (gogoproto.jsontag) = 'device_id' ];
+
+  //接收时间
+  string rcv_time = 3 [ (gogoproto.jsontag) = 'rcv_time' ];
+
+  //行驶状态 0：熄火 1：启动
+  uint32 driving_status = 4 [ (gogoproto.jsontag) = 'driving_status' ];
+
+  //在线状态 0：离线 1：在线
+  uint32 is_online = 45 [ (gogoproto.jsontag) = 'is_online' ];
+
+  //当天里程（单位：里）
+  uint32 theday_init_mileage = 6
+      [ (gogoproto.jsontag) = 'theday_init_mileage' ];
+
+  //总里程（单位：里）
+  uint32 mileage = 7 [ (gogoproto.jsontag) = 'mileage' ];
+
+  //电压
+  uint32 voltage = 8 [ (gogoproto.jsontag) = 'voltage' ];
+
+  //速度
+  uint32 speed = 9 [ (gogoproto.jsontag) = 'speed' ];
+
+  //海拔
+  uint32 altitude = 10 [ (gogoproto.jsontag) = 'altitude' ];
+
+  //方向
+  uint32 direct = 11 [ (gogoproto.jsontag) = 'direct' ];
+
+  //油量
+  uint32 oil_num = 12 [ (gogoproto.jsontag) = 'oil_num' ];
+
+  //状态描述
+  string status_desc = 13 [ (gogoproto.jsontag) = 'status_desc' ];
+
+  //北斗信号量
+  uint32 beidou_signal = 14 [ (gogoproto.jsontag) = 'beidou_signal' ];
+
+  // GPS信号量
+  uint32 gps_signal = 15 [ (gogoproto.jsontag) = 'gps_signal' ];
+
+  //移动信号量
+  uint32 gsm_signal = 16 [ (gogoproto.jsontag) = 'gsm_signal' ];
+
+  //是否报警 0：非报警 1：报警状态
+  uint32 alarm_flag = 17 [ (gogoproto.jsontag) = 'alarm_flag' ];
+
+  //报警类型
+  string alarm_type = 18 [ (gogoproto.jsontag) = 'alarm_type' ];
+
+  //报警描述
+  string alarm_desc = 19 [ (gogoproto.jsontag) = 'alarm_desc' ];
+
+  //省名
+  string province_name = 20 [ (gogoproto.jsontag) = 'province_name' ];
+
+  //城市
+  string city_name = 21 [ (gogoproto.jsontag) = 'city_name' ];
+
+  //区域
+  string region_name = 22 [ (gogoproto.jsontag) = 'region_name' ];
+
+  //定位标识（0：gps定位 2：基站定位 3：wifi定位）
+  uint32 gps_flag = 23 [ (gogoproto.jsontag) = 'gps_flag' ];
+
+  // GPS经度
+  double gps_lon = 24 [ (gogoproto.jsontag) = 'gps_lon' ];
+
+  // GPS纬度
+  double gps_lat = 25 [ (gogoproto.jsontag) = 'gps_lat' ];
+
+  // GPS定位时间
+  string gps_time = 26 [ (gogoproto.jsontag) = 'gps_time' ];
+
+  //基站经度
+  double lbs_lon = 27 [ (gogoproto.jsontag) = 'lbs_lon' ];
+
+  //基站纬度
+  double lbs_lat = 28 [ (gogoproto.jsontag) = 'lbs_lat' ];
+
+  //基站定位时间
+  string lbs_time = 29 [ (gogoproto.jsontag) = 'lbs_time' ];
+
+  // wifi经度
+  double wifi_lon = 30 [ (gogoproto.jsontag) = 'wifi_lon' ];
+
+  // wifi纬度
+  double wifi_lat = 31 [ (gogoproto.jsontag) = 'wifi_lat' ];
+
+  // wifi定位时间
+  string wifi_time = 32 [ (gogoproto.jsontag) = 'wifi_time' ];
+}
+
+message GetRealtimeTrackListResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //实时轨迹信息
+  repeated DeviceRealtimeTrack result = 3 [ (gogoproto.jsontag) = 'result' ];
+}
+
+message DeviceHistoryTrack {
+  //设备记录id
+  uint32 id = 1 [ (gogoproto.jsontag) = 'id' ];
+
+  //经度
+  double lon = 2 [ (gogoproto.jsontag) = 'lon' ];
+
+  //纬度
+  double lat = 3 [ (gogoproto.jsontag) = 'lat' ];
+
+  //百度地图经度
+  double baidu_lon = 4 [ (gogoproto.jsontag) = 'bd_lon' ];
+
+  //百度地图纬度
+  double baidu_lat = 5 [ (gogoproto.jsontag) = 'bd_lat' ];
+
+  //速度
+  uint32 speed = 6 [ (gogoproto.jsontag) = 'speed' ];
+
+  //方向
+  uint32 direct = 7 [ (gogoproto.jsontag) = 'direct' ];
+
+  //总里程（单位：里）
+  double mileage = 8 [ (gogoproto.jsontag) = 'mileage' ];
+
+  //状态描述
+  string status = 9 [ (gogoproto.jsontag) = 'status' ];
+
+  //定位方式
+  string pos_mode = 10 [ (gogoproto.jsontag) = 'pos_mode' ];
+
+  //定位时间
+  string gps_time = 11 [ (gogoproto.jsontag) = 'gps_time' ];
+
+  //接收时间
+  string rcv_time = 12 [ (gogoproto.jsontag) = 'rcv_time' ];
+}
+
+//获取历史轨迹信息
+message GetHistoryTrackListReq {
+  //设备imei
+  string device_id = 1;
+
+  //返回属性名称列表,没在数组中不初始化属性值；为空初始化所有属性
+  repeated string property_list = 2;
+  //开始时间
+  string start_time = 3;
+
+  //结束时间
+  string end_time = 4;
+
+  //过滤的速度 -1:不过滤
+  int32 speed_limit = 5;
+
+  // 0:不过滤  1:过滤参考定位 2:过滤基站定位 3:过滤参考、基站定位
+  int32 exact = 6;
+
+  //限制行数
+  uint32 limit = 7;
+}
+
+message GetHistoryTrackListResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //历史轨迹信息
+  repeated DeviceHistoryTrack result = 3 [ (gogoproto.jsontag) = 'result' ];
+}
+
+//获取设备历史抓拍的照片或视频列表
+message GetHistorySnapListReq {
+  //设备imei
+  string device_id = 1;
+  //开始时间
+  string start_time = 2;
+  //结束时间
+  string end_time = 3;
+  //用户ID
+  uint32 user_id = 4;
+  //通道号
+  string channel = 5;
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 6;
+}
+message DeviceHistorySnap {
+  //事件ID
+  uint64 event_id = 1;
+  //事件触发时间
+  string event_time = 2;
+  //视频链接
+  string vedio_url = 3;
+  //图片链接
+  repeated string image_url = 4;
+  //缩略图链接
+  string thumb_url = 5;
+  //抓拍时间
+  string shoot_time = 6;
+  //创建时间
+  string create_time = 7;
+  //创建时间
+  string source = 8;
+  //触发来源
+  string channel = 9;
+  //事件类型
+  uint32 event_type = 10;
+  //媒体类型
+  string media_type = 11;
+  //帐号ID
+  uint64 user_id = 12;
+  //位置
+  DeviceHistorySnapPos pos = 13;
+}
+
+//设备历史抓拍位置信息
+message DeviceHistorySnapPos {
+  //经度
+  double lng = 1;
+  //纬度
+  double lat = 2;
+  //速度
+  uint32 speed = 3;
+  //方向
+  uint32 direct = 4;
+  //定位时间
+  string gps_time = 5;
+}
+
+//历史抓拍信息列表
+message DeviceHistorySnapList {
+  repeated DeviceHistorySnap list = 1;
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+message GetHistorySnapListResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //历史抓拍
+  DeviceHistorySnapList result = 3 [ (gogoproto.jsontag) = 'result' ];
+}
+
+//获取经纬度省市区
+message GetLngLatAreaReq {
+  // GPS经度
+  double lng = 1;
+  // GPS纬度
+  double lat = 2;
+}
+
+//区域信息
+message RegionInfo {
+  //省份
+  string province = 1;
+  //城市
+  string city = 2;
+  //县区
+  string region = 3;
+}
+
+//获取经纬度省市区结果
+message GetLngLatAreaResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //结果
+  RegionInfo result = 3 [ (gogoproto.jsontag) = 'result' ];
+}
+
+//获取最后行程信息
+message GetCurrentTravelReq {
+  //设备Imei
+  repeated string device_id = 1;
+  //返回属性名称列表,没在数组中不初始化属性值；为空初始化所有属性
+  repeated string property_list = 8;
+}
+
+//设备行程信息
+message DeviceTravelInfo {
+  //位置个数
+  uint32 pos_count = 1;
+  //是否已经完成 0未完成 1完成
+  uint32 complete = 2;
+  //备注
+  string remark = 3;
+  //开始行程经度
+  double start_lon = 4;
+  //开始行程纬度
+  double start_lat = 5;
+  //开始时间
+  string start_time = 6;
+  //开始行程里程
+  double start_mileage = 7;
+  //停止行程经度
+  double stop_lon = 8;
+  //停止行程纬度
+  double stop_lat = 9;
+  //停止行程时间
+  string stop_time = 10;
+  //平均速度
+  uint32 avg_speed = 11;
+  //最大速度
+  uint32 max_speed = 12;
+  //行程里程
+  uint64 travel_mileage = 14;
+  //行程时长
+  uint32 travel_period = 15;
+}
+message GetCurrentTravelResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //行程信息
+  repeated DeviceTravelInfo result = 3 [ (gogoproto.jsontag) = 'result' ];
+}
+
+//获取行程列表参数
+message GetTravelListReq {
+  //设备Imei
+  string device_id = 1;
+  //查询开始时间
+  string begin_time = 2;
+  //查询结束时间
+  string end_time = 3;
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 4;
+}
+
+//获取行程列表信息
+message GetTravelListInfo {
+  //行程ID
+  string travel_id = 1;
+  //行程开始时间
+  string start_time = 2;
+  //行程开始经度
+  string start_lon = 3;
+  //行程开始纬度
+  string start_lat = 4;
+  //行程开始位置
+  string start_address = 5;
+  //行程停止时间
+  string stop_time = 6;
+  //行程停止经度
+  string stop_lon = 7;
+  //行程停止纬度
+  string stop_lat = 8;
+  //行程停止位置
+  string stop_address = 9;
+  //行程里程
+  string travel_mileage = 10;
+  //行程油耗
+  string travel_oil = 11;
+  //行程总时间
+  string total_time = 12;
+  //超速速度
+  string over_speed = 13;
+  //急加速
+  string celerate = 14;
+  //急减速
+  string decelerate = 15;
+  //停车ACC
+  string stop_acc = 16;
+  //平均速度
+  uint32 avg_speed = 17;
+  //最大速度
+  uint32 max_speed = 18;
+  //简单的开始位置描述
+  string short_start_pos = 19;
+  //简单的停止位置描述
+  string short_stop_pos = 20;
+  //驾驶评分
+  uint32 drive_score = 21;
+}
+
+//获取行程列表
+message GetTravelListInfoList {
+  //行程信息列表
+  repeated GetTravelListInfo list = 1;
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+message GetTravelListResp {
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //获取行程列表
+  GetTravelListInfoList result = 3 [ (gogoproto.jsontag) = 'result' ];
+}
+
+/*********************************************************20200904**************************************************/
+
+// 用户已购套餐信息查询参数
+message GetUserPackageListOpenapiReq {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.moretags) = 'form:"device_id"' ];
+}
+
+//用户已购套餐信息查询结果
+message GetUserPackageListOpenapiResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  repeated mapgoo.paas.packagemanager.data.GetUserPackageListEntity result = 3;
+}
+
+//分页查询Openapi拉取时间戳参数
+message GetTimeLineOpenapiReq {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //开始时间;
+  uint64 begin_time = 2 [ (gogoproto.jsontag) = 'begin_time' ];
+  //结束时间;
+  uint64 end_time = 3 [ (gogoproto.jsontag) = 'end_time' ];
+  //摄像头通道号;
+  int32 channel = 4 [ (gogoproto.jsontag) = 'channel' ];
+  //视频持续时长总分钟数
+  uint32 duration = 5 [ (gogoproto.jsontag) = 'duration' ];
+  //指定播放日期
+  string cur_date = 6;
+  //滑动类型:0向左滑动，1向右滑动 (仅用于滑动查询时使用)
+  uint32 sliding_type = 7;
+}
+
+// Openapi拉取时间戳结果1
+message GetTimeLineOpenapiResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //结果
+  GetTimeLineResult result = 3;
+}
+
+// Openapi拉取时间戳结果2
+message GetTimeLineResult {
+  string imei = 1;
+  //前次查询结果开始时间
+  uint64 begin_time = 2;
+  //前次查询结果结束时间
+  uint64 end_time = 3;
+  //列表信息
+  repeated mapgoo.paas.live.data.GetTimeLineEntity time_line = 4
+      [ (gogoproto.jsontag) = 'time_lines' ];
+}
+
+//分页查询Openapi拉取文件列表参数
+message GetIndexOpenapiReq {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //开始时间;
+  uint64 begin_time = 2 [ (gogoproto.jsontag) = 'begin_time' ];
+  //结束时间;
+  uint64 end_time = 3 [ (gogoproto.jsontag) = 'end_time' ];
+  //摄像头通道号;
+  int32 channel = 4 [ (gogoproto.jsontag) = 'channel' ];
+}
+
+// Openapi拉取文件列表结果1
+message GetIndexOpenapiResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  GetIndexResult result = 3;
+}
+
+// Openapi拉取文件列表返回结果结构
+message GetIndexDetailInfo {
+  //摄像头通道号;
+  uint32 channel = 1;
+  //开始时间;
+  uint64 start_time = 2;
+  //结束时间;
+  uint64 end_time = 3;
+  //视频文件总帧数;
+  uint32 frame_cnt = 4;
+  //网址;
+  string url = 5;
+  //文件大小;
+  uint32 file_size = 6;
+  //缩略图;
+  string thumb_url = 7;
+  //时长;
+  uint32 play_duration = 8;
+  // id
+  uint64 id = 12;
+}
+
+// Openapi拉取文件列表结果2
+message GetIndexResult {
+  //设备IMEI即可
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //列表信息
+  repeated GetIndexDetailInfo indexes = 3;
+}
+
+//分页查询获取云记录仪视频日历参数
+message GetCalendarReq {
+  //设备IMEI即可
+  string device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+  //月份
+  string month = 3;
+}
+
+//视频日历信息
+message GetCalendarInfo {
+  //日期
+  string date = 1;
+  //视频时长
+  uint32 video_duration = 2;
+  //事件个数
+  uint32 event_count = 3;
+  //是否有效
+  bool is_enable = 4;
+}
+
+//获取云记录仪视频日历结果
+message GetCalendarResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //列表信息
+  repeated GetCalendarInfo result = 3;
+}
+
+//获取驾驶事件列表参数
+message GetVideoLabelReq {
+  //设备ID，填写IMEI即可
+  string device_id = 1 [ (gogoproto.moretags) = 'form:"device_id"' ];
+  //开始时间
+  string begin_time = 2 [ (gogoproto.moretags) = 'form:"begin_time"' ];
+  //结束时间
+  string end_time = 3 [ (gogoproto.moretags) = 'form:"end_time"' ];
+}
+
+//驾驶事件明细
+message GetVideoLabelInfo {
+  //事件id
+  uint64 event_id = 1;
+  //开始经度
+  double start_lon = 2;
+  //开始纬度
+  double start_lat = 3;
+  //结束经度
+  double stop_lon = 4;
+  //结束纬度
+  double stop_lat = 5;
+
+  //标签类型
+  uint32 label_type = 6;
+  //标签子类型
+  uint32 label_sub_type = 7;
+  // GPS时间
+  string gps_time = 8;
+  //接收时间
+  string rcv_time = 9;
+  //开始时间
+  string start_time = 10;
+
+  //停止时间
+  string stop_time = 11;
+  //标签描述
+  string label_desc = 12;
+}
+
+//获取驾驶事件列表结果
+message GetVideoLabelResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //列表信息
+  repeated GetVideoLabelInfo result = 3;
+}

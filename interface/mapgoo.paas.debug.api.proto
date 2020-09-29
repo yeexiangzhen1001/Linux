@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package mapgoo.paas.debug.api;
+option go_package = "api";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "mapgoo.paas.debug.api.data.proto";
+
+service DebugService {
+    //获取路由信息
+    rpc GetRouterInfo(mapgoo.paas.debug.api.data.GetRouterInfoReq) returns (mapgoo.paas.debug.api.data.GetRouterInfoResp) {
+             option (google.api.http) = {
+                 post : "/debug/getRouterInfo"
+             };
+         }
+    //获取设备信息
+    rpc GetDeviceInfo(mapgoo.paas.debug.api.data.GetDeviceInfoReq) returns (mapgoo.paas.debug.api.data.GetDeviceBaseInfoResp) {
+            option (google.api.http) = {
+                 post : "/debug/getDeviceInfo"
+            };
+        }
+    //添加设备跟踪
+    rpc AddDeviceTrace(mapgoo.paas.debug.api.data.AddDeviceTraceReq) returns (mapgoo.paas.debug.api.data.AddDeviceTraceResp) {
+             option (google.api.http) = {
+                 get:"/debug/addDeviceTrace"
+            };
+         };
+
+    //删除设备跟踪
+    rpc DeleteDeviceTrace(mapgoo.paas.debug.api.data.DeleteDeviceTraceReq) returns (mapgoo.paas.debug.api.data.DeleteDeviceTraceResp) {
+              option (google.api.http) = {
+                 get:"/debug/deleteDeviceTrace"
+            };
+         };
+
+}

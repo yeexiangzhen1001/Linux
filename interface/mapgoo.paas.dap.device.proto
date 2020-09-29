@@ -1,0 +1,511 @@
+syntax = "proto3";
+
+package mapgoo.paas.dap.device;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.device.proto";
+import public "mapgoo.paas.video.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DeviceDbProxy
+{
+    //设备添加/修改 设备信息CRUD
+    rpc UpdateDeviceBaseInfoDB(mapgoo.paas.device.SaveDeviceInfoReq) returns (mapgoo.paas.device.SaveDeviceInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/updateDeviceBaseInfoDB"
+        };
+    }
+
+    //获取设备基本信息, 可根据原始IMEI查询设备基本信息Map
+    rpc GetDeviceBaseInfoDB(mapgoo.paas.device.DeviceInfoReq) returns (mapgoo.paas.device.DeviceBaseInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getDeviceBaseInfoDB"
+        };
+    }
+
+    //获取设备信息, 可根据原始IMEI查询设备基本信息Map
+    rpc GetDeviceInfoDB(mapgoo.paas.device.DeviceInfoReq) returns (mapgoo.paas.device.DeviceInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getDeviceInfoDB"
+        };
+    }
+
+    // 根据原始IMEI获取设备基本信息Map
+    rpc GetOriginalIMEIInfoDB(mapgoo.paas.device.OriginalIMEIInfoReq) returns (mapgoo.paas.device.OriginalIMEIInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getOriginalIMEIInfoDB"
+        };
+    }
+
+    // 更新设备原始IMEI接口
+    rpc SyncOriginalImeiDB(mapgoo.paas.device.SyncOriginalImeiReq) returns (mapgoo.paas.device.SyncOriginalImeiResp) {
+        option (google.api.http) = {
+            post:"/dap/device/syncOriginalImeiDB"
+        };
+    }
+
+    // 设备参数读取
+    rpc GetDeviceParamsDB(mapgoo.paas.device.GetDeviceParamsReq) returns (mapgoo.paas.device.GetDeviceParamsResp) {
+        option (google.api.http) = {
+            post:"/dap/device/GetDeviceParamsDB"
+        };
+    }
+
+    // 设备能力上传
+    rpc SetDeviceParamsDB(mapgoo.paas.device.SetDeviceParamsReq) returns (SetDeviceParamsDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/SetDeviceParamsDB"
+        };
+    }
+
+    // 获取Can状态、设备信息请求
+    rpc GetObjectCANInfoDB(mapgoo.paas.device.DeviceIMEIFieldReq) returns (GetObjectCANInfoDBResp) {
+        option (google.api.http) = {
+            get:"/dap/device/getObjectCANInfoDB"
+        };
+    }
+
+    // 上传视频设备信息
+    rpc UploadCarSsvidInfoDB(UploadCarSsvidInfoDBReq) returns (UploadCarSsvidInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/uploadCarSsvidInfoDB"
+        };
+    }
+
+    // 自注册部分1
+    rpc GetExistObjInfoDB(GetExistObjInfoDBReq) returns (GetExistObjInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getExistObjInfoDB"
+        };
+    }
+
+    // 保存设备自注册信息至数据表
+    rpc AddObjectRegInfoDB(AddObjectRegInfoDBReq) returns (AddObjectRegInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/addObjectRegInfoDB"
+        };
+    }
+
+    // 获取设备类型产品信息
+    rpc GetMDTProductInfoDB(GetMDTProductInfoDBReq) returns (GetMDTProductInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getMDTProductInfoDB"
+        };
+    }
+
+    // 上传设备APK应用信息
+    rpc UploadDeviceAppInfoDB(mapgoo.paas.device.UploadDeviceAppInfoReq) returns (UploadDeviceAppInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/uploadDeviceAppInfoDB"
+        };
+    }
+
+    // 获取设备APP版本信息
+    rpc GetDeviceAppVerInfoDB(GetDeviceAppVerInfoDBReq) returns (GetDeviceAppVerInfoDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getDeviceAppVerInfoDB"
+        };
+    }
+
+    // 设备自注册新增保存数据方法
+    rpc SaveDeviceSelfRegDB(mapgoo.paas.device.SaveDeviceSelfRegInfoReq) returns (mapgoo.paas.device.SaveDeviceSelfRegInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/saveDeviceSelfRegDB"
+        };
+    }
+
+    // 修改自注册设备信息
+    rpc UpdateDeviceSelfRegInfoDB(UpdateDeviceSelfRegDBReq) returns (mapgoo.paas.device.UpdateDeviceSelfRegInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/updateDeviceSelfRegInfoDB"
+        };
+    }
+
+    //获取设备摄像头信息列表
+    rpc GetDeviceVideoInfo(mapgoo.paas.device.GetDeviceVideoInfoReq)returns(mapgoo.paas.device.GetDeviceVideoInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getDeviceVideoInfo"
+        };
+    }
+
+    //获取设备基本信息for openapi
+    rpc GetDeviceBaseInfoApi(mapgoo.paas.device.GetDeviceBaseInfoApiReq)returns(mapgoo.paas.device.GetDeviceBaseInfoApiResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getDeviceBaseInfoApi"
+        };
+    }
+
+    //获取设备摄像头通道数
+    rpc GetDeviceCameraInfo(mapgoo.paas.device.GetDeviceCameraInfoReq) returns (mapgoo.paas.device.GetDeviceCameraInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getDeviceCameraInfo"
+        };
+    }
+
+    //更新设备摄像头通道数
+    rpc UpdateDeviceCameraInfo(mapgoo.paas.device.UpdateDeviceCameraInfoReq) returns (mapgoo.paas.device.UpdateDeviceCameraInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/updateDeviceCameraInfo"
+        };
+    }
+
+    //获取Socol配置
+    rpc GetDeviceSocol(mapgoo.paas.device.DeviceSocolReq) returns (mapgoo.paas.device.DeviceSocolResp) {
+        option (google.api.http) = {
+            post:"/dap/device/getdevicesocol"
+        };
+    }
+
+    //保存Socol配置
+    rpc UpdateDeviceSocol(UpdateDeviceSocolDBReq) returns (UpdateDeviceSocolDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/updateDeviceSocol"
+        };
+    }
+	
+    //保存和更新设备配置参数
+    rpc SaveDeviceConfig(SaveDeviceConfigDbReq) returns (SaveDeviceConfigDbResp) {
+        option (google.api.http) = {
+            post:"/dap/hold/SaveDeviceConfig"
+        };
+    };
+
+    //删除设备配置参数
+    rpc DelDeviceConfig(DelDeviceConfigDbReq) returns (DelDeviceConfigDbResp) {
+        option (google.api.http) = {
+            post:"/dap/hold/DelDeviceConfig"
+        };
+    };
+
+    //获取设备配置参数
+    rpc GetDeviceConfig(GetDeviceConfigDbReq) returns (GetDeviceConfigDbResp) {
+        option (google.api.http) = {
+            post:"/dap/hold/GetDeviceConfig"
+        };
+    };
+
+    //获取设备配置参数
+    rpc GetDeviceConfigDbList(GetDeviceConfigDbListReq) returns (GetDeviceConfigDbListResp) {
+        option (google.api.http) = {
+            post:"/dap/hold/GetDeviceConfigDbList"
+        };
+    };
+
+    //查询在线监控设备
+    rpc SearchTrackObjectListDB(SearchTrackObjectListDBReq) returns (SearchTrackObjectListDBResp) {
+        option (google.api.http) = {
+            post:"/dap/device/SearchTrackObjectListDB"
+        };
+    };
+
+
+    //视频编码信息上报
+    rpc SaveVideoInfo(mapgoo.paas.video.data.SaveVideoInfoReq) returns (mapgoo.paas.video.data.SaveVideoInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/SaveVideoInfo"
+        };
+    };
+
+    //查询视频信息
+    rpc SearchVideoInfo(mapgoo.paas.video.data.SearchVideoInfoReq) returns (mapgoo.paas.video.data.SearchVideoInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/SearchVideoInfo"
+        };
+    };
+
+    //上报视频错误码信息
+    rpc SaveVideoErrCode(mapgoo.paas.video.data.SaveVideoErrCodeReq) returns (mapgoo.paas.video.data.SaveVideoErrCodeResp) {
+        option (google.api.http) = {
+            post:"/dap/device/SaveVideoErrCode"
+        };
+    };
+
+    //删除
+    rpc DelVideoIndex(mapgoo.paas.video.data.DelVideoIndexReq) returns (mapgoo.paas.video.data.DelVideoIndexResp) {
+        option (google.api.http) = {
+            post:"/dap/device/DelVideoIndex"
+        };
+    };
+
+    //查询错误码
+    rpc SearchVideoErrInfo(mapgoo.paas.video.data.SearchVideoErrInfoReq) returns (mapgoo.paas.video.data.SearchVideoErrInfoResp) {
+        option (google.api.http) = {
+            post:"/dap/device/SearchVideoErrInfo"
+        };
+    };
+
+}
+
+// 获取Can状态、设备信息返回
+message GetObjectCANInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // CAN状态
+    uint32 can_state = 2 [(gogoproto.jsontag) = 'CANState'];
+    // 渠道ID
+    uint32 hold_id = 3 [(gogoproto.jsontag) = 'HoldID'];
+    // 目标ID
+    uint32 object_id = 4 [(gogoproto.jsontag) = 'ObjectID'];
+    // ICCID号
+    string iccid = 5 [(gogoproto.jsontag) = 'ICCID'];
+}
+
+
+// 设备能力上传返回
+message SetDeviceParamsDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 是否发送OMS通知
+    bool notice_oms = 2;
+}
+
+// 上传视频设备信息请求
+message UploadCarSsvidInfoDBReq
+{
+    // 视频序列id
+    uint32 id = 1 [(gogoproto.jsontag) = 'ID'];
+    // IMEI号
+    string imei = 2 [(gogoproto.jsontag) = 'IMEI'];
+    // SSVID
+    string ssvid = 3 [(gogoproto.jsontag) = 'SSVID'];
+    // 状态,1.在线,0.离线
+    uint32 status = 4;
+    // 设备类型,1.大屏机,2.后视镜,3.其他类型
+    uint32 device_type = 5;
+    // Token
+    string token = 6;
+    // Rtmp
+    string rtmp = 7;
+    // SSVID数量
+    uint32 ssvid_count = 8 [(gogoproto.jsontag) = 'SSVIDCount'];
+    // 等待时间
+    uint64 wait_time = 9 [(gogoproto.jsontag) = 'WaitTime'];
+    // 更新时间
+    uint64 update_time = 10 [(gogoproto.jsontag) = 'UpdateTime'];
+}
+// 上传视频设备信息返回
+message UploadCarSsvidInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message GetExistObjInfoDBReq
+{
+    // originalIMEI号
+    string original_imei = 1 [(gogoproto.jsontag) = 'originalIMEI'];
+}
+message GetExistObjInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    map<string, mapgoo.paas.device.DeviceSelfRegFields> info_map = 2 [(gogoproto.jsontag) = 'info_map'];
+}
+
+// 保存设备自注册信息至数据表请求
+message AddObjectRegInfoDBReq
+{
+    // IMEI号
+    string imei = 1 [(gogoproto.jsontag) = 'IMEI'];
+    // SIM卡号
+    string sim = 2 [(gogoproto.jsontag) = 'SIM'];
+    // 设备名
+    string object_name = 3;
+    // 渠道ID
+    uint32 hold_id = 4 [(gogoproto.jsontag) = 'HoldID'];
+    // 设备编号
+    string object_code = 5;
+    // 设备类型id
+    uint32 mdttype_id = 6;
+    // 令牌
+    string lincese = 7;
+    // 原IMEI号
+    string original_imei = 8;
+    // APP Key
+    string app_key = 9;
+}
+message AddObjectRegInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 新设备id
+    uint32 object_id = 2;
+}
+
+// 获取设备类型产品信息请求
+message GetMDTProductInfoDBReq
+{
+    // 设备类型ID
+    uint32 mdttype_id = 1;
+}
+// 获取设备类型产品信息，返回具体字段由业务模块自行组合
+message GetMDTProductInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 工厂信息
+    string factory = 2;
+    // 品牌信息
+    string brand = 3;
+}
+
+// 上传设备APK应用信息返回
+message UploadDeviceAppInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// 获取设备APP版本信息
+message GetDeviceAppVerInfoDBReq {
+  // 设备id ObjectID
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'ObjectID' ];
+  //包名
+  string app_package_name = 2 [ (gogoproto.jsontag) = 'app_package_name' ];
+}
+// 获取设备APP版本信息,按数据库字段原型返回
+message GetDeviceAppVerInfoDBResp
+{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1  [(gogoproto.jsontag) = 'base'];
+    // 设备app版本信息
+    mapgoo.paas.device.DeviceAppVerInfo info = 2  [(gogoproto.jsontag) = 'info'];
+}
+
+// 修改注册数据请求
+message UpdateDeviceSelfRegDBReq
+{
+    // IMEI号
+    string imei = 1 [(gogoproto.jsontag) = 'imei'];
+    // ICCID号
+    string iccid = 2 [(gogoproto.jsontag) = 'iccid'];
+    // 设备类型id
+    uint32 mdt_type_id = 3 [(gogoproto.jsontag) = 'mdt_type_id'];
+    // 令牌
+    string lincese = 4 [(gogoproto.jsontag) = 'lincese'];
+    // 渠道ID
+    uint32 hold_id = 5 [(gogoproto.jsontag) = 'hold_id'];
+    // 原IMEI号
+    string original_imei = 6 [(gogoproto.jsontag) = 'original_imei'];
+    // 设备id
+    uint32 object_id = 7 [(gogoproto.jsontag) = 'object_id'];
+    // app key
+    string app_key = 8 [(gogoproto.jsontag) = 'app_key'];
+    // 是否更新AppKey字段
+    bool isupdate_app_key = 9 [(gogoproto.jsontag) = 'isupdate_app_key'];
+    //产品批次
+    string product_batch = 10 [(gogoproto.jsontag) = 'product_batch'];
+    //是否更新holdID字段
+    bool is_update_hold_id=11;
+}
+
+//更新Socol配置
+message UpdateDeviceSocolDBReq{
+    mapgoo.paas.base.DeviceSocolInfo device_socol = 1;
+}
+message UpdateDeviceSocolDBResp{
+    // 返回统一请求结果状态实例
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//保存和更新设备配置参数
+message SaveDeviceConfigDbReq {
+    //设备id
+    uint32 object_id = 1;
+
+    //是否存在版本
+    bool is_exist_version = 2;
+
+    //更新参数列表
+    repeated mapgoo.paas.device.DeviceConfigParam update_list = 3;
+
+    //插入参数列表
+    repeated mapgoo.paas.device.DeviceConfigParam insert_list = 4;
+}
+
+message SaveDeviceConfigDbResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除设备配置参数
+message DelDeviceConfigDbReq {
+    //设备id
+    uint32 object_id = 1;
+
+    //参数列表
+    repeated string setting_name_list = 2;
+}
+
+message DelDeviceConfigDbResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取设备配置参数
+message GetDeviceConfigDbReq {
+    //设备id
+    uint32 object_id = 1;
+
+    //配置名称 默认:所有参数
+    string setting_name = 2;
+
+    //状态 默认：全部 1：启用 2：废弃
+    uint32 state = 3;
+}
+
+message GetDeviceConfigDbResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //更新时间
+    uint64 update_time = 2;
+
+    //参数列表
+    repeated mapgoo.paas.device.DeviceConfigParam param_list = 3;
+}
+
+//获取设备配置参数
+message GetDeviceConfigDbListReq {
+    //更新时间
+    uint64 update_time = 1;
+
+    //行数
+    uint32 limit = 2;
+}
+
+message GetDeviceConfigDbListResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //参数列表
+    map<uint32, mapgoo.paas.device.DeviceConfigInfo> config_list = 2;
+}
+
+
+//通过模糊搜索获取设备ID
+message SearchTrackObjectListDBReq{
+    //关键字类型 1 设备名称 2所属用户 3 IMEI号 4 sim卡号 8 关联账号 10 设备状态 11 联系人 12 车牌号 13标签 14 iccid
+    uint32 key_type =1;
+    //关键字
+    string key_val=2;
+    //每页数量
+    uint32 page_size =3;
+    //渠道id
+    uint32 hold_id=4;
+    //渠道level
+    uint32 hold_level=5;
+
+}
+
+message SearchTrackObjectListDBResp{
+    //返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //设备id列表
+    repeated uint32 object_id_list =2;
+}

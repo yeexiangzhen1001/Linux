@@ -1,0 +1,488 @@
+syntax = "proto3";
+
+package mapgoo.paas.travel.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+
+//轨迹
+message TrackInfoSimple
+{
+	//里程
+	uint64 mileage = 1;		
+	
+	//速度，仅GPS定位时有效，其它情况为0xFFFFFFFF	单位km/h
+    uint32 speed = 2;		
+	
+	//方向，仅GPS定位时有效，其它情况为0xFFFFFFFF，单位：度
+    uint32 direction = 3;	
+	
+	//纬度
+	int32 lat = 4;		
+	
+	//经度
+	int32 lng = 5;		
+	
+	//接收时间
+	uint64 recv_time = 6;
+	
+	//定位时间
+	uint64 gps_time = 7;
+}
+
+//行程信息
+message TravelInfo
+{
+	//设备id
+	uint32 object_id = 1;
+
+	//行程id
+	uint64 travel_id = 2;
+
+	//行程标志 0：熄火 1：启动
+	bool is_completed = 3;
+
+	//行程里程
+	uint64 travel_mileage = 4;	
+	
+	//行程油耗
+	uint64 travel_oil = 5;		
+	
+	//行程时长
+	uint32 travel_period = 6;	
+	
+	//驾驶时长
+	uint32 drive_period = 7;	
+	
+	//超速次数
+	uint32 over_speed_count = 8;	
+	
+	//急加速次数
+	uint32 celerate_count = 9;		
+	
+	//急减速次数
+	uint32 decelerate_count = 10;	
+	
+	//停车未熄火次数
+	uint32 stop_accon_count = 11;	
+	
+	//
+	string start_pos_desc = 12;
+
+	//
+	string stop_pos_desc = 13;
+
+	//
+	uint64 start_event_id = 14;
+
+	//
+	uint64 stop_event_id = 15;
+
+	//
+	uint64 stay_id = 16;
+
+	//备注
+	string remark = 17;		
+	
+	//平均速度
+	uint32 avg_speed = 18;	
+	
+	//最大速度
+	uint32 max_speed = 19;	
+	
+	//
+	uint32 pos_count = 20;
+
+	//
+	uint32 total_speed = 21;
+
+	//故障个数
+	uint32 bd_count = 22;	
+	
+	//故障码
+	string bd_code = 23;	
+
+	//
+	repeated string seq_fault_code = 24;
+
+	//行程启动信息
+	TrackInfoSimple start_pos = 25;		
+
+	//行程停止信息
+	TrackInfoSimple stop_pos = 26;	
+	//驾驶分
+	uint32 drive_score = 27;	
+};
+
+//获取历史行程
+message GetHisTravelReq
+{
+	//设备id和imei
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+	//开始时间
+    string start_time = 2;
+
+	//结束时间
+    string end_time = 3;
+
+	//行数限制
+	uint32 limit = 4;
+	mapgoo.paas.base.PageBaseInfo page_info = 5;
+}
+
+message GetHisTravelResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//行程信息
+    repeated TravelInfo travel_list = 2;
+	mapgoo.paas.base.PageBaseInfo page_info = 3;
+}
+
+//获取行程统计信息
+message GetStatisticsTravelReq
+{
+	//设备id和imei
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+	//开始时间
+	string begin_time = 2;
+
+	//结束时间
+	string end_time = 3;
+
+	//其它sql条件
+	repeated string sql_condition = 4;
+}
+
+message GetStatisticsTravelResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//总油耗
+	uint64 sum_travel_oil = 2;
+	
+	//总里程
+	uint64 sum_travel_mileage = 3;
+	
+	//
+	uint32 sum_score = 4;
+
+	//总数量
+	uint32 count = 5;
+}
+
+//行程信息
+message TravelDbInfo
+{
+	//行程id，雪花算法生成
+	uint64 rec_id = 1;	
+
+	//设备id
+	uint32 object_id = 2;	
+
+	//行程开始时间(gps定位时间）
+	uint64 start_time = 3;
+
+	//行程开始经度
+	sint32 start_lon = 4;
+
+	//行程开始纬度
+	sint32 start_lat = 5;
+
+	//行程开始位置地址描述
+	string start_pos = 6;
+
+	//行程结束时间（gps定位时间）
+	uint64 stop_time = 7;
+
+	//行程结束经度
+	sint32 stop_lon = 8;
+
+	//行程结束纬度
+	sint32 stop_lat = 9;
+
+	//行程结束位置地址描述
+	string stop_pos = 10;
+
+	//obd故障码个数
+	uint32 bd_count = 11;
+
+	//obd故障码（多个故障码以逗号隔开）
+	string bd_code = 12;
+
+	//行程里程
+	uint32 travel_mileage = 13;
+
+	//行程百公里油耗
+	uint32 travel_oil = 14;
+
+	//超速次数
+	uint32 over_speed_count = 15;
+
+	//急加速次数
+	uint32 celerate_count = 16;
+
+	//急减速次数
+	uint32 decelerate_count = 17;
+
+	//行程时长
+	uint32 travel_period = 18;
+
+	//驾驶时长
+	uint32 drive_period = 19;
+
+	//停车未熄火次数
+	uint32 stop_acc_on_count = 20;
+
+	//备注（行程启动类型->行程熄火类型）
+	string remark = 21;
+
+	//是否有效，0-有效，1-无效
+	uint32 enabled = 22;
+
+	//地址是否解析，-1未解析，0-已解析
+	uint32 location_flag = 23;
+
+	//行程开始时总里程
+	uint32 start_mileage = 24;
+
+	//行程启动事件id
+	uint64 start_event_id = 25;
+
+	//行程熄火事件id
+	uint64 stop_event_id = 26;
+
+	//停留记录id
+	uint64 stay_id = 27;
+
+	//记录掺入时间
+	uint64 the_day = 28;
+
+	//行程评分
+	uint32 score = 29;
+
+	//行程平均速度
+	uint32 avg_speed = 30;
+
+	//行程最大速度
+	uint32 max_speed = 31;
+
+	//行程位置点个数
+	uint32 pos_count = 32;
+
+	//急转弯次数
+	uint32 sharp_turn_count = 33;
+
+	//是否隐藏
+	uint32 is_hide = 34;
+}
+
+//行程事件信息
+message TravelEventDbInfo
+{
+	//行程事件id，雪花算法生成，递增唯一
+	uint64 rec_id = 1;
+
+	//设备id
+	uint32 object_id = 2;
+
+	//事件类型id，1-acc启动 2-obd启动 3-gps启动 4-acc熄火 5-obd熄火 6-超时熄火 7-gps熄火 9-待命熄火 10-速度熄火 11-离线熄火
+	uint64 event_type_id = 3;
+	
+	//事件描述
+	string event_desc = 4;
+	
+	//事件发生时的定时数据接收时间
+	uint64 rcv_time = 5;
+	
+	//事件发生时的经度
+	sint32 lon = 6;
+	
+	//事件发生时的纬度
+	sint32 lat = 7;
+	
+	//事件发生时的速度
+	uint32 speed = 8;
+	
+	//事件发生时的方向
+	uint32 direct = 9;
+	
+	//事件发生是的里程
+	uint32 mileage = 10;
+	
+	//事件发生时的油耗
+	uint32 oil_num = 11;
+	
+	//事件发生时的gps时间
+	uint64 gps_time = 12;
+	
+	//事件发生时的定位方式
+	uint32 gps_flag = 13;
+	
+	//事件发生时的位置地址描述
+	string cur_location = 14;
+	
+	//
+	string ascii = 15;
+	
+	//
+	string hex = 16;
+	
+	//行程开始时间
+	uint64 begin_time = 17;
+	
+	//行程开始的经度
+	sint32 begin_lon = 18;
+	
+	//行程开始的纬度
+	sint32 begin_lat = 19;
+	
+	//行程时长
+	uint32 travel_period = 20;
+	
+	//驾驶时长
+	uint32 drive_period = 21;
+	
+	//超速次数
+	uint32 over_speed_count = 22;
+	
+	//急加速次数
+	uint32 celerate_count = 23;
+	
+	//急减速次数
+	uint32 decelerate_count = 24;
+	
+	//停车未熄火次数
+	uint32 stop_acc_on_count = 25;
+	
+	//行程里程
+	uint32 travel_mileage = 26;
+	
+	//行程油耗
+	uint32 travel_oil = 27;
+	
+	//地址解析标记，-1未解析 0-已解析
+	uint32 parse_flag = 28;
+	
+	//推送标记
+	uint32 push_flag = 29;
+	
+	//入库时间
+	uint64 the_day = 30;
+}
+
+//停留信息
+message StopDetailDbInfo
+{
+	//主键，记录id
+	uint64 rec_id = 1;
+	
+	//设备id
+	uint32 object_id = 2;
+	
+	//停留开始时间（上一笔行程结束的gps时间）
+	uint64 start_time = 3;
+	
+	//停留结束时间（下一笔行程开始的gps时间）
+	uint64 stop_time = 4;
+	
+	//停留开始的经度（上一笔行程结束的经度）
+	sint32 start_lon = 5;
+	
+	//停留开始的纬度（上一笔行程结束的纬度）
+	sint32 start_lat = 6;
+	
+	//停留开始的定位方式
+	uint32 start_gps_flag = 7;
+	
+	//停留时长
+	uint32 minute_span = 8;
+	
+	//
+	uint32 orig_up_id = 10;
+	
+	//当前行程里程
+	uint32 current_mileage = 11;
+	
+	//之前的行驶里程
+	uint32 pre_run_mileage = 12;
+	
+	//地址解析标记，0-未解析，1-已解析
+	uint32 parse_flag = 13;
+	
+	//地址描述
+	string cur_location = 14;
+	
+	//记录插入时间
+	uint64 the_day = 15;
+	
+	//geohash字符串
+	string geo_code = 16;
+}
+
+//里程信息
+message MileAgeDetailDbInfo
+{
+	//记录id
+	uint64 detail_id = 1;
+	
+	//设备id
+	uint32 object_id = 2;
+	
+	//渠道id
+	uint32 hold_id = 3;
+	
+	//
+	uint32 driver_id1 = 4;
+	
+	//
+	uint32 driver_id2 = 5;
+	
+	//
+	uint32 total_id = 6;
+	
+	//被统计日期
+	uint64 total_date = 7;
+	
+	//
+	uint32 total_type = 8;
+	
+	//统计开始时间
+	uint64 start_time = 9;
+	
+	//统计结束时间
+	uint64 end_time = 10;
+	
+	//总时间（以分钟为单位）
+	uint32 minutes = 11;
+	
+	//当日统计里程值
+	uint32 total_value = 12;
+	
+	//记录写入时间
+	uint64 the_day = 13;
+}
+
+//获取设备实时行程
+message GetRealtimeTravelReq
+{
+    //设备ID列表
+    repeated string device_list = 1;
+
+    //设备记录ID列表
+    repeated uint32 object_list = 2;
+}
+
+message GetRealtimeTravelResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//行程信息
+    repeated TravelInfo travel_list = 2;
+}

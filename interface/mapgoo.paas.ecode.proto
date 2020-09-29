@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package mapgoo.paas.ecode;
+
+enum PAAS_ERROR_CODE {
+    //成功
+    COMM_SUCCESS = 0;
+    /*通用错误 100-200*/
+    //连接错误
+    COMM_ECODE_CONNECT_ERROR = 100;
+    //参数不合法
+    COMM_ECODE_INVALID_PARAM_ERROR = 101;
+    //发送失败
+    COMM_ECODE_REQUEST_ERROR = 102;
+    //数据不存在
+    COMM_ECODE_NO_DATA = 103;
+    //未知错误
+    COMM_ECODE_OTHER = 104;
+    //数据存在
+    COMM_ECODE_DATA_EXIST = 105;
+    //解析json失败
+    COMM_ECODE_PARSE_FAILED = 106;
+    //系统错误
+    COMM_SYSTEM_ERROR=107;
+    //数据重复
+    COMM_REPEAT_DATA=108;
+
+    /*DAP相关错误 200-300*/
+    //SQL查询失败
+    DAP_ECODE_SQL_QUERY_ERROR = 200;
+    //扫描数据错误
+    DAP_ECODE_ROW_SCAN_ERROR = 201;
+    //执行SQL失败
+    DAP_ECODE_SQL_EXEC_ERROR = 202;
+    //SQL未知错误
+    DAP_ECODE_SQL_UNKNOWN_ERROR=203;
+    //SQL事务错误
+    DAP_ECODE_SQL_TRANS_ERROR=204;
+
+    /*CAP相关错误 300-400*/
+    //KEY不存在
+    CAP_ECODE_KEY_NOT_EXIST = 300;
+    //数据扫描错误
+    CAP_ECODE_DATA_SCAN_ERROR = 301;
+    //数据写入失败
+    CAP_ECODE_DATA_WRITE_ERROR = 302;
+    //缓存数据不存在
+    CAP_ECODE_DATA_NULL_ERROR = 303;
+    //查询缓存结果集数据异常
+    CAP_ECODE_DATA_DIST_ERROR = 304;
+
+    /*设备相关错误 400-500*/
+    //设备不存在
+    DEVICE_ECODE_NOT_EXIST = 400;
+    //设备信息错误
+    DEVICE_ECODE_INFO_ERROR = 401;
+    //设备调用DAP写入失败
+    DEVICE_ECODE_DAP_WRITE_ERROR = 402;
+    //设备调用CAP写入失败
+    DEVICE_ECODE_CAP_WRITE_ERROR = 403;
+    //设备已经注册，并且在当前渠道
+    DEVICE_ECODE_EXIST_REG = 404;
+    //IMEI长度无效
+    DEVICE_ECODE_IMEI_LEN_INVALID = 405;
+    //AppKey无效
+    DEVICE_ECODE_APPKEY_INVALID = 406;
+    //IMEI生成额度超限
+    DEVICE_ECODE_IMEI_BUILDOVER = 407;
+    //未找到可修改的设备信息
+    DEVICE_ECODE_NOTHING_UPDATE = 408;
+    //设备参数相同无需更新
+    DEVICE_ECODE_PARAM_NOTHING_UPDATE = 409;
+    //设备渠道信息有误
+    DEVICE_ECODE_HOLD_ERROR = 410;
+    //摄像头信息查询错误
+    DEVICE_ECODE_CAMERA_QUERY_ERROR = 411;
+    //添加摄像头信息错误
+    DEVICE_ECODE_CAMERA_ADD_ERROR = 412;
+    //某个通道号有重复
+    DEVICE_ECODE_CAMERA_RECHANNEL_ERROR = 413;
+    //设置设备信息过期时间失败
+    DEVICE_ECODE_SETCACHE_EXPIRE_FAILED = 414;
+
+    /*用户相关错误 500-600*/
+    USER_ECODE_VERIFY_FAILED=500;
+
+    /*渠道相关错误 600-700*/
+    HOLD_ECODE_APK_CONFIG_NO_UPDATE=3002;
+
+}

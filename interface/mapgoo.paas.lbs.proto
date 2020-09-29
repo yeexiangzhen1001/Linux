@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package mapgoo.paas.lbs;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.dcs.data.proto";
+
+message WifiInfo{
+    string mac = 1;
+    int32 strength = 2;
+}
+
+message BsInfo{
+	int32 cid = 1;
+	int32 lac = 2;
+	int32 mcc = 3;
+	int32 mnc = 4;
+	int32 sig = 5;
+}
+
+message MixedReq {
+	uint32 gpsTime = 1;
+	mapgoo.pass.dcs.data.LocationaType reqType = 2;
+	mapgoo.paas.base.Point point = 3;
+}
+
+message WifiReq{
+	repeated WifiInfo wifi_list = 1;
+	repeated BsInfo bs_list = 2;
+}
+
+message BsReq{
+	repeated BsInfo bs_list = 1;
+}
+
+message LBSPayload {
+	uint32 objId = 1;
+	uint32 recvTime = 2;
+	string statusDesc = 3;
+	repeated bytes alarm = 4;
+	WifiReq wifiReq = 5;
+	BsReq bsReq = 6;
+	MixedReq mixedReq = 7;
+}

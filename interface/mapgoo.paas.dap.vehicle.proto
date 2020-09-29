@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package mapgoo.paas.dap.vehicle;
+
+option go_package = "api";
+
+import public "mapgoo.paas.vehicle.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DapVehicleProxy {
+	//获取车辆信息
+	rpc getVehicleInfo(mapgoo.paas.vehicle.data.GetVehicleInfoReq) returns (mapgoo.paas.vehicle.data.GetVehicleInfoResp) {
+		option (google.api.http) = {
+			post:"/dap/vehicle/getVehicleInfo"
+		};
+	};
+}

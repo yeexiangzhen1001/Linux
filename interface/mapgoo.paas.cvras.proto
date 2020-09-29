@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package mapgoo.paas.cvras;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.live.proto";
+
+//启动远程调阅，rtmp开始推流
+message GetRtmpPlayReq
+{
+	//用户编号
+	uint32 user_id = 1;
+
+	//设备对象
+	uint32 object_id = 2;
+
+	//设备播放通道
+	uint32 channel = 3;
+
+	//视频开始播放起始时间
+	string play_begin_time = 4;
+
+	//视频调阅结束时间
+	string play_end_time = 5;
+
+	//云文件列表
+	repeated mapgoo.paas.live.MediaFileInfo media_list = 6;
+}
+
+message GetRtmpPlayResp
+{
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//推流id
+	string play_id = 2;
+
+	//视频推流地址
+	string play_url = 3;
+}
+
+//停止远程调阅，rtmp停止推流
+message StopCvrasPlayReq
+{
+	//设备id
+	uint32 object_id = 1;
+
+	//设备播放通道
+    uint32 channel = 2;
+
+	//推流id
+    string play_id = 3;
+}
+
+message StopCvrasPlayResp
+{
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//远程调阅心跳
+message HeartCvrasPlayReq
+{
+	//设备id
+	uint32 object_id = 1;
+
+	//设备播放通道
+    uint32 channel = 2;
+
+	//推流id
+    string play_id = 3;
+}
+
+message HeartCvrasPlayResp
+{
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取可用推流地址
+message GetCvrasPlayUrlReq
+{
+	//设备id
+	uint32 object_id = 1;
+
+	//设备播放通道
+    uint32 channel = 2;
+
+	//用户id
+    uint32 user_id = 3;
+
+}
+
+message GetCvrasPlayUrlResp
+{
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//推流id
+    string play_id = 2;
+
+	//推流地址
+    string play_url = 3;
+
+	//拉流地址
+    string push_url = 4;
+}
+
+service CvrasProxy
+{
+	//启动远程调阅，rtmp开始推流
+	rpc getCvrasPlay(GetRtmpPlayReq) returns (GetRtmpPlayResp) { };   
+
+	//停止远程调阅，rtmp停止推流
+	rpc stopCvrasPlay(StopCvrasPlayReq) returns (StopCvrasPlayResp) { };   
+
+	//远程调阅心跳
+	rpc heartCvrasPlay(HeartCvrasPlayReq) returns (HeartCvrasPlayResp) { };
+
+	//获取可用推流地址
+	rpc getCvrasPlayUrl(GetCvrasPlayUrlReq) returns (GetCvrasPlayUrlResp) { };
+}

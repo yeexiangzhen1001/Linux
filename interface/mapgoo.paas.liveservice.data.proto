@@ -1,0 +1,213 @@
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import public "mapgoo.paas.ecode.proto";
+import public "mapgoo.paas.base.proto";
+
+package mapgoo.paas.liveservice.data;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+//获取直播地址
+message GetDeviceLiveAddrReq
+{
+    //视频id
+    string ssv_id = 1;
+
+    //imei
+    string imei = 2;
+
+    //通道
+    uint32 channel = 3;
+
+    //直播类型
+    uint32 source_type = 4;
+
+    //
+    int32 pre_channel = 5;
+
+    //重试次数
+    uint32 times = 6;
+
+    //用户id
+    uint32 user_id = 7;
+
+    //直播切换模式
+    uint32 live_switch_mode = 8;
+}
+
+message DeviceLiveAddrInfo
+{
+    //imei
+    string imei = 1;
+
+    //视频id
+    string ssv_id = 2;
+
+    //请求token
+    string token = 3;
+
+    //设备状态
+    uint32 device_type = 4;
+
+    //状态
+    uint32 status = 5;
+
+    //更新时间
+    uint64 update_time = 6;
+
+    //直播地址
+    string rtmp_url = 7;
+
+    //设备个数
+    uint32 ssvid_count = 8;
+
+    //设备类型id
+    uint32 mdt_type_id = 9;
+
+    //
+    uint32 wait_time = 10;
+}
+
+message GetDeviceLiveAddrResp
+{
+    //返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //Ssvid信息
+    DeviceLiveAddrInfo result = 2;
+}
+
+//设备直播鉴权
+message LiveStatusNotifyReq {
+    //拉流名称
+    string name = 1 [ (gogoproto.jsontag) = 'name', (gogoproto.moretags) = 'form:"name"' ];
+
+    //事件名称
+    string call = 2 [ (gogoproto.jsontag) = 'call', (gogoproto.moretags) = 'form:"call"' ];
+
+    //拉流客户端
+    string app = 3 [ (gogoproto.jsontag) = 'app', (gogoproto.moretags) = 'form:"app"' ];
+
+    //直播协议 1:rtmp,2:HLS,3:httpflv
+    uint32 live_type = 4 [ (gogoproto.jsontag) = 'liveType', (gogoproto.moretags) = 'form:"liveType"' ];
+
+    //码率
+    uint32 rate = 5 [ (gogoproto.jsontag) = 'rate', (gogoproto.moretags) = 'form:"rate"' ];
+
+    //分辨率
+    uint32 resolution = 6 [ (gogoproto.jsontag) = 'resolution', (gogoproto.moretags) = 'form:"resolution"' ];
+
+    //用户id
+    uint32 user_id = 7 [ (gogoproto.jsontag) = 'userId', (gogoproto.moretags) = 'form:"userId"' ];
+
+    //用户会话
+    string user_session = 8 [ (gogoproto.jsontag) = 'p', (gogoproto.moretags) = 'form:"p"' ];
+
+    //地址
+    string addr = 9 [ (gogoproto.jsontag) = 'addr', (gogoproto.moretags) = 'form:"addr"' ];
+
+    //客户端ID
+    string client_id = 10 [ (gogoproto.jsontag) = 'clientid', (gogoproto.moretags) = 'form:"clientid"' ];
+
+    //flash版本
+    string flash_ver = 11 [ (gogoproto.jsontag) = 'flashver', (gogoproto.moretags) = 'form:"flashver"' ];
+
+    //swf文件路径
+    string swf_url = 12 [ (gogoproto.jsontag) = 'swfurl', (gogoproto.moretags) = 'form:"swfurl"' ];
+
+    //tcUrl
+    string tc_url = 13 [ (gogoproto.jsontag) = 'tcurl', (gogoproto.moretags) = 'form:"tcurl"' ];
+
+    //页面路径
+    string page_url = 14 [ (gogoproto.jsontag) = 'pageurl', (gogoproto.moretags) = 'form:"pageurl"' ];
+
+    //应用key
+    string app_key = 15 [ (gogoproto.jsontag) = 'appKey', (gogoproto.moretags) = 'form:"appKey"' ];
+
+    //
+    uint32 reset = 16 [ (gogoproto.jsontag) = 'reset', (gogoproto.moretags) = 'form:"reset"' ];
+
+    //
+    string type = 17 [ (gogoproto.jsontag) = 'type', (gogoproto.moretags) = 'form:"type"' ];
+
+    //
+    uint32 duration = 18 [ (gogoproto.jsontag) = 'duration', (gogoproto.moretags) = 'form:"duration"' ];
+
+    //
+    string server_addr = 19 [ (gogoproto.jsontag) = 'serverAddr', (gogoproto.moretags) = 'form:"serverAddr"' ];
+
+    //
+    uint32 server_port = 20 [ (gogoproto.jsontag) = 'serverPort', (gogoproto.moretags) = 'form:"serverPort"' ];
+
+    //imei号
+    string imei = 21 [ (gogoproto.jsontag) = 'imei', (gogoproto.moretags) = 'form:"imei"' ];
+
+    //摄像头号
+    string channel = 22 [ (gogoproto.jsontag) = 'channel', (gogoproto.moretags) = 'form:"channel"' ];
+}
+
+message LiveStatusNotifyResp {
+    //错误码
+    mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+    //提示
+    string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+}
+
+//设备直播观看信息内部接口
+message GetLiveInfoReq {
+    //设备imei
+    string imei = 1;
+
+    //渠道
+    string channel = 2;
+}
+
+message LiveClientInfo {
+	//用户id
+	uint32 user_id = 1;
+
+	//开始时间
+	uint64 start_time = 2;
+
+	//结束时间
+	uint64 stop_time = 3;
+
+	//
+	bool is_watching = 4;
+}
+
+message GetLiveInfoResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //客户端数量
+    uint32 playing_clients_num = 2;
+
+    //客户端信息
+    repeated LiveClientInfo client_list = 3;
+}
+
+//获取塞尚摄像头状态参数
+message GetCameraStatusReq {
+  //视频ID，不合理，这个参数重复！！！
+  string ssvid = 1;
+}
+
+//摄像头状态
+enum CAMERA_STATUS{
+    UNKNOW=0;
+    ONLINE=1;
+    SLEEP=2;
+}
+
+//获取塞尚摄像头状结果
+message GetCameraStatusResp {
+  //返回信息
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //摄像头状态
+  CAMERA_STATUS camera_status = 2;
+}

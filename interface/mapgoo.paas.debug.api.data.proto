@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package mapgoo.paas.debug.api.data;
+option go_package = "api";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "mapgoo.paas.status.data.proto";
+import "mapgoo.paas.base.proto";
+
+//获取设备路由
+message GetRouterInfoReq {
+    //设备ID
+    mapgoo.paas.base.DeviceId device_id = 1;
+}
+
+message GetRouterInfoResp {
+    //返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //路由信息
+    mapgoo.paas.status.data.RouterInfo routerInfo = 2;
+}
+
+//获取设备信息
+message GetDeviceInfoReq {
+    //设备id
+    mapgoo.paas.base.DeviceId device_id = 1 [ (gogoproto.jsontag) = 'device_id' ];
+}
+message GetDeviceBaseInfoResp {
+    //返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+    //设备信息
+    mapgoo.paas.base.DeviceBaseInfo base_info = 2 [ (gogoproto.jsontag) = 'base_info' ];
+}
+
+//添加设备跟踪
+message AddDeviceTraceReq{
+    //设备IMEI
+    string imei = 1;
+    //过期时间戳,-1表示永不过期
+    int32 ttl = 2;
+}
+message AddDeviceTraceResp{
+    //返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除设备跟踪
+message DeleteDeviceTraceReq{
+    //设备IMEI
+    string imei = 1;
+}
+
+message DeleteDeviceTraceResp{
+    //返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+

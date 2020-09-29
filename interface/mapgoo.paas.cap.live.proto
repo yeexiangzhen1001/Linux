@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.live;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.live.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//
+service DeviceLiveCacheProxy
+{
+
+}
+

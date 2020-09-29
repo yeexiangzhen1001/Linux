@@ -1,0 +1,9 @@
+[dss]
+    timeout = "10s"
+
+[zipkin]
+    endpoint = "http://172.16.5.203:9411/api/v2/spans"
+	batchSize = 100
+	timeout = "10000ms"
+	disableSample = false
+

@@ -1,0 +1,217 @@
+syntax = "proto3";
+
+import public "mapgoo.paas.base.proto";
+import "mapgoo.paas.hold.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.hms;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service HMS {
+
+  //清空缓存
+  rpc ClearApkConfigCache(mapgoo.paas.hold.data.ClearApkConfigCacheReq)
+      returns (mapgoo.paas.hold.data.ClearApkConfigCacheResp) {
+    option (google.api.http) = {
+      get : "/hms/cearApkConfig"
+    };
+  }
+
+  /********************************以上是新版接口声明****************************/
+  //获取UI界面配置参数（设备级配置通用）
+  rpc GetApkConfigUIList(mapgoo.paas.hold.data.GetApkConfigUIListHMSReq)
+      returns (mapgoo.paas.hold.data.GetApkConfigUIListHMSResp) {
+    option (google.api.http) = {
+      get : "/hms/base/GetApkConfigUIList"
+    };
+  }
+
+  //保存渠道配置参数
+  rpc SaveApkConfig(mapgoo.paas.hold.data.SaveApkConfigHMSReq)
+      returns (mapgoo.paas.hold.data.SaveApkConfigHMSResp) {
+    option (google.api.http) = {
+      post : "/hms/apkconfig/SaveApkConfig"
+    };
+  }
+
+  //查询渠道配置列表
+  rpc SearchApkConfigList(mapgoo.paas.hold.data.SearchApkConfigListHmsReq)
+      returns (mapgoo.paas.hold.data.SearchApkConfigListHmsResp) {
+    option (google.api.http) = {
+      post : "/hms/apkconfig/SearchApkConfigList"
+    };
+  }
+
+  //查询渠道配置信息参数
+  rpc GetNewApkConfig(mapgoo.paas.hold.data.GetApkConfigHMSReq)
+      returns (mapgoo.paas.hold.data.GetApkConfigHMSResp) {
+    option (google.api.http) = {
+      get : "/hms/apkconfig/GetNewApkConfig"
+    };
+  }
+
+  //查询渠道基本信息及渠道配置信息
+  rpc GetApkInfoAndConfig(mapgoo.paas.hold.data.GetApkInfoAndConfigHmsReq)
+      returns (mapgoo.paas.hold.data.GetApkInfoAndConfigHmsResp) {
+    option (google.api.http) = {
+      get : "/hms/apkconfig/GetApkInfoAndConfig"
+    };
+  }
+
+  //查询渠道配置字典表
+  rpc GetApkSettingDict(mapgoo.paas.hold.data.GetApkSettingDictReq)
+      returns (mapgoo.paas.hold.data.GetApkSettingDictResp) {
+    option (google.api.http) = {
+      get : "/hms/base/GetApkSettingDict"
+    };
+  }
+
+  //删除渠道配置
+  rpc DeleteApkConfig(mapgoo.paas.hold.data.DeleteApkConfigReq)
+      returns (mapgoo.paas.hold.data.DeleteApkConfigResp) {
+    option (google.api.http) = {
+      get : "hms/apkconfig/DeleteApkConfig"
+    };
+  }
+
+  //保存渠道配置字典数据（设备级配置通用）
+  rpc SaveApkConfigDict(mapgoo.paas.hold.data.SaveApkConfigDictReq)
+      returns (mapgoo.paas.hold.data.SaveApkConfigDictResp) {
+    option (google.api.http) = {
+      post : "/hms/base/SaveApkConfigDict"
+
+    };
+  }
+
+  //删除渠道配置字典数据（设备级配置通用）
+  rpc DeleteApkConfigDict(mapgoo.paas.hold.data.DeleteApkConfigDictReq)
+      returns (mapgoo.paas.hold.data.DeleteApkConfigDictResp) {
+    option (google.api.http) = {
+      post : "/hms/base/DeleteApkConfigDict"
+    };
+  }
+
+  //分页查询渠道配置字典信息（设备级配置通用）
+  rpc SearchApkConfigDict(mapgoo.paas.hold.data.SearchApkConfigDictReq)
+      returns (mapgoo.paas.hold.data.SearchApkConfigDictResp) {
+    option (google.api.http) = {
+      post : "/hms/base/SearchApkConfigDict"
+    };
+  }
+
+  //保存渠道配置分组信息
+  rpc SaveApkConfigGroup(mapgoo.paas.hold.data.SaveApkConfigGroupReq)
+      returns (mapgoo.paas.hold.data.SaveApkConfigGroupResp) {
+    option (google.api.http) = {
+      post : "/hms/base/SaveApkConfigGroup"
+    };
+  }
+
+  //删除渠道配置分组数据
+  rpc DeleteApkConfigGroup(mapgoo.paas.hold.data.DeleteApkConfigGroupReq)
+      returns (mapgoo.paas.hold.data.DeleteApkConfigGroupResp) {
+    option (google.api.http) = {
+      post : "/hms/base/DeleteApkConfigGroup"
+    };
+  }
+
+  //分页查询渠道配置分组信息
+  rpc SearchApkConfigGroup(mapgoo.paas.hold.data.SearchApkConfigGroupReq)
+      returns (mapgoo.paas.hold.data.SearchApkConfigGroupResp) {
+    option (google.api.http) = {
+      post : "/hms/base/SearchApkConfigGroup"
+    };
+  }
+
+  //同步APK数据信息
+  rpc SyncApkConfigData(mapgoo.paas.hold.data.SyncApkConfigDataReq)
+      returns (mapgoo.paas.hold.data.SyncApkConfigDataResp) {
+    option (google.api.http) = {
+      get : "/hms/apkconfig/SyncApkConfigData"
+    };
+  }
+
+  //分页查询查询渠道信息列表
+  rpc SearchHoldInfo(mapgoo.paas.hold.data.SearchHoldInfoReq)
+      returns (mapgoo.paas.hold.data.SearchHoldInfoResp) {
+    option (google.api.http) = {
+      post : "/hms/hold/SearchHoldInfo"
+    };
+  }
+
+  //获取渠道目录树
+  rpc GetHoldTreePath(mapgoo.paas.hold.data.GetHoldTreePathReq)
+      returns (mapgoo.paas.hold.data.GetHoldTreePathResp) {
+    option (google.api.http) = {
+      post : "/hms/hold/GetHoldTreePath"
+    };
+  }
+
+  //库拆分
+  rpc SplitDatabase(SplitDatabaseReq) returns (SplitDatabaseResp) { 
+	option (google.api.http) = {
+		post : "/hms/hold/SplitDatabase"
+	};
+  }
+
+  //库合并
+  rpc MergeDatabase(MergeDatabaseReq) returns (MergeDatabaseResp) { 
+	option (google.api.http) = {
+		post : "/hms/hold/MergeDatabase"
+	};
+  }
+
+  //用户迁移
+  rpc HoldMove(HoldMoveReq) returns (HoldMoveResp) { 
+	option (google.api.http) = {
+		post : "/hms/hold/HoldMove"
+	};
+  }
+} 
+
+//库拆分
+message SplitDatabaseReq {
+	//当前用户
+	uint32 curr_hold_id = 1;
+
+	//子用户
+	uint32 sub_hold_id = 2;
+}
+
+message SplitDatabaseResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//库合并
+message MergeDatabaseReq {
+	//当前用户
+	uint32 curr_hold_id = 1;
+
+	//子用户
+	uint32 sub_hold_id = 2;
+}
+
+message MergeDatabaseResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;  
+}
+
+//用户迁移
+message HoldMoveReq {
+	//用户id
+	uint32 hold_id = 1;
+
+	//源父类用户id
+	uint32 orig_parent_id = 2;
+
+	//新父类用户id
+	uint32 dest_parent_id = 3;
+}
+
+message HoldMoveResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1; 
+}

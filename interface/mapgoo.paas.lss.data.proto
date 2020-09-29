@@ -1,0 +1,195 @@
+syntax = "proto3";
+
+package mapgoo.paas.lss.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+
+//直播类型
+enum LiveType
+{
+	TYPE_LIVE_DEFAULT = 0;
+	TYPE_LIVE_RTMP = 1;
+	TYPE_LIVE_HLS = 2;
+	TYPE_LIVE_HTTPFLV = 3;
+};
+
+//获取直播地址
+message GetLiveUrlReq
+{
+	//imei号
+	string imei = 1;
+
+	//摄像头号
+	uint32 channel = 2;
+
+	//用户id
+	uint32 user_id = 3;
+
+	//直播类型
+	LiveType live_type = 4;
+
+	//直播切换模式
+	uint32 live_switch_mode = 5;
+}
+
+message GetLiveUrlResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+
+	//直播地址
+	string live_url = 2;
+}
+
+//RTMP的通知信息
+message RtmpInfo
+{
+	//流ip
+	string server_addr = 1;	
+
+	//流端口
+	uint32 server_port = 2;	
+
+	//客户端ip
+	string addr = 3; 		
+
+	//客户端id
+	uint32 client_id = 4;		
+
+	//应用名称
+	string app = 5;			
+
+	//客户端flash版本
+	string flash_ver = 6;	
+
+	//swf的url
+	string swf_url = 7;		
+
+	//tc的url
+	string tc_url = 8;	
+
+	//page的url
+	string page_url = 9;	
+
+	//流名称
+	string name = 10;		
+};
+
+//拉流端的通知信息
+message OnPlayNotifyReq
+{
+	//用户id
+	uint32 user_id = 1;
+
+	//用户会话
+	string user_session = 2;
+
+	//
+	uint32 rate = 3;
+
+	//
+	uint32 resolution = 4;
+
+	//直播类型
+	LiveType live_type = 5;
+	
+	//RTMP的通知信息
+	RtmpInfo rtmp_info = 6;
+};
+
+message OnPlayNotifyResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+}
+
+//推流端的通知信息 
+message OnPublishNotifyReq
+{
+	//RTMP的通知信息
+	RtmpInfo rtmp_info = 1;
+};
+
+message OnPublishNotifyResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+}
+
+//拉流结束通知
+message OnPlayDoneNotifyReq
+{
+	//用户id
+	uint32 user_id = 1;
+
+	//用户会话
+	string user_session = 2;
+
+	//
+	uint32 rate = 3;
+
+	//
+	uint32 resolution = 4;
+
+	//直播类型
+	LiveType live_type = 5;
+	
+	//RTMP的通知信息
+	RtmpInfo rtmp_info = 6;
+};
+
+message OnPlayDoneNotifyResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+}
+
+//推流结束通知
+message OnPublishDoneNotifyReq
+{
+	//RTMP的通知信息
+	RtmpInfo rtmp_info = 1;
+};
+
+message OnPublishDoneNotifyResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+}
+
+//客户端信息
+message PlayClientInfo
+{
+	//用户id
+	uint32 user_id = 1;
+
+	//开始时间
+	uint64 start_time = 2;
+
+	//结束时间
+	uint64 stop_time = 3;
+
+	//
+	bool is_watching = 4;
+};
+
+//通过推流名获取播放统计信息
+message GetPlayStatisByStreamNameReq
+{
+	//流名称
+	string stream_name = 1;
+};
+
+message GetPlayStatisByStreamNameResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+
+	//客户端信息
+	repeated PlayClientInfo client_list = 2;
+
+	//客户端数量
+	uint32 playing_clients_num = 3;
+};

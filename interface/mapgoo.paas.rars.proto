@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package mapgoo.paas.rars;
+
+option go_package = "api";
+
+import public "mapgoo.paas.rars.data.proto";
+
+service RarsProxy
+{
+	//获取省市区
+    rpc getRegionInfo(mapgoo.paas.rars.data.GetRegionInfoReq) returns (mapgoo.paas.rars.data.GetRegionInfoResp) { };
+}

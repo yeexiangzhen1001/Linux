@@ -1,0 +1,1177 @@
+syntax = "proto3";
+
+import "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "mapgoo.paas.ecode.proto";
+
+package mapgoo.paas.packagemanager.data;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+//获取运营套餐云记录仪配置参数结构
+message GetRecorderConfigParam {
+  //自增ID;
+  repeated uint32 id = 1;
+}
+
+//分页查询获取运营套餐云记录仪配置参数
+message GetRecorderConfigDBReq {
+  //查询参数
+  GetRecorderConfigParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取运营套餐云记录仪配置返回结果结构
+message GetRecorderConfigEntity {
+  //自增ID;
+  uint32 id = 1;
+  //超出有效观看时间需要删除的时间，单位：天;
+  uint32 delete_file_time = 2
+      [ (gogoproto.jsontag) = 'cloud_recoder_delete_time' ];
+  //视频上云公里数;
+  uint32 mileage = 3 [ (gogoproto.jsontag) = 'cloud_recoder_mileage' ];
+  //套餐有效期，单位：天;
+  uint32 period = 4 [ (gogoproto.jsontag) = 'cloud_recoder_period' ];
+  //云记录仪视频可观看时长，单位：天;
+  uint32 play_duration = 5
+      [ (gogoproto.jsontag) = 'cloud_recoder_play_duration' ];
+  //创建时间;
+  string create_time = 6;
+  //更新时间;
+  string update_time = 7;
+}
+
+//获取运营套餐云记录仪配置结果
+message GetRecorderConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetRecorderConfigEntity record_list = 3;
+}
+
+/***********************************************************************************************************************************************/
+
+//添加运营套餐云记录仪配置参数
+message AddRecorderConfigDBReq {
+
+  //添加参数
+  GetRecorderConfigEntity info = 1;
+}
+
+//添加运营套餐云记录仪配置结果
+message AddRecorderConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //自增ID;
+  uint32 id = 2;
+}
+
+/***********************************************************************************************************************************************/
+
+//添加用户套餐参数
+message AddUserPackageDBReq { GetUserPackageEntity info = 1; }
+
+//添加用户套餐结果
+message AddUserPackageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //自增ID;
+  uint32 id = 2;
+}
+
+/***********************************************************************************************************************************************/
+
+//修改用户套餐参数
+message UpdateUserPackageDBReq {
+  //激活时间;
+  string active_time = 1;
+  //生效时间;
+  string effect_time = 2;
+  //套餐过期时间;
+  string expired_time = 3;
+  //自增ID;
+  uint32 id = 4;
+  //设备ID、目标ID;
+  uint32 objectid = 5;
+  // 0自运营，1openapi;
+  uint32 source = 6;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 7;
+  //更新时间;
+  string update_time = 8;
+}
+
+//修改用户套餐结果
+message UpdateUserPackageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+/***********************************************************************************************************************************************/
+//获取用户套餐参数结构
+message GetUserPackageParam {
+  //帐号ID、用户ID;
+  repeated uint32 userid = 1;
+  //自增ID;
+  repeated uint32 id = 2;
+  //设备ID、目标ID;
+  repeated uint32 objectid = 3;
+  //购买的套餐ID;
+  uint32 package_id = 4;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 5;
+  //是否赠送
+  bool is_giving = 6;
+  // iccid
+  string iccid = 7;
+}
+
+//分页查询获取用户套餐参数
+message GetUserPackageDBReq {
+  //查询参数
+  GetUserPackageParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取用户套餐返回结果结构
+message GetUserPackageEntity {
+  //激活时间;
+  string active_time = 1;
+  //购买时间;
+  string buy_time = 2;
+  //购买方式：0赠送，1购买;
+  uint32 buy_type = 3;
+  //创建时间;
+  string create_time = 4;
+  //生效时间;
+  string effect_time = 5;
+  //套餐过期时间;
+  string expired_time = 6;
+  //自增ID;
+  uint32 id = 7;
+  //设备ID、目标ID;
+  uint32 objectid = 8;
+  //购买的套餐ID;
+  uint32 package_id = 9;
+  //价格;
+  uint32 price = 10;
+  //套餐使用优先级，0-为最高优先级，同一个设备的套餐优先级依次递减，优先使用高优先级的套餐容量;
+  uint32 priority = 11;
+  // 0自运营，1openapi;
+  uint32 source = 12;
+  //购买的渠道ID;
+  uint32 source_holdid = 13;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 14;
+  //更新时间;
+  string update_time = 15;
+  //帐号ID、用户ID;
+  uint32 userid = 16;
+  //订单号
+  string order_no = 17;
+  // iccid
+  string iccid = 18;
+}
+
+//获取用户套餐结果
+message GetUserPackageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetUserPackageEntity record_list = 3;
+}
+
+/***********************************************************************************************************************************************/
+//获取记录仪结算明细参数结构
+message GetRecorderStatementParam {
+  //自增ID;
+  uint32 id = 1;
+  //设备ID、目标ID;
+  uint32 objectid = 2;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 3;
+  //套餐内已使用里程;
+  uint32 used_mileage = 4;
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 5;
+  //里程未耗尽
+  bool has_effective_mileage = 6;
+  //大于指定ID
+  uint32 bigger_id = 7;
+  //到期时间大于
+  string expired_time = 8;
+}
+
+//分页查询获取记录仪结算明细参数
+message GetRecorderStatementDBReq {
+  //查询参数
+  GetRecorderStatementParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取记录仪结算明细返回结果结构
+message GetRecorderStatementEntity {
+  //自增ID;
+  uint32 id = 1;
+  //激活时间;
+  string active_time = 2;
+  //创建时间;
+  string create_time = 3;
+  //当前车辆行驶总里程;
+  uint32 current_milage = 4;
+  //生效时间;
+  string effect_time = 5;
+  //套餐过期时间;
+  string expired_time = 6;
+  //购买套餐时的初始里程;
+  uint32 init_mileage = 7;
+  //设备ID、目标ID;
+  uint32 objectid = 8;
+  //云记录仪视频观看时长;
+  uint32 play_duration_used = 9;
+  //云记录仪视频空间使用量;
+  uint64 space_used = 10;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 11;
+  //总里程;
+  uint32 total_mileage = 12;
+  //云记录仪视频观看时长;
+  uint32 total_play_duration = 13;
+  //更新时间;
+  string update_time = 14;
+  //套餐内已使用里程;
+  uint32 used_mileage = 15;
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 16;
+  //套餐有效期，单位：天;
+  uint32 period = 17;
+  //超出有效观看时间需要删除的时间，单位：天;
+  uint32 delete_file_time = 18;
+}
+
+//获取记录仪结算明细结果
+message GetRecorderStatementDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetRecorderStatementEntity record_list = 3;
+}
+
+/***********************************************************************************************************************************************/
+
+//添加记录仪结算明细参数
+message AddRecorderStatementDBReq {
+  //实体参数
+  GetRecorderStatementEntity info = 1;
+}
+
+//添加记录仪结算明细结果
+message AddRecorderStatementDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //自增ID;
+  uint32 id = 2;
+}
+
+/***********************************************************************************************************************************************/
+
+//修改记录仪结算明细参数
+message UpdateRecorderStatementDBReq {
+  //当前车辆行驶总里程;
+  uint32 current_milage = 1;
+  //自增ID;
+  uint32 id = 2;
+  //套餐内已使用里程;
+  uint32 used_mileage = 3;
+  //云记录仪视频观看时长;
+  uint32 play_duration_used = 4;
+  //云记录仪视频空间使用量;
+  uint64 space_used = 5;
+  //套餐状态, 1-已激活&#39;,2 已失效（里程超限或到期）;
+  uint32 state = 6;
+  //更新时间;
+  string update_time = 7;
+  //初始里程
+  uint32 init_mileage = 8;
+  //用户套餐ID
+  uint32 user_package_id = 9;
+}
+
+//修改记录仪结算明细结果
+message UpdateRecorderStatementDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+/***********************************************************************************************************************************************/
+//获取运营套餐列表参数结构
+message GetPackageConfigParam {
+  //套餐ID，自增主键;
+  uint32 id = 1;
+  //云记录仪子项配置ID，关联op_package_cloud_recoder_config记录，为空则不包含此项权益;
+  uint32 cloud_recoder_config_id = 2;
+  //套餐类型，0-普通 1-叠加包 2-扩充包;
+  int32 package_type = 3;
+  //套餐名称
+  string package_title = 4;
+}
+
+//分页查询获取运营套餐列表参数
+message GetPackageConfigDBReq {
+  //查询参数
+  GetPackageConfigParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取运营套餐列表返回结果结构
+message GetPackageConfigEntity {
+  //套餐ID，自增主键;
+  uint32 id = 1;
+  //云记录仪子项配置ID，关联op_package_cloud_recoder_config记录，为空则不包含此项权益;
+  uint32 cloud_recoder_config_id = 2;
+  //创建时间;
+  string create_time = 3;
+  //驾驶行为子项配置ID，暂留;
+  uint32 drive_behavior_config_id = 4;
+  //是否有效，1-有效 0-无效;
+  uint32 is_enabled = 5;
+  //直播子项配置ID，暂留;
+  uint32 live_config_id = 6;
+  //套餐详细描述;
+  string package_desc = 7;
+  //套餐子名称，可添加更详细的描述;
+  string package_subtitle = 8;
+  //套餐名称;
+  string package_title = 9;
+  //套餐类型，0-普通 1-叠加包 2-扩充包;
+  uint32 package_type = 10;
+  //轨迹子项配置ID，暂留;
+  uint32 remote_access_config_id = 11;
+  //震动报警子项配置ID，暂留;
+  uint32 shark_alarm_config_id = 12;
+  //抓拍子项配置ID，暂留;
+  uint32 snap_config_id = 13;
+  //轨迹子项配置ID,暂留;
+  uint32 track_config_id = 14;
+  //行程子项配置ID，暂留;
+  uint32 travel_config_id = 15;
+  //更新时间;
+  string update_time = 16;
+  // oms用户ID
+  uint32 oms_user_id = 17;
+}
+
+//获取运营套餐列表结果
+message GetPackageConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetPackageConfigEntity record_list = 3;
+}
+
+/***********************************************************************************************************************************************/
+//添加运营套餐参数
+message AddPackageConfigDBReq {
+  //实体参数
+  GetPackageConfigEntity info = 1;
+}
+
+//添加运营套餐结果
+message AddPackageConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //自增ID
+  uint32 id = 2;
+}
+
+/***********************************************************************************************************************************************/
+//修改运营套餐参数
+message UpdatePackageConfigDBReq {
+  //套餐ID，自增主键;
+  uint32 id = 1;
+  //云记录仪子项配置ID，关联op_package_cloud_recoder_config记录，为空则不包含此项权益;
+  uint32 cloud_recoder_config_id = 2;
+  //是否有效，1-有效 0-无效;
+  uint32 is_enabled = 3;
+  //套餐详细描述;
+  string package_desc = 4;
+  //套餐子名称，可添加更详细的描述;
+  string package_subtitle = 5;
+  //套餐名称;
+  string package_title = 6;
+  //更新时间;
+  string update_time = 7;
+}
+
+//修改运营套餐结果
+message UpdatePackageConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//更新里程耗尽的结算记录套餐状态参数
+message UpdateStatememntStateDBReq {
+  //套餐状态, 0-未激活，1-已激活,2-已失效;
+  uint32 state = 1;
+  //设备ID
+  uint32 object_id = 2;
+}
+
+//更新里程耗尽的结算记录套餐状态结果
+message UpdateStatememntStateDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //更新个数
+  uint32 count = 2;
+}
+
+/***********************************************************************************************************************************************/
+
+//修改运营套餐云记录仪配置参数
+message UpdateRecorderConfigDBReq {
+  //超出有效观看时间需要删除的时间，单位：天;
+  uint32 delete_file_time = 1;
+  //自增ID;
+  uint32 id = 2;
+  //视频上云公里数;
+  uint32 mileage = 3;
+  //套餐有效期，单位：天;
+  uint32 period = 4;
+  //云记录仪视频可观看时长，单位：天;
+  uint32 play_duration = 5;
+  //更新时间;
+  string update_time = 6;
+}
+
+//修改运营套餐云记录仪配置结果
+message UpdateRecorderConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// last获取用户已经购买的套餐列表参数结构
+message GetUserBoughtPackageParam {
+  //设备ID、目标ID;
+  uint32 objectid = 1;
+  //帐号ID、用户ID;
+  uint32 userid = 2;
+  //状态
+  int32 state = 3;
+  //全部套餐到期
+  bool all_expired = 4;
+  //到期时间大于
+  string expired_time = 5;
+  //里程未用完
+  bool has_mileage = 6;
+  //已经激活过的
+  bool get_actived = 7;
+}
+
+//分页查询获取用户已经购买的套餐列表参数
+message GetUserBoughtPackageDBReq {
+  //查询参数
+  GetUserBoughtPackageParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取用户已经购买的套餐列表返回结果结构
+message GetUserBoughtPackageEntity {
+  //自增ID;
+  uint32 user_package_id = 1;
+  //购买时间;
+  string buy_time = 2;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 3;
+  //激活时间;
+  string active_time = 4;
+  //生效时间;
+  string effect_time = 5;
+  //套餐过期时间;
+  string expired_time = 6;
+  //套餐ID，自增主键;
+  uint32 package_id = 7;
+  //套餐名称;
+  string package_title = 8;
+  //套餐子名称，可添加更详细的描述;
+  string package_subtitle = 9;
+  //套餐详细描述;
+  string package_desc = 10;
+  //套餐类型，0-普通 1-叠加包 2-扩充包;
+  uint32 package_type = 11;
+  //套餐有效期，单位：天;
+  uint32 period = 12;
+  //视频上云公里数;
+  uint32 mileage = 13;
+  //云记录仪视频可观看时长，单位：天;
+  uint32 play_duration = 14;
+  //套餐内已使用里程;
+  uint32 used_mileage = 15;
+  //套餐优先级
+  uint32 priority = 16;
+  //超出有效观看时间需要删除的时间，单位：天;
+  uint32 delete_file_time = 17;
+  //套餐总里程
+  uint32 total_mileage = 18;
+  //当前总里程
+  uint32 current_mileage = 19;
+  //初始里程
+  uint32 init_mileage = 20;
+  //已经空间
+  uint64 space_used = 21;
+  //结算ID
+  uint32 state_id = 22;
+  //购买方式：0赠送，1购买;
+  uint32 buy_type = 23;
+  //更新时间
+  uint32 update_time = 24;
+  //云记录仪视频观看时长;
+  uint32 play_duration_used = 25;
+  //已经删除的空间
+  uint64 space_released = 26;
+}
+
+//获取用户已经购买的套餐列表结果
+message GetUserBoughtPackageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetUserBoughtPackageEntity record_list = 3;
+}
+
+/***********************************************************************************************************************************************/
+//获取套餐结算设备列表参数结构
+message GetStatementObjectsParam {
+  //设备ID、目标ID;
+  uint32 objectid = 1;
+  //套餐状态, 0-未激活，1-已激活;
+  int32 state = 2;
+  //到期时间大于
+  string expired_time = 3;
+}
+
+//分页查询获取套餐结算设备列表参数
+message GetStatementObjectsDBReq {
+  //查询参数
+  GetStatementObjectsParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取套餐结算设备列表返回结果结构
+message GetStatementObjectsEntity {
+  //设备ID、目标ID;
+  uint32 objectid = 1;
+}
+
+//获取套餐结算设备列表结果
+message GetStatementObjectsDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetStatementObjectsEntity record_list = 3;
+}
+
+/*************************************************************以下是PMS结构**********************************************************/
+// 1.OMS进行套餐配置(pms)参数
+message ConfigPackageReq {
+  //套餐ID，自增主键;
+  uint32 package_id = 1;
+  //套餐名称;
+  string package_title = 2;
+  //套餐子名称，可添加更详细的描述;
+  string package_subtitle = 3;
+  //套餐详细描述;
+  string package_desc = 4;
+  //套餐类型，0-普通 1-叠加包 2-扩充包;
+  uint32 package_type = 5;
+  //云记录仪套餐配置;
+  GetRecorderConfigEntity cloud_recoder_config = 6;
+  // oms用户id
+  uint32 oms_user_id = 7;
+  //直播套餐配置
+  GetLiveConfigEntity live_config = 8;
+}
+
+message PackageConfigInfo {
+    //套餐ID，自增主键;
+    uint32 package_id = 1;
+    //套餐名称;
+    string package_title = 2;
+    //套餐子名称，可添加更详细的描述;
+    string package_subtitle = 3;
+    //套餐详细描述;
+    string package_desc = 4;
+    //套餐类型，0-普通 1-叠加包 2-扩充包;
+    uint32 package_type = 5;
+    //云记录仪套餐配置;
+    GetRecorderConfigEntity cloud_recoder_config = 6;
+    // oms用户id
+    uint32 oms_user_id = 7;
+    //直播套餐配置
+    GetLiveConfigEntity live_config = 8;
+    //创建时间
+    string create_time=9;
+    //修改时间
+    string update_time=10;
+}
+
+message ConfigPackageResult {
+  //套餐ID
+  uint32 package_id = 2;
+}
+
+// OMS进行套餐配置(pms)结果
+message ConfigPackageResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  ConfigPackageResult result = 3;
+}
+
+// 2.已配套餐分页查询(pms)参数
+message GetPackageConfigListReq {
+  //套餐ID，自增主键;
+  uint32 package_id = 1 [ (gogoproto.moretags) = 'form:"package_id"' ];
+  //页码;
+  uint32 page_no = 2 [ (gogoproto.moretags) = 'form:"page_no"' ];
+  //页大小;
+  uint32 page_size = 3 [ (gogoproto.moretags) = 'form:"page_size"' ];
+  //套餐标题
+  string package_title = 4 [ (gogoproto.moretags) = 'form:"package_title"' ];
+  //套餐类型
+  int32 package_type = 5 [ (gogoproto.moretags) = 'form:"package_type"' ];
+}
+
+//已配置套餐结果
+message GetPackageConfigListInfo {
+
+  //结果
+  repeated PackageConfigInfo data_list = 1;
+  //分页
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//已配套餐分页查询(pms)结果
+message GetPackageConfigListResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  GetPackageConfigListInfo result = 3;
+}
+
+// 3.  用户套餐购买参数
+message BuyPackageReq {
+  //设备ID、目标ID;
+  uint32 objectid = 1;
+  //帐号ID、用户ID;
+  uint32 userid = 2;
+  //购买的套餐ID;
+  uint32 package_id = 3;
+  // 0自运营，1openapi;
+  uint32 source = 4;
+  //购买的渠道ID;
+  uint32 source_holdid = 5;
+  //购买时间;
+  string buy_time = 6;
+  //价格;
+  uint32 price = 7;
+  //购买方式：0赠送，1购买;
+  uint32 buy_type = 8;
+  //套餐使用优先级，0-为最高优先级，同一个设备的套餐优先级依次递减，优先使用高优先级的套餐容量;
+  uint32 priority = 9;
+  //订单号
+  string order_no = 10;
+  // iccid
+  string iccid = 20;
+}
+
+message BuyPackageResult {
+  //用户套餐ID
+  uint32 user_package_id = 2;
+}
+
+//用户套餐购买结果
+message BuyPackageResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  BuyPackageResult result = 3;
+}
+
+// 4.用户已购套餐信息查询参数
+message GetUserPackageListReq {
+  //用户 ID;
+  uint32 userid = 1 [ (gogoproto.moretags) = 'form:"userid"' ];
+  //设备ID;
+  uint32 objectid = 2 [ (gogoproto.moretags) = 'form:"objectid"' ];
+}
+
+//用户已购套餐信息查询返回结果结构
+message GetUserPackageListEntity {
+  //购买的套餐ID;
+  uint32 package_id = 1;
+  //套餐名称;
+  string package_title = 2;
+  //套餐子名称，可添加更详细的描述;
+  string package_subtitle = 3;
+  //套餐详细描述;
+  string package_desc = 4;
+  //套餐类型，0-普通 1-叠加包 2-扩充包;
+  uint32 package_type = 5;
+  //记录仪套餐配置
+  RecorderPackageDetail cloud_recorder_package = 6;
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 7;
+  //购买时间;
+  string buy_time = 8;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 9;
+  //直播套餐配置
+  LivepPackageDetail live_package = 10;
+}
+
+//记录仪套餐配置
+message RecorderPackageDetail {
+  //套餐有效期，单位：天;
+  uint32 period = 1;
+  //激活时间;
+  string active_time = 2;
+  //生效时间;
+  string effect_time = 3;
+  //套餐过期时间;
+  string expired_time = 4;
+  //总里程;
+  uint32 total_mileage = 5;
+  //套餐内已使用里程;
+  uint32 used_mileage = 6;
+  //云记录仪视频观看时长;
+  uint32 total_play_duration = 7;
+}
+
+//直播套餐配置
+message LivepPackageDetail {
+  //激活时间;
+  string active_time = 1;
+  //生效时间;
+  string effect_time = 2;
+  //套餐过期时间;
+  string expired_time = 3;
+  //云记录仪视频观看时长;
+  uint32 live_duration = 4;
+}
+
+//用户已购套餐信息查询结果
+message GetUserPackageListResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  repeated GetUserPackageListEntity result = 3;
+}
+
+// 5    //用户套餐功能校验参数
+message CheckCloudRecoderPackageReq {
+  //设备ID、目标ID;
+  uint32 objectid = 1 [ (gogoproto.moretags) = 'form:"objectid"' ];
+  //帐号ID、用户ID;
+  uint32 userid = 2 [ (gogoproto.moretags) = 'form:"userid"' ];
+  //开始时间;
+  uint64 begin_time = 3 [ (gogoproto.moretags) = 'form:"begin_time"' ];
+  //结束时间;
+  uint64 end_time = 4 [ (gogoproto.moretags) = 'form:"end_time"' ];
+}
+
+message RecorderTimeRange {
+  //开始时间;
+  uint64 begin_time = 1;
+  //结束时间;
+  uint64 end_time = 2;
+}
+
+message CheckRecoderPackageResult {
+  //有效时段
+  RecorderTimeRange valid_period = 1;
+}
+
+//用户套餐功能校验结果
+message CheckCloudRecoderPackageResp {
+  //错误码
+  sint32 error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+
+  //结果
+  CheckRecoderPackageResult result = 3;
+}
+
+//激活新套餐
+message ActiveNewPackageReq {
+  //设备ID
+  uint32 object_id = 1;
+  //初始里程
+  uint32 init_mileage = 2;
+}
+
+message ActiveNewPackageResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取当前需要结算的套餐结算信息
+message GetAcitvePackageStatementReq {
+  //设备ID
+  uint32 object_id = 1;
+  //到期时间
+  string expired_time = 3;
+}
+
+message GetAcitvePackageStatementResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //购买套餐列表
+  GetUserBoughtPackageEntity info = 2;
+}
+
+//获取设备观看范围的总天数和保留天数
+message GetDeviceWatchTimeReq {
+  //设备ID
+  uint32 object_id = 1;
+}
+
+message GetDeviceWatchTimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //可观看时长
+  uint32 play_duration = 2;
+  //保留天数
+  uint32 delete_file_time = 3;
+  //到期时间
+  string expired_time = 4;
+}
+
+//更新设备结算表里程信息参数
+message UpdateDeviceStatementInfoReq {
+  //设备ID
+  uint32 object_id = 1;
+  //购买套餐列表
+  GetUserBoughtPackageEntity info = 2;
+}
+
+//更新设备结算表里程信息结果
+message UpdateDeviceStatementInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+/***********************************************************************直播套餐相关**********************************************************************/
+//获取某iccid的直播套餐参数结构
+message GetLiveStatementParam {
+  // iccid号;
+  string iccid = 1;
+  //自增ID;
+  uint32 id = 2;
+}
+
+//分页查询获取某iccid的直播套餐参数
+message GetLiveStatementDBReq {
+  //查询参数
+  GetLiveStatementParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取某iccid的直播套餐返回结果结构
+message GetLiveStatementEntity {
+  //自增ID;
+  uint32 id = 1;
+  // iccid号;
+  string iccid = 2;
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 3;
+  //直播可观看天数;
+  uint32 live_duration = 4;
+  //激活时间;
+  string active_time = 5;
+  //生效时间;
+  string effect_time = 6;
+  //套餐过期时间;
+  string expired_time = 7;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 8;
+}
+
+//获取某iccid的直播套餐结果
+message GetLiveStatementDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetLiveStatementEntity record_list = 3;
+}
+
+//添加某iccid的直播套餐参数
+message AddLiveStatementDBReq {
+  // iccid号;
+  string iccid = 1;
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 2;
+  //直播可观看天数;
+  uint32 live_duration = 3;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 4;
+  //激活时间;
+  string active_time = 5;
+  //生效时间;
+  string effect_time = 6;
+  //套餐过期时间;
+  string expired_time = 7;
+}
+
+//添加某iccid的直播套餐结果
+message AddLiveStatementDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//修改某iccid的直播套餐参数
+message UpdateLiveStatementDBReq {
+  // iccid号;
+  string iccid = 1;
+  //套餐ID，关联op_user_package的记录的id字段;
+  uint32 user_package_id = 2;
+  //直播可观看天数;
+  uint32 live_duration = 3;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 4;
+  //激活时间;
+  string active_time = 5;
+  //生效时间;
+  string effect_time = 6;
+  //套餐过期时间;
+  string expired_time = 7;
+}
+
+//修改某iccid的直播套餐结果
+message UpdateLiveStatementDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//添加直播套餐的配置参数
+message AddLiveConfigDBReq {
+  //直播可观看天数;
+  uint32 live_duration = 1;
+}
+
+//添加直播套餐的配置结果
+message AddLiveConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //主键ID;
+  uint32 id = 2;
+}
+
+//获取直播套餐的配置参数结构
+message GetLiveConfigParam {
+  //主键ID;
+  repeated uint32 id = 1;
+}
+
+//分页查询获取直播套餐的配置参数
+message GetLiveConfigDBReq {
+  //查询参数
+  GetLiveConfigParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取直播套餐的配置返回结果结构
+message GetLiveConfigEntity {
+  //主键ID;
+  uint32 id = 1;
+  //直播可观看天数;
+  uint32 live_duration = 2;
+}
+
+//获取直播套餐的配置结果
+message GetLiveConfigDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetLiveConfigEntity record_list = 3;
+}
+
+//修改所有到期的直播套餐状态参数
+message UpdateLivePackageStateDBReq {
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 1;
+  //套餐过期时间;
+  string expired_time = 2;
+}
+
+//修改所有到期的直播套餐状态结果
+message UpdateLivePackageStateDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//用户直播套餐功能校验参数
+message CheckLivePackageReq {
+  //帐号ID、用户ID;
+  uint32 user_id = 1[(gogoproto.moretags)='form:"userid"'];
+  //设备ID、目标ID;
+  uint32 object_id = 2[(gogoproto.moretags)='form:"objectid"'];
+}
+
+//结果详情
+message CheckLivePackageResult {
+  //到期标识
+  bool expired = 1;
+}
+
+//用户直播套餐功能校验结果
+message CheckLivePackageResp {
+
+  //错误码
+  mapgoo.paas.ecode.PAAS_ERROR_CODE error = 1 [ (gogoproto.jsontag) = 'error' ];
+
+  //提示
+  string reason = 2 [ (gogoproto.jsontag) = 'reason' ];
+  //结果
+  CheckLivePackageResult result = 3;
+}
+
+//获取用户已经购买的直播套餐列表参数结构
+message GetUserLivePackageParam {
+  // iccid号;
+  string iccid = 1;
+  //套餐状态, 0-未激活，1-已激活;
+  int32 state = 2;
+}
+
+//分页查询获取用户已经购买的直播套餐列表参数
+message GetUserLivePackageDBReq {
+  //查询参数
+  GetUserLivePackageParam search_param = 1;
+
+  //分页参数
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+}
+
+//获取用户已经购买的直播套餐列表返回结果结构
+message GetUserLivePackageEntity {
+  //购买的套餐ID;
+  uint32 package_id = 1;
+  //套餐名称;
+  string package_title = 2;
+  //套餐子名称，可添加更详细的描述;
+  string package_subtitle = 3;
+  //套餐详细描述;
+  string package_desc = 4;
+  //套餐类型，0-普通 1-叠加包 2-扩充包;
+  uint32 package_type = 5;
+  //用户购买的套餐ID;
+  uint32 user_package_id = 6;
+  //购买时间;
+  string buy_time = 7;
+  //套餐状态, 0-未激活，1-已激活;
+  uint32 state = 8;
+  //激活时间;
+  string active_time = 9;
+  //生效时间;
+  string effect_time = 10;
+  //套餐过期时间;
+  string expired_time = 11;
+  //可观看天数;
+  uint32 live_duration = 12;
+}
+
+//获取用户已经购买的直播套餐列表结果
+message GetUserLivePackageDBResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //列表信息
+  repeated GetUserLivePackageEntity record_list = 3;
+}
+
+//获取记录仪相关的套餐列表参数
+message GetUserRecorderPackageListReq {
+  //设备ID、目标ID;
+  uint32 objectid = 1;
+  //帐号ID、用户ID;
+  uint32 userid = 2;
+}
+
+//获取记录仪相关的套餐列表结果
+message GetUserRecorderPackageListResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+  //列表信息
+  repeated GetUserPackageListEntity record_list=2;
+  
+}

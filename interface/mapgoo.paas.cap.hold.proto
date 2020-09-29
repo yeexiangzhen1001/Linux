@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.hold;
+
+option go_package = "api";
+
+import public "mapgoo.paas.hold.data.proto";
+
+service HoldInfoCacheProxy {
+  //获取渠道配置
+  rpc GetApkConfigCache(mapgoo.paas.hold.data.GetApkConfigCacheReq)
+      returns (mapgoo.paas.hold.data.GetApkConfigCacheResp);
+
+  //修改渠道配置
+  rpc UpdateApkConfigCache(mapgoo.paas.hold.data.UpdateApkConfigCacheReq)
+      returns (mapgoo.paas.hold.data.UpdateApkConfigCacheResp);
+
+  //删除缓存信息
+  rpc DeleteCacheInfo(mapgoo.paas.hold.data.DeleteCacheInfoReq)
+      returns (mapgoo.paas.hold.data.DeleteCacheInfoResp);
+
+  //获取渠道配置版本号
+  rpc GetApkConfigCacheVersion(
+      mapgoo.paas.hold.data.GetApkConfigCacheVersionReq)
+      returns (mapgoo.paas.hold.data.GetApkConfigCacheVersionResp);
+
+  //设置渠道配置版本号
+  rpc SetApkConfigCacheVersion(
+      mapgoo.paas.hold.data.SetApkConfigCacheVersionReq)
+      returns (mapgoo.paas.hold.data.SetApkConfigCacheVersionResp);
+
+  /*********************************************新版接口********************************/
+  //公共设置缓存
+  rpc SetCacheVersion(mapgoo.paas.hold.data.SetCacheVersionReq)
+      returns (mapgoo.paas.hold.data.SetCacheVersionResp);
+
+  //公共获取缓存
+  rpc GetCacheVersion(mapgoo.paas.hold.data.GetCacheVersionReq)
+      returns (mapgoo.paas.hold.data.GetCacheVersionResp);
+
+  //设置渠道配置缓存
+  rpc SaveApkConfigListCache(mapgoo.paas.hold.data.SaveApkConfigListCacheReq)
+      returns (mapgoo.paas.hold.data.SaveApkConfigListCacheResp);
+
+  //获取渠道配置缓存
+  rpc GetApkConfigListCache(mapgoo.paas.hold.data.GetApkConfigListCacheReq)
+      returns (mapgoo.paas.hold.data.GetApkConfigListCacheResp);
+
+  //获取渠道key
+  rpc GetAppKeyByHoldID(mapgoo.paas.hold.data.GetAppKeyByHoldIDReq)
+      returns (mapgoo.paas.hold.data.GetAppKeyByHoldIDResp);
+
+  //缓存渠道配置字典
+  rpc SaveApkSettingDictCache(mapgoo.paas.hold.data.SaveApkSettingDictCacheReq)
+      returns (mapgoo.paas.hold.data.SaveApkSettingDictCacheResp);
+
+  //获取渠道配置字典缓存
+  rpc GetApkSettingDictCache(mapgoo.paas.hold.data.GetApkSettingDictCacheReq)
+      returns (mapgoo.paas.hold.data.GetApkSettingDictCacheResp);
+
+  //获取渠道目录树缓存
+  rpc GetHoldTreePathCache(mapgoo.paas.hold.data.GetHoldTreePathCacheReq)
+      returns (mapgoo.paas.hold.data.GetHoldTreePathCacheResp);
+
+  //保存渠道目录树缓存
+  rpc SetHoldTreePathCache(mapgoo.paas.hold.data.SetHoldTreePathCacheReq)
+      returns (mapgoo.paas.hold.data.SetHoldTreePathCacheResp);
+}

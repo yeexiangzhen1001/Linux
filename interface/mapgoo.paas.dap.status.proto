@@ -1,0 +1,195 @@
+syntax = "proto3";
+
+package mapgoo.paas.dap.status;
+
+option go_package = "api";
+
+import public "mapgoo.paas.status.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DapStatusProxy
+{
+	//获取驾驶评分
+    rpc getDrivingScore(mapgoo.paas.status.data.GetDrivingScoreReq) returns (mapgoo.paas.status.data.GetDrivingScoreResp) { 
+        option (google.api.http) = {
+            post:"/dap/status/getDrivingScore"
+        };
+    };   
+	
+    //更新定位表信息
+    rpc updateDeviceStatus(mapgoo.paas.status.data.UpdateDeviceStatusReq) returns (mapgoo.paas.status.data.UpdateDeviceStatusResp) {
+        option (google.api.http) = {
+            post:"/dap/status/updateDeviceStatus"
+        };
+    };
+
+	//保存设备变更信息
+    rpc saveDeviceChange(mapgoo.paas.status.data.SaveDeviceChangeReq) returns (mapgoo.paas.status.data.SaveDeviceChangeResp) {
+        option (google.api.http) = {
+            post:"/dap/status/saveDeviceChange"
+        };
+    };
+
+    //保存设备主动安全事件
+    rpc saveDeviceActiveSafety(mapgoo.paas.status.data.SaveDeviceActiveSafetyReq) returns (mapgoo.paas.status.data.SaveDeviceActiveSafetyResp) {
+        option (google.api.http) = {
+            post:"/dap/status/saveDeviceActiveSafety"
+        };
+    };
+
+    //保存设备OBD信息
+    rpc saveDeviceOBDPid(mapgoo.paas.status.data.SaveDeviceOBDPidReq) returns (mapgoo.paas.status.data.SaveDeviceOBDPidResp) {
+        option (google.api.http) = {
+            post:"/dap/status/saveDeviceOBDPid"
+        };
+    };
+
+    //更新设备单个属性
+    rpc uploadDeviceOptionData(mapgoo.paas.status.data.UploadDeviceOptionReq) returns (mapgoo.paas.status.data.UploadDeviceOptionResp) {
+        option (google.api.http) = {
+            post:"/dap/status/uploadDeviceOptionData"
+        };
+    };  
+	
+	//保存OBD的诊断信息明细
+	rpc SavePIDInfo(mapgoo.paas.status.data.SavePIDInfoReq) returns (mapgoo.paas.status.data.SavePIDInfoResp) {
+	  option (google.api.http) = {
+		post : "/dap/status/SavePIDInfo"
+	  };
+	}
+
+	//分页查询获取OBD的诊断信息明细
+	rpc GetPIDInfo(mapgoo.paas.status.data.GetPIDInfoReq) returns (mapgoo.paas.status.data.GetPIDInfoResp) {
+	  option (google.api.http) = {
+		post : "/dap/status/GetPIDInfo"
+	  };
+	}
+
+	//创建数据库
+	rpc CreateDatabase(CreateDatabaseReq) returns (CreateDatabaseResp) {
+        option (google.api.http) = {
+            get:"/dap/status/CreateDatabase"
+        };
+    };
+
+	//判断数据库是否存在
+	rpc CheckDatabaseIsExist(CheckDatabaseIsExistReq) returns (CheckDatabaseIsExistResp) {
+        option (google.api.http) = {
+            get:"/dap/status/CheckDatabaseIsExist"
+        };
+    };
+
+	//获取指令
+	rpc GetMinDownInfoCacheDbInfo(GetMinDownInfoCacheDbInfoReq) returns (GetMinDownInfoCacheDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/GetMinDownInfoCacheDbInfo"
+        };
+    };
+
+	//迁移指令
+	rpc MoveDownInfoCacheDbInfo(MoveDownInfoCacheDbInfoReq) returns (MoveDownInfoCacheDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/MoveDownInfoCacheDbInfo"
+        };
+    };
+
+    //删除指令
+    rpc DelDownInfoCacheDbInfo(DelDownInfoCacheDbInfoReq) returns (DelDownInfoCacheDbInfoResp) {
+        option (google.api.http) = {
+            get:"/dap/travel/DelDownInfoCacheDbInfo"
+        };
+    };
+}
+
+//创建数据库
+message CreateDatabaseReq
+{
+	//数据库名称
+	string name = 1;
+}
+
+message CreateDatabaseResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//判断数据库是否存在
+message CheckDatabaseIsExistReq
+{
+	//数据库名称
+	string name = 1;	
+}
+
+message CheckDatabaseIsExistResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取指令
+message GetMinDownInfoCacheDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//用户id
+	uint32 hold_id = 2;
+
+    //用户级别
+	uint32 hold_level = 3;
+
+	//设备id
+	uint32 object_id = 4;
+
+	//获取比该值小的recid
+    uint64 max_rec_id = 5;
+
+	//条数
+	uint32 limit = 6;
+}
+
+message GetMinDownInfoCacheDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+//迁移指令
+message MoveDownInfoCacheDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//目标库名
+	string dest_db_name = 2;
+
+	//recid列表
+    repeated uint64 rec_id_list = 3;
+}
+
+message MoveDownInfoCacheDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除指令原始数据
+message DelDownInfoCacheDbInfoReq
+{
+	//原始库名
+	string orig_db_name = 1;
+
+	//recid列表
+    repeated uint64 rec_id_list = 2;
+}
+
+message DelDownInfoCacheDbInfoResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}

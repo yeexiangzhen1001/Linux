@@ -1,0 +1,195 @@
+syntax = "proto3";
+
+package mapgoo.paas.user.dap;
+
+option go_package = "api";
+
+import public "mapgoo.paas.user.data.proto";
+
+//用户管理
+service UserManagement {
+  //添加普通用户
+  rpc AddUserInfo(mapgoo.paas.user.data.AddUserInfoReq)
+      returns (mapgoo.paas.user.data.AddUserInfoResp);
+  //修改用户
+  rpc UpdateUserInfo(mapgoo.paas.user.data.UpdateUserInfoReq)
+      returns (mapgoo.paas.user.data.UpdateUserInfoResp);
+
+  //添加微信用户信息
+  rpc AddWechatUserInfo(mapgoo.paas.user.data.UserRegisterInfoWechatReq)
+      returns (mapgoo.paas.user.data.UserRegisterInfoWechatResp);
+
+  //公众号取关
+  rpc UnsubscribeWechat(mapgoo.paas.user.data.UnsubscribeWechatReq)
+      returns (mapgoo.paas.user.data.UnsubscribeWechatResp);
+
+  //修改微信用户信息
+  rpc GetWechatUserInfo(mapgoo.paas.user.data.GetWechatUserInfoReq)
+      returns (mapgoo.paas.user.data.GetWechatUserInfoResp);
+
+  // C端帐号登录
+  rpc UserLoginByAccount(mapgoo.paas.user.data.UserLoginByAccountReq)
+      returns (mapgoo.paas.user.data.UserLoginResp);
+
+  //第三方用户登录
+  rpc UserLoginByThirdPartyPlatform(
+      mapgoo.paas.user.data.UserLoginByThirdPartyAccountReq)
+      returns (mapgoo.paas.user.data.UserLoginResp);
+
+  //用户基本信息查询
+  rpc GetUserInfo(mapgoo.paas.user.data.UserQueryReq)
+      returns (mapgoo.paas.user.data.UserQueryResp);
+
+  //用户基本信息查询
+  rpc GetUserBaseInfo(mapgoo.paas.user.data.GetUserBaseInfoReq)
+      returns (mapgoo.paas.user.data.GetUserBaseInfoResp);
+
+  //验证手机号或邮箱验证码是否有效
+  rpc GetVerifyInfo(mapgoo.paas.user.data.GetVerifyInfoReq)
+      returns (mapgoo.paas.user.data.GetVerifyInfoResp);
+
+  //验证指定手机号、邮箱是否已注册
+  rpc VerifyUserMobileOrEmail(mapgoo.paas.user.data.VerifyUserMobileOrEmailReq)
+      returns (mapgoo.paas.user.data.VerfiyUserMobileOrEmailResp);
+
+  //设置用户某类报警报警开关
+  rpc SetUserSetting(mapgoo.paas.user.data.SetUserSettingReq)
+      returns (mapgoo.paas.user.data.SetUserSettingResp);
+
+  //获取用户报警订阅开关设置信息
+  rpc GetUserSetting(mapgoo.paas.user.data.GetUserSettingReq)
+      returns (mapgoo.paas.user.data.GetUserSettingResp);
+
+  //获取微信绑定状态
+  rpc GetUserBindWechatState(mapgoo.paas.user.data.GetUserBindWechatStateReq)
+      returns (mapgoo.paas.user.data.GetUserBindWechatStateResp);
+
+  //手机号和微信账号绑定
+  rpc BindUserWechat(mapgoo.paas.user.data.BindUserWechatReq)
+      returns (mapgoo.paas.user.data.BindUserWechatResp);
+
+  //修改帐号常用信息
+  rpc UpdateUserCommonInfo(mapgoo.paas.user.data.UpdateUserCommonInfoReq)
+      returns (mapgoo.paas.user.data.UpdateUserCommonInfoResp);
+
+  //保存用户常用地址
+  rpc AddCommonlyUsedAddress(mapgoo.paas.user.data.POIEntityReq)
+      returns (mapgoo.paas.user.data.POIEntityResp);
+
+  //修改用户常用地址
+  rpc UpdateCommonlyUsedAddress(mapgoo.paas.user.data.POIEntityReq)
+      returns (mapgoo.paas.user.data.POIEntityResp);
+
+  //获取用户常用地址列表
+  rpc GetCommonlyUsedAddressList(
+      mapgoo.paas.user.data.GetCommonlyUsedAddressListReq)
+      returns (mapgoo.paas.user.data.POIEntityListResp);
+
+  //获取会员信息
+  rpc GetMemberInfo(mapgoo.paas.user.data.GetMemberInfoReq)
+      returns (mapgoo.paas.user.data.GetMemberInfoResp);
+}
+
+//消息管理
+service MessageManagement {
+  //用户订阅消息
+  rpc SubAppMsg(mapgoo.paas.user.data.SubAppMsgReq)
+      returns (mapgoo.paas.user.data.SubAppMsgResp);
+
+  //用户取消订阅消息
+  rpc UnsubAppMsg(mapgoo.paas.user.data.UnsubAppMsgReq)
+      returns (mapgoo.paas.user.data.UnsubAppMsgResp);
+
+  //设置消息为已读
+  rpc ReadMessage(mapgoo.paas.user.data.ReadMessageReq)
+      returns (mapgoo.paas.user.data.ReadMessageResp);
+
+  //逻辑删除用户消息
+  rpc DeleteMessage(mapgoo.paas.user.data.DeleteMessageReq)
+      returns (mapgoo.paas.user.data.DeleteMessageResp);
+
+  //获取用户的消息箱列表
+  rpc GetMessageList(mapgoo.paas.user.data.GetMessageListReq)
+      returns (mapgoo.paas.user.data.GetMessageListResp);
+
+  //获取消息箱未读消息数量统计
+  rpc GetUnreadCount(mapgoo.paas.user.data.GetUnreadCountReq)
+      returns (mapgoo.paas.user.data.GetUnreadCountResp);
+}
+
+//设备绑定管理
+service BindDeviceManagement {
+  //绑定用户设备
+  rpc UserBindObject(mapgoo.paas.user.data.UserBindObjectReq)
+      returns (mapgoo.paas.user.data.UserBindObjectResp);
+
+  //解除某个用户的设备绑定
+  rpc UserUnbindObject(mapgoo.paas.user.data.UserUnbindDeviceReq)
+      returns (mapgoo.paas.user.data.UserUnbindDeviceResp);
+
+  //获取设备管理员列表
+  rpc GetDeviceAdminList(mapgoo.paas.user.data.GetDeviceAdminListReq)
+      returns (mapgoo.paas.user.data.GetDeviceAdminListResp);
+
+  //查询用户绑定的设备列表
+  rpc GetUserBindObjList(mapgoo.paas.user.data.GetUserBindObjectInfoReq)
+      returns (mapgoo.paas.user.data.GetUserBindObjectInfoResp);
+
+  //获取用户是否绑定设备
+  rpc CheckUserBindDeviceState(
+      mapgoo.paas.user.data.CheckUserBindObjectStateReq)
+      returns (mapgoo.paas.user.data.CheckUserbindObjectStateResp);
+
+  //获取用户申请绑定的列表
+  rpc GetApplyList(mapgoo.paas.user.data.GetApplyListReq)
+      returns (mapgoo.paas.user.data.GetApplyListResp);
+
+  //获取我已经邀请的列表
+  rpc GetInvitedList(mapgoo.paas.user.data.GetInvitedListReq)
+      returns (mapgoo.paas.user.data.GetInvitedListResp);
+
+  //获取当前登录用户能解除的用户绑定列表
+  rpc GetCanUnbindList(mapgoo.paas.user.data.GetCanUnbindListReq)
+      returns (mapgoo.paas.user.data.GetCanUnbindListResp);
+
+  //取消邀请
+  rpc CancelInvite(mapgoo.paas.user.data.CancelInviteReq)
+      returns (mapgoo.paas.user.data.CancelInviteResp);
+
+  //获取绑定申请记录new
+  rpc GetBindObjectList(mapgoo.paas.user.data.GetBindObjectListReq)
+      returns (mapgoo.paas.user.data.GetBindObjectListResp);
+
+  //添加绑定申请记录new
+  rpc AddApplyRecord(mapgoo.paas.user.data.AddApplyRecordReq)
+      returns (mapgoo.paas.user.data.AddApplyRecordResp);
+
+  //更新绑定申请记录new
+  rpc UpdateApplyRecord(mapgoo.paas.user.data.UpdateApplyRecordReq)
+      returns (mapgoo.paas.user.data.UpdateApplyRecordResp);
+
+  //获取已经用户某设备已经绑定的手机列表new
+  rpc GetBindedMobiles(mapgoo.paas.user.data.GetBindedMobilesReq)
+      returns (mapgoo.paas.user.data.GetBindedMobilesResp);
+
+  //获取用户已被邀请的手机号列表new
+  rpc GetInvitedMobiles(mapgoo.paas.user.data.GetInvitedMobilesReq)
+      returns (mapgoo.paas.user.data.GetInvitedMobilesResp);
+
+  //批量更新邀请时间new
+  rpc BatchUpdateInviteTime(mapgoo.paas.user.data.BatchUpdateInviteTimeReq)
+      returns (mapgoo.paas.user.data.BatchUpdateInviteTimeResp);
+
+  //重置某设备管理员
+  rpc ResetDeviceAdmin(mapgoo.paas.user.data.ResetDeviceAdminReq)
+      returns (mapgoo.paas.user.data.ResetDeviceAdminResp);
+
+  //获取微信帐号绑定的设备个数
+  rpc GetWechatBindObjectCount(
+      mapgoo.paas.user.data.GetWechatBindObjectCountReq)
+      returns (mapgoo.paas.user.data.GetWechatBindObjectCountResp);
+
+  //获取绑定设备相关的用户
+  rpc GetBindUserList(mapgoo.paas.user.data.GetBindUserListReq)
+      returns (mapgoo.paas.user.data.GetBindUserListResp);
+}

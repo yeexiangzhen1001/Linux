@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mapgoo.paas.rars.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+
+//获取省市区
+message GetRegionInfoReq
+{
+	//位置
+    mapgoo.paas.baseex.PointEx point = 1;
+}
+
+message GetRegionInfoResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+
+	//省市区信息
+	mapgoo.paas.baseex.DistrictInfoEx district = 2;
+}

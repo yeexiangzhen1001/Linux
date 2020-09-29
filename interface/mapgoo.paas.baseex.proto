@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package mapgoo.paas.baseex;
+
+option go_package = "api";
+
+//基础响应
+message BaseRespInfoEx
+{
+    //错误码
+    sint32 error = 1;
+
+    //错误原因                             
+    string reason = 2;
+}
+
+//经纬度信息
+message PointEx
+{
+	//纬度
+    int32 lat = 1;
+
+	//经度
+    int32 lon = 2;
+}
+
+//行政区域信息
+message DistrictInfoEx
+{
+	//省id
+    uint32 province_id = 1;
+
+	//省名称
+    string province_name = 2;
+
+	//市id
+    uint32 city_id = 3;
+
+	//市名称
+    string city_name = 4;
+
+	//区域id
+    uint32 region_id = 5;
+
+	//区域名称
+    string region_name = 6;
+}

@@ -1,0 +1,294 @@
+syntax = "proto3";
+
+import "mapgoo.paas.device.api.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.device.api;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+import public "mapgoo.paas.video.data.proto";
+import public "mapgoo.paas.deviceupdateservice.data.proto";
+
+service DeviceApi {
+
+  /* 综合获取渠道配置(HMS)
+  rpc GetApkConfig(mapgoo.paas.device.api.data.GetApkConfigBusiReq)
+      returns (mapgoo.paas.device.api.data.GetApkConfigBusiResp) {
+    option (google.api.http) = {
+      get : "/device/api/getApkConfig"
+    };
+  }*/
+
+  //获取车机首页信息(device-api)
+  rpc GetCarHomeInfo(mapgoo.paas.device.api.data.GetCarHomeInfoReq)
+      returns (mapgoo.paas.device.api.data.GetCarHomeInfoResp) {
+    option (google.api.http) = {
+      get : "/device/api/getCarHomeInfo"
+    };
+  }
+
+  //更新定位表的Lock状态(DSS)
+  rpc SetCarDeviceStatus(mapgoo.paas.device.api.data.SetCarDeviceStatusReq)
+      returns (mapgoo.paas.device.api.data.SetCarDeviceStatusResp) {
+    option (google.api.http) = {
+      get : "/device/api/setCarDeviceStatus"
+    };
+  }
+
+  //上传设备事件(DSS)！！对比实体使用方式--使用转换方式
+  rpc CarUploadEvent(mapgoo.paas.device.api.data.CarUploadEventReq)
+      returns (mapgoo.paas.device.api.data.CarUploadEventResp) {
+    option (google.api.http) = {
+      post : "/device/api/carUploadEvent"
+    };
+  }
+
+  //获取绑定的用户列表(UMS)
+  rpc GetBindUser(mapgoo.paas.device.api.data.GetBindUserReq)
+      returns (mapgoo.paas.device.api.data.GetBindUserResp) {
+    option (google.api.http) = {
+      get : "/device/api/getBindUser"
+    };
+  }
+
+  //设备能力上传(DMS)!!补充上周新增参数
+  rpc SetDeviceCapacity(mapgoo.paas.device.api.data.SetDeviceCapacityReq)
+      returns (mapgoo.paas.device.api.data.SetDeviceCapacityResp) {
+    option (google.api.http) = {
+      post : "/device/api/setDeviceCapacity"
+    };
+  }
+
+  //检查设备激活状态(DMS)
+  rpc CheckActiveState(mapgoo.paas.device.api.data.CheckActiveStateReq)
+      returns (mapgoo.paas.device.api.data.CheckActiveStateResp) {
+    option (google.api.http) = {
+      get : "/device/api/checkActiveState"
+    };
+  }
+
+  //检查设备是否已经自注册(DMS)
+  rpc CheckObjectSelfReg(mapgoo.paas.device.api.data.CheckObjectSelfRegReq)
+      returns (mapgoo.paas.device.api.data.CheckObjectSelfRegResp) {
+    option (google.api.http) = {
+      get : "/device/api/checkObjectSelfReg"
+    };
+  }
+
+  //上传驾驶事件(DSS)
+  rpc UploadCarDriveEvent(mapgoo.paas.device.api.data.UploadCarDriveEventReq)
+      returns (mapgoo.paas.device.api.data.UploadCarDriveEventResp) {
+    option (google.api.http) = {
+      post : "/device/api/uploadCarDriveEvent"
+    };
+  }
+
+  //上传视频设备信息(DMS)
+  rpc UploadCarVideoInfo(mapgoo.paas.device.api.data.UploadCarVideoInfoReq)
+      returns (mapgoo.paas.device.api.data.UploadCarVideoInfoResp) {
+    option (google.api.http) = {
+      post : "/device/api/uploadCarVideoInfo"
+    };
+  }
+
+  //新版设备自注册方法(DMS)
+  rpc ObjectSelfRegEx(mapgoo.paas.device.api.data.ObjectSelfRegExReq)
+      returns (mapgoo.paas.device.api.data.ObjectSelfRegExResp) {
+    option (google.api.http) = {
+      post : "/device/api/objectSelfRegEx"
+    };
+  }
+
+  //上传设备APK应用信息(DMS)--实体共用？？
+  rpc UploadCarAppInfo(mapgoo.paas.device.api.data.UploadCarAppInfoReq)
+      returns (mapgoo.paas.device.api.data.UploadCarAppInfoResp) {
+    option (google.api.http) = {
+      post : "/device/api/uploadCarAppInfo"
+    };
+  }
+
+  //新版获取会员信息(UMS)--卡信息先用老接口实现
+  rpc GetCarMemberInfoEx(mapgoo.paas.device.api.data.GetCarMemberInfoExReq)
+      returns (mapgoo.paas.device.api.data.GetCarMemberInfoExResp) {
+    option (google.api.http) = {
+      get : "/device/api/getCarMemberInfoEx"
+    };
+  }
+
+  //旧版获取会员信息(UMS)--增值套餐API是否在OMS实现？
+  rpc GetCarMemberInfo(mapgoo.paas.device.api.data.GetCarMemberInfoReq)
+      returns (mapgoo.paas.device.api.data.GetCarMemberInfoResp) {
+    option (google.api.http) = {
+      get : "/device/api/getCarMemberInfo"
+    };
+  }
+
+  //获取用户常用地址(UMS)
+  rpc GetCarPoi(mapgoo.paas.device.api.data.GetCarPoiReq)
+      returns (mapgoo.paas.device.api.data.GetCarPoiResp) {
+    option (google.api.http) = {
+      get : "/device/api/carPoi"
+    };
+  }
+
+  //上传用户常用地址(UMS)
+  rpc SetCarPoi(mapgoo.paas.device.api.data.SetCarPoiReq)
+      returns (mapgoo.paas.device.api.data.SetCarPoiResp) {
+    option (google.api.http) = {
+      post : "/device/api/carPoi"
+    };
+  }
+
+  //上传摄像头通道(DMS)
+  rpc UploadCameraInfo(mapgoo.paas.device.api.data.UploadCameraInfoReq)
+      returns (mapgoo.paas.device.api.data.UploadCameraInfoResp) {
+    option (google.api.http) = {
+      post : "/device/api/uploadCameraInfo"
+    };
+  }
+
+  //新版查询渠道配置信息参数
+  rpc GetNewApkConfig(mapgoo.paas.device.api.data.GetNewApkConfigDevReq)
+      returns (mapgoo.paas.device.api.data.GetNewApkConfigDevResp) {
+    option (google.api.http) = {
+      get : "/device/api/GetNewApkConfig"
+    };
+  }
+  //上报视频异常信息
+  rpc ReportBadVideoInfo(mapgoo.paas.device.api.data.ReportBadVideoInfoDevReq)
+      returns (mapgoo.paas.device.api.data.ReportBadVideoInfoDevResp) {
+    option (google.api.http) = {
+      post : "/device/api/reportBadVideoInfo"
+    };
+  }
+
+  //设备端视频文件上传
+  rpc UploadIndex(mapgoo.paas.device.api.data.UploadIndexDevReq)
+      returns (mapgoo.paas.device.api.data.UploadIndexDevResp) {
+    option (google.api.http) = {
+      post : "/device/api/cloudRecorder/uploadIndex"
+    };
+  }
+
+  //保存目录树
+  rpc SaveCloudStorageIndex(
+      mapgoo.paas.device.api.data.SaveCloudStorageIndexDevReq)
+      returns (mapgoo.paas.device.api.data.SaveCloudStorageIndexDevResp) {
+    option (google.api.http) = {
+      post : "/device/api/cloudStorage/updateindex"
+    };
+  }
+
+  //增量拉取目录树
+  rpc GetCloudStorageIndex(
+      mapgoo.paas.device.api.data.GetCloudStorageIndexDevReq)
+      returns (mapgoo.paas.device.api.data.GetCloudStorageIndexDevResp) {
+    option (google.api.http) = {
+      get : "/device/api/cloudStorage/getindex"
+    };
+  }
+
+    //新版本保存目录树
+    rpc SaveNewCloudStorageIndex(
+      mapgoo.paas.device.api.data.SaveNewCloudStorageIndexDevReq)
+      returns (mapgoo.paas.device.api.data.SaveNewCloudStorageIndexDevResp) {
+    option (google.api.http) = {
+      post : "/device/api/cloudStorage/newupdateindex"
+    };
+  }
+
+  //删除本地目录树
+  rpc DeleteCloudStorageIndex(mapgoo.paas.device.api.data.DeleteCloudStorageIndexDevReq)
+      returns (mapgoo.paas.device.api.data.DeleteCloudStorageIndexDevResp) {
+    option (google.api.http) = {
+      post : "/device/api/cloudStorage/deleteindex"
+    };
+  }
+
+
+
+    //上传摄像头信息
+    rpc UploadVideoInfo(mapgoo.paas.device.api.data.UploadVideoInfoReq)
+        returns (mapgoo.paas.device.api.data.UploadVideoInfoResp) {
+            option (google.api.http) = {
+            post : "/device/api/UploadVideoInfo"
+        };
+    }
+
+    //获取历史轨迹信息
+    rpc GetHistoryTrackInfo(mapgoo.paas.device.api.data.GetHistoryTrackInfoReq) returns (mapgoo.paas.device.api.data.GetHistoryTrackInfoResp) {
+    option (google.api.http) = {
+            get : "/device/api/GetHistoryTrackInfo"
+        };
+    }
+
+    //获取对象存储的参数
+    rpc GetYunStorageParams(mapgoo.paas.device.api.data.GetYunStorageParamsReq)
+        returns (mapgoo.paas.device.api.data.GetYunStorageParamsResp) {
+      option (google.api.http) = {
+        post : "/device/api/getYunStorageParams"
+      };
+    }
+
+    //视频编码信息上报
+    rpc SaveVideoInfo(mapgoo.paas.video.data.SaveVideoInfoReq) returns (mapgoo.paas.video.data.SaveVideoInfoResp) {
+          option (google.api.http) = {
+                post:"/device/api/SaveVideoInfo"
+            };
+    };
+
+    rpc SaveVideoErrCode(mapgoo.paas.video.data.SaveVideoErrCodeReq) returns (mapgoo.paas.video.data.SaveVideoErrCodeResp) {
+      option (google.api.http) = {
+            post:"/device/api/SaveVideoErrCode"
+        };
+    };
+
+
+    //查询视频信息
+    rpc SearchVideoInfo(mapgoo.paas.video.data.SearchVideoInfoReq) returns (mapgoo.paas.video.data.SearchVideoInfoResp) {
+      option (google.api.http) = {
+            post:"/device/api/SearchVideoInfo"
+        };
+    };
+
+
+  //查询错误码
+  rpc SearchVideoErrInfo(mapgoo.paas.video.data.SearchVideoErrInfoReq) returns (mapgoo.paas.video.data.SearchVideoErrInfoResp) {
+      option (google.api.http) = {
+            post:"/device/api/SearchVideoErrInfo"
+        };
+  };
+
+  //设备更新检测接口
+  rpc GetDeviceUpgrade(mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeReq) returns (mapgoo.paas.device.api.data.GetDeviceApiUpgradeResp) {
+      option (google.api.http) = {
+        post : "/device/api/GetDeviceUpgrade"
+      };
+  }
+
+  //设备下载状态上报
+  rpc GetDeviceUpgradeDownload(mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeDownloadReq) returns (mapgoo.paas.device.api.data.GetDeviceApiDownloadResp) {
+      option (google.api.http) = {
+        post : "/device/api/GetDeviceUpgradeDownload"
+      };
+  }
+
+  //设备升级状态上报
+  rpc GetDeviceUpgradeUpdate(mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeUpdateReq) returns (mapgoo.paas.device.api.data.GetDeviceApiUpdateResp) {
+      option (google.api.http) = {
+        post : "/device/api/GetDeviceUpgradeUpdate"
+      };
+  }
+
+}
+
+/*
+业务接口统计：
+HMS:1个
+DMS:7个
+UMS:5个
+DSS:3个
+
+*/

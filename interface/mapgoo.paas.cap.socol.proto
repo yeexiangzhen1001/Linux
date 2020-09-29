@@ -1,0 +1,198 @@
+syntax = "proto3";
+
+package mapgoo.paas.cap.socol;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.socol.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service SocolCacheProxy {
+    // 添加socol任务缓存
+    rpc setSocolTaskCache(SetSocolTaskCacheReq) returns (SetSocolTaskCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/setSocolTaskCache"
+        };
+    };
+
+    // 获取socol任务缓存
+    rpc getSocolTaskCache(GetSocolTaskCacheReq) returns (GetSocolTaskCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/getSocolTaskCache"
+        };
+    };
+
+    // 更新socol任务缓存
+    rpc UpdateSocolTaskCache(UpdateSocolTaskCacheReq) returns (UpdateSocolTaskCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/updateSocolTaskCache"
+        };
+    };
+
+    // 获取socol快过期任务列表
+    rpc getSocolWillExpireTaskCache(GetSocolWillExpireTaskCacheReq) returns (GetSocolWillExpireTaskCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/getSocolWillExpireTaskCache"
+        };
+    };
+
+    // 获取Socol诊断计数
+    rpc getSocolDiagnoseCouterCache(GetSocolDiagnoseCouterCacheReq) returns (GetSocolDiagnoseCouterCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/getSocolDiagnoseCouterCache"
+        };
+    };
+
+    // 获取Socol渠道预警诊断计数
+    rpc getSocolDiagnoseHoldWarnCouterCache(GetSocolDiagnoseHoldWarnCouterCacheReq) returns (GetSocolDiagnoseHoldWarnCouterCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/getSocolDiagnoseHoldWarnCouterCache"
+        };
+    };
+
+    // 保存Socol诊断计数
+    rpc setSocolDiagnoseCouterCache(SetSocolDiagnoseCouterCacheReq) returns (SetSocolDiagnoseCouterCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/setSocolDiagnoseCouterCache"
+        };
+    };
+
+    // Socol分布式加锁
+    rpc getSocolTryLockCache(GetSocolTryLockCacheReq) returns (GetSocolTryLockCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/getSocolTryLockCache"
+        };
+    };
+    // Socol分布式解锁
+    rpc setSocolUnLockCache(SetSocolUnLockCacheReq) returns (SetSocolUnLockCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/setSocolUnLockCache"
+        };
+    };
+
+    rpc updateSocolRegisterStatCache(UpdateSocolRegisterStatCacheReq) returns (UpdateSocolRegisterStatCacheResp) {
+        option (google.api.http) = {
+            get:"/cap/socol/updateSocolRegisterStatCache"
+        };
+    };
+}
+
+message SocolTaskCache{
+    string imei = 1;
+    mapgoo.paas.socol.data.SocolCmdSeq cmd_seq = 2;
+    mapgoo.paas.socol.data.SocolCmdStatus cmd_status = 3;//指令发送状态
+    uint32 task_status = 4;//任务状态
+    uint32 expired_time = 5;//过期时间
+    mapgoo.paas.socol.data.SocolUploadMessage upload_msg = 6;
+    mapgoo.paas.socol.data.SocolUploadSummary upload_summary = 7;
+    string version_code = 8;
+}
+
+message SetSocolTaskCacheReq{
+    SocolTaskCache task_cache = 1; //缓存任务
+    repeated mapgoo.paas.socol.data.SocolUploadImage image_list = 3; //抽帧图片数据
+}
+
+message SetSocolTaskCacheResp{
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+message GetSocolTaskCacheReq{
+    mapgoo.paas.socol.data.SocolCmdSeq cmd_seq = 1;
+}
+
+message GetSocolTaskCacheResp{
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    SocolTaskCache task_cache = 2; //缓存任务
+    repeated mapgoo.paas.socol.data.SocolUploadImage image_list = 3; //抽帧图片数据
+}
+
+message UpdateSocolTaskCacheReq{
+    int32 is_delete = 1;//是否删除
+    repeated mapgoo.paas.socol.data.SocolCmdSeq cmd_seq_list = 2;
+    repeated mapgoo.paas.socol.data.SocolUploadImage image_list = 3; //抽帧图片数据
+    mapgoo.paas.socol.data.SocolCmdStatus cmd_status = 4; //抽帧指令状态
+    mapgoo.paas.socol.data.SocolUploadMessage upload_msg = 5;//抽帧状态码
+    mapgoo.paas.socol.data.SocolUploadSummary upload_summary = 6;
+    uint32 expired_time = 7;//过期时间
+    string version_code = 8;//设备号
+}
+
+message UpdateSocolTaskCacheResp{
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+message GetSocolWillExpireTaskCacheReq{
+    uint32 expired_time = 1;//指令过期时间
+    uint32 lock_time = 2;//锁时间
+}
+
+message GetSocolWillExpireTaskCacheResp{
+	mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    repeated mapgoo.paas.socol.data.SocolCmdSeq cmd_seq_list = 2;
+}
+
+message GetSocolDiagnoseCouterCacheReq{
+    uint32 hold_id = 1; // 渠道号
+    uint32 device_id = 2; //设备号
+}
+
+message GetSocolDiagnoseCouterCacheResp{
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+
+    uint32 image_total = 2; //已抽取图片数
+    map<uint32, uint32> hold_counter = 3;//渠道抽取图片数
+    map<uint32, uint32> device_counter = 4;//设备抽取图片数
+}
+
+message SetSocolDiagnoseCouterCacheReq{
+    uint32 hold_id = 1; // 渠道号
+    uint32 device_id = 2; //设备号
+    uint32 image_count = 3; //抽帧图片数
+    uint32 warn_type = 4;   //预警类型
+}
+message SetSocolDiagnoseCouterCacheResp{
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+message SocolDiagnoseHoldWarnCounter{
+    uint32 hold_id = 1; // 渠道号
+    uint32 warn_type = 2; //预警类型
+    uint32 image_total = 3; //图片数量
+}
+
+message GetSocolDiagnoseHoldWarnCouterCacheReq{
+    uint32 hold_id = 1; // 渠道号
+    uint32 warn_type = 2; //预警类型
+}
+
+message GetSocolDiagnoseHoldWarnCouterCacheResp{
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+    repeated SocolDiagnoseHoldWarnCounter counter_list = 2;
+    uint32 counter_total = 3;
+}
+
+message GetSocolTryLockCacheReq{
+    string lock_key = 1;//锁名称
+    string lock_token = 2;//锁别名
+    uint32 lock_ttl = 3; //锁时间
+}
+message GetSocolTryLockCacheResp{
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+message SetSocolUnLockCacheReq{
+    string lock_key = 1;//锁名称
+    string lock_token = 2;//锁别名
+}
+message SetSocolUnLockCacheResp{
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}
+
+message UpdateSocolRegisterStatCacheReq{
+    mapgoo.paas.base.DeviceSocolInfo device_socol = 1;
+}
+message UpdateSocolRegisterStatCacheResp{
+    mapgoo.paas.base.BaseRespInfo base = 1 [(gogoproto.jsontag) = 'base'];
+}

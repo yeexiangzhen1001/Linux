@@ -1,0 +1,688 @@
+syntax = "proto3";
+
+package mapgoo.paas.status.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.baseex.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//驾驶评分
+message DrivingScore {
+	//设备id
+	uint32 object_id = 1;
+
+	//
+	uint32 score = 2;
+
+	//
+	bool is_driving_behavior = 3;
+}
+
+//获取驾驶评分
+message GetDrivingScoreReq {
+	//设备id和imei
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+	//开始时间
+    string start_time = 2;
+
+	//结束时间
+    string end_time = 3;
+
+	//行数限制
+	uint32 limit = 4;
+}
+
+message GetDrivingScoreResp {
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//驾驶评分
+	repeated DrivingScore score = 2;
+}
+
+//定位表信息
+message DeviceStatus {
+	//设备id
+	mapgoo.paas.base.DeviceId device_id = 1;
+
+	//启动熄火开关
+	uint32 acc = 2;
+}
+
+//更新定位表信息
+message UpdateDeviceStatusReq {
+	//定位表信息
+	DeviceStatus dev_status = 1;
+}
+
+message UpdateDeviceStatusResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//保存设备变更信息
+message SaveDeviceChangeReq {
+	//变更类型(
+	//0：设备基础资料变更（包括设备所属用户）
+	//1：用户及所属用户变更
+	//2：地理对象数据变更
+	//3：地理对象绑定关系变更
+	//4：设备参数变更
+	//5：报警解除)
+	uint32 change_type = 1;
+
+	//变更实体1
+	uint32 entity_id1 = 2;
+
+	//变更实体2
+	uint32 entity_id2 = 3;
+
+	//变更实体3
+	uint32 entity_id3 = 4;
+
+	//处理标志 0-未处理 1-已取出 2-已返回
+	uint32 flag = 5;
+}
+
+message SaveDeviceChangeResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message DeviceTrack {
+	uint32 obj_id = 1;
+	uint32 gps_time  = 2;
+    uint32 rcv_time  = 3;
+    mapgoo.paas.base.Point point  = 4;
+	mapgoo.paas.baseex.DistrictInfoEx district = 5;
+    uint32 mileage  = 6;
+    uint32 speed  = 7;
+    uint32 direction  = 8;
+    uint32 altitude  = 9;
+    uint32 battery  = 10;
+    uint32 message_type  = 11;
+    uint32 gsm_strength  = 12;
+    uint32 satellite_num  = 13;
+    uint32 beidousatellite_num  = 14;
+    uint32 gps_accuracy_type  = 15;
+    bool alarm_flag  = 16;
+    string alarm_type  = 17;
+    string alarm_desc  = 18;
+	uint32 oil_num = 19;
+	uint32 is_link = 20;
+}
+
+message UInt32Value {
+	uint32 value = 1;
+}
+
+message StringValue {
+	string value = 1;
+}
+
+message DeviceTrackOpt {
+	uint32 obj_id = 1;
+	UInt32Value gps_time  = 2;
+    UInt32Value rcv_time  = 3;
+    mapgoo.paas.base.Point point  = 4;
+	mapgoo.paas.baseex.DistrictInfoEx district = 5;
+    UInt32Value mileage  = 6;
+    UInt32Value speed  = 7;
+    UInt32Value direction  = 8;
+    UInt32Value altitude  = 9;
+    UInt32Value battery  = 10;
+    UInt32Value message_type  = 11;
+    UInt32Value gsm_strength  = 12;
+    UInt32Value satellite_num  = 13;
+    UInt32Value beidousatellite_num  = 14;
+    UInt32Value gps_accuracy_type  = 15;
+    StringValue status_desc  = 16;
+	UInt32Value the_day_init_mileage = 17;
+	UInt32Value oil_num = 18;
+}
+
+message DeviceInfoOpt {
+	mapgoo.paas.base.DeviceId device_id = 1;
+	UInt32Value IsAcc = 2;
+	UInt32Value IsObd = 3;
+	UInt32Value OpState = 4;
+	UInt32Value HasMileage = 5;
+}
+
+message ActiveSafetyInfo {
+    uint32 event_type = 1;
+    uint32 event_time = 2;
+
+    string annex_id = 3;
+    string annex_number = 4;
+
+    uint32 speed = 5;
+    mapgoo.paas.base.Point point  = 6;
+}
+
+message SaveDeviceActiveSafetyReq {
+    mapgoo.paas.base.DeviceId device_id = 1;
+	ActiveSafetyInfo info = 2;
+}
+
+message SaveDeviceActiveSafetyResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message SaveDeviceOBDPidReq {
+    mapgoo.paas.base.DeviceId device_id = 1;
+	map<string, string> pids = 2;
+}
+
+message SaveDeviceOBDPidResp {
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message UploadDeviceOptionReq {
+    DeviceInfoOpt option = 1;
+}
+
+message UploadDeviceOptionResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message ObjActive {
+	uint32 object_id = 1;
+}
+
+message SqlInfo {
+	//请求类型
+	uint32 type = 1;
+
+	//请求sql
+	string sql = 2;
+
+	//请求时间戳
+	uint32 time = 3;
+}
+
+//获取OBD的诊断信息明细返回结果结构
+message PidInfoDetail {
+  //记录ID;
+  uint32 rec_id = 1;
+  //故障码;
+  uint32 p0_cab = 2;
+  //故障码;!!!注意结果需要除以10
+  uint32 p04_a = 3;
+  //故障码;!!!注意结果需要除以100
+  uint32 p42_ab = 4;
+  //故障码;
+  uint32 p0_da = 5;
+  //故障码;!!!注意结果需要除以10
+  uint32 p05_a = 6;
+  //故障码;
+  string p03_a = 7;
+  //故障码;
+  string p03_b = 8;
+  //故障码;!!!注意结果需要除以10
+  uint32 p06_a = 9;
+  //故障码;!!!注意结果需要除以10
+  uint32 p0_ea = 10;
+  //故障码;
+  string p13_a = 11;
+  //故障码;
+  uint32 p0_fa = 12;
+  //故障码;!!!注意结果需要除以1000
+  uint32 p15_a = 13;
+  //故障码;!!!注意结果需要除以10
+  uint32 p15_b = 14;
+  //故障码;
+  string p1_ca = 15;
+  //故障码;
+  uint32 p21_ab = 16;
+  //设备ID、目标ID;
+  uint32 object_id = 17;
+  //故障码;!!!注意结果需要除以10
+  uint32 p2_fa = 18;
+  //创建时间;
+  uint64 create_time = 19;
+  //
+  uint32 p01_a06 = 20;
+  //
+  uint32 p01_a7 = 21;
+  //
+  uint32 p01_b0 = 22;
+  //
+  uint32 p01_b1 = 23;
+  //
+  uint32 p01_b2 = 24;
+  //
+  uint32 p01_b4 = 25;
+  //
+  uint32 p01_b5 = 26;
+  //
+  uint32 p01_b6 = 27;
+  //
+  uint32 p01_c0 = 28;
+  //
+  uint32 p01_c1 = 29;
+  //
+  uint32 p01_c2 = 30;
+  //
+  uint32 p01_c3 = 31;
+  //
+  uint32 p01_c4 = 32;
+  //
+  uint32 p01_c5 = 33;
+  //
+  uint32 p01_c6 = 34;
+  //
+  uint32 p01_c7 = 35;
+  //
+  uint32 p01_d0 = 36;
+  //
+  uint32 p01_d1 = 37;
+  //
+  uint32 p01_d2 = 38;
+  //
+  uint32 p01_d3 = 39;
+  //
+  uint32 p01_d4 = 40;
+  //
+  uint32 p01_d5 = 41;
+  //
+  uint32 p01_d6 = 42;
+  //
+  uint32 p01_d7 = 43;
+  //;!!!注意结果需要除以10
+  uint32 p06_b = 44;
+}
+
+//保存OBD的诊断信息明细
+message SavePIDInfoReq {
+	//OBD的诊断信息
+	PidInfoDetail pid_info = 1;
+}
+
+message SavePIDInfoResp {
+	//公共结构
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//分页查询获取OBD的诊断信息明细参数
+message GetPIDInfoReq {
+  //设备ID、目标ID;
+  uint32 object_id = 1;
+
+  //限定行数
+  uint32 limit = 2;
+}
+
+//获取OBD的诊断信息明细结果
+message GetPIDInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1;
+
+  //列表信息
+  repeated PidInfoDetail pid_list = 2;
+}
+
+//指令信息
+message DownInfoCacheDbInfo {
+	//指令id
+	uint64 down_id = 1;
+
+	//接受指令的设备id
+	uint32 object_id = 2;
+
+	//接受的指令sim卡（现已不用，暂时保留）
+	string to_sim = 3;
+
+	//指令发送来源（现已不用，暂时保留）
+	uint32 send_source = 4;
+
+	//设备在线状态（现已不用，暂时保留）
+	uint32 trans_type = 5;
+
+	//指令内容
+	string content = 6;
+
+	//指令内容
+	string send_content = 7;
+
+	//指令发送者用户id
+	uint32 send_user_id = 8;
+
+	//指令类型（现已不用，暂时保留）
+	uint32 down_info_type = 9;
+
+	//指令发送时间
+	uint64 submit_time = 10;
+
+	//指令发送状态（0-已成功，-1-发送失败 1-网关已发送成功 251-发送未签收 252-设备签收失败 253-发送超时 254-无线设备等待发送 255-有限设备等待发送
+	uint32 send_flag = 11;
+
+	//
+	uint32 sms_channel = 12;
+
+	//备注
+	string remark = 13;
+
+	//指令类型id（现已不用，暂时保留）
+	uint32 cmd_type_id = 14;
+
+	//指令流水号
+	string seq = 15;
+
+	//指令处理结果
+	uint32 handle_result = 16;
+
+	//记录插入时间
+	uint64 the_day = 17;
+
+	//指令过期时间
+	uint64 expired_time = 18;
+
+	//指令扩展流水号（第三方指令，比如socol抽帧指令）
+	string ext_seq = 19;
+
+	//下发重试次数
+	uint32 try_count = 20;
+
+	//指令下发成功时间
+	uint64 success_time = 21;
+
+	//时间签收时间
+	uint64 ack_time = 22;
+}
+
+//库拆分、库合并、设备用户迁移、用户迁移任务
+message DataMoveTask {
+	//类型 1：拆分 2：合并 3：用户迁移 4：设备迁移
+    uint32 type = 1;
+
+    //设备id
+    uint32 object_id = 2;
+
+    //用户id
+    uint32 hold_id = 3;
+
+    //用户级别
+    uint32 hold_level = 4;
+
+    //原始库名
+    string orig_name = 5;
+
+    //目标库名
+    string dest_name = 6;
+
+    //发布时间
+    uint64 create_time = 7;
+}
+
+enum TrackKeyName {
+   EM_TRACK_RCVTIME_KEY			   =  0;
+   EM_TRACK_MILEAGE_KEY            =  1;
+   EM_TRACK_SPEED_KEY              =  2;
+   EM_TRACK_DIRECTION_KEY          =  3;
+   EM_TRACK_ALTITUDE_KEY           =  4;
+   EM_TRACK_BATTERY_KEY            =  5;
+   EM_TRACK_MESSAGETYPE_KEY        =  6;
+   EM_TRACK_GSMSTRENGTH_KEY        =  7;
+   EM_TRACK_SATELLITENUM_KEY       =  8;
+   EM_TRACK_GPSACCURACYTYPE_KEY    =  9;
+   EM_TRACK_PROVINCE_KEY           =  10;
+   EM_TRACK_CITY_KEY               =  11;
+   EM_TRACK_REGION_KEY             =  12;
+   EM_TRACK_GPSTIME_KEY            =  13;
+   EM_TRACK_GPSLON_KEY             =  14;
+   EM_TRACK_GPSLAT_KEY             =  15;
+   EM_TRACK_ALARMFLAG_KEY          =  16;
+   EM_TRACK_ALARMTYPE_KEY          =  17;
+   EM_TRACK_ALARMDESC_KEY          =  18;
+   EM_TRACK_BEIDOUSATELLITENUM_KEY =  19;
+   EM_TRACK_ISLINK_KEY 				= 20;
+   EM_TRACK_BSTIME_KEY 				= 21;
+   EM_TRACK_BSLON_KEY 				= 22;
+   EM_TRACK_BSLAT_KEY 				= 23;
+   EM_TRACK_THEDAYINITMILEAGE_KEY 	= 24;
+   EM_TRACK_ISONLINE_KEY 			= 25;
+   EM_TRACK_WIFITIME_KEY 			= 26;
+   EM_TRACK_WIFILON_KEY 			= 27;
+   EM_TRACK_WIFILAT_KEY 			= 28;
+   EM_TRACK_STATUSDESC_KEY 			= 29;
+   EM_TRACK_MIXEDTIME_KEY 			= 30;
+   EM_TRACK_MIXEDLON_KEY 			= 31;
+   EM_TRACK_MIXEDLAT_KEY 			= 32;
+   EM_TRACK_NOTACCURACYGPSTIME_KEY 	= 33;
+   EM_TRACK_NOTACCURACYGPSLON_KEY 	= 34;
+   EM_TRACK_NOTACCURACYGPSLAT_KEY 	= 35;
+   EM_TRACK_ISSLEEP_KEY 			= 36;
+   EM_TRACK_OILNUM_KEY 			    = 37;
+}
+
+//设备实时轨迹所有信息
+message DeviceAllTrack {
+    uint32 obj_id = 1;
+    uint64 rcv_time  = 2;
+    uint32 mileage  = 3;
+    uint32 speed  = 4;
+    uint32 direction  = 5;
+    uint32 altitude  = 6;
+    uint32 battery  = 7;
+    uint32 message_type  = 8;
+    uint32 gsm_strength  = 9;
+    uint32 satellite_num  = 10;
+    uint32 gps_accuracy_type  = 11;
+    string province = 12;
+    string city = 13;
+    string region = 14;
+    uint64 gps_time = 15;
+    int64 gps_lon = 16;
+    int64 gps_lat = 17;
+    bool alarm_flag  = 18;
+    string alarm_type  = 19;
+    string alarm_desc  = 20;
+    uint32 beidou_satellite_num  = 21;
+    uint32 is_link = 22;
+    uint64 bs_time = 23;
+    int64 bs_lon = 24;
+    int64 bs_lat = 25;
+    uint32 theday_init_mileage = 26;
+    uint32 is_online = 27;
+    uint64 wifi_time = 28;
+    int64 wifi_lon = 29;
+    int64 wifi_lat = 30;
+    string status_desc = 31;
+    uint64 mixed_time = 32;
+    int64 mixed_lon = 33;
+    int64 mixed_lat = 34;
+    uint64 not_accuracy_gps_time = 35;
+    int64 not_accuracy_gps_lon = 36;
+    int64 not_accuracy_gps_lat = 37;
+    uint32 is_sleep = 38;
+    uint32 oil_num = 39;
+    string imei = 40;
+}
+
+//获取实时轨迹信息
+message GetRealtimeTrackReq {
+    //设备ID列表
+    repeated string device_list = 1;
+
+    //设备记录ID列表
+    repeated uint32 object_list = 2;
+
+    //返回属性名称列表,没在数组；为空初始化所有属性
+    repeated TrackKeyName property_list = 3;
+}
+
+message GetRealtimeTrackResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //列表信息
+    repeated DeviceAllTrack track_list = 2;
+}
+
+//发送指令
+message CommandReq {
+    //设备id
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+    //指令内容
+    string send_content = 2;
+
+    //用户id
+    uint32 send_user_id = 3;
+
+    //sim卡号
+    string sim = 4;
+
+    //备注
+    string remark = 5;
+
+    //流水号
+    string seq = 6;
+
+    //回调地址
+    string callback_url = 7;
+}
+
+message CommandResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取经纬度省市区
+message GetRegionInfoByGeoReq{
+    //纬度
+    int32 lng = 1;
+
+    //经度
+    int32 lat = 2;
+}
+message GetRegionInfoByGeoResp{
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //省市区
+    mapgoo.paas.base.DistrictInfo district_info = 2;
+}
+
+message DeviceHisTrack {
+    //记录id
+    uint32 id = 1;
+
+    //经度
+    double lon = 2;
+
+    //纬度
+    double lat = 3;
+
+    //百度地图经度
+    double baidu_lon = 4;
+
+    //百度地图纬度
+    double baidu_lat = 5;
+
+    //速度
+    uint32 speed = 6;
+
+    //方向
+    uint32 direct = 7;
+
+    //总里程（单位：里）
+    uint32 mileage = 8;
+
+    //状态描述
+    string status = 9;
+
+    //定位方式
+    string pos_mode = 10;
+
+    //定位时间
+    uint64 gps_time = 11;
+
+    //接收时间
+    uint64 rcv_time = 12;
+
+    //电量
+    uint32 voltage = 13;
+
+    //gps信号
+    uint32 gps_signal = 14;
+
+    //累积里程
+    double mile = 15;
+
+    //定位标识
+    uint32 gps_flag = 16;
+
+    //设备id
+    uint32 object_id = 17;
+}
+
+//获取历史轨迹信息
+message GetHistoryTrackReq {
+    //设备id
+    mapgoo.paas.base.DeviceId device_id = 1;
+
+    //开始时间
+    uint64 begin_time = 2;
+
+    //结束时间
+    uint64 end_time = 3;
+
+    //过滤的速度 -1:不过滤
+    int32 speed_limit = 4;
+
+    //0:不过滤  1:过滤参考定位 2:过滤基站定位 3:过滤参考、基站定位
+    int32 exact = 5;
+
+    //限制行数
+    uint32 limit = 6;
+
+    //返回属性名称列表,没在数组中不初始化属性值；为空初始化所有属性
+    repeated string property_list = 7;
+
+    //车牌号码
+    string carno = 8;
+}
+
+message GetHistoryTrackResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //历史轨迹信息
+    repeated DeviceHisTrack result = 2;
+}
+
+
+
+message RouterInfo{
+    uint32 obj_id = 1;
+    string gateway_ip = 2[(gogoproto.jsontag)='ias_ip'];
+    uint32 gateway_port = 3[(gogoproto.jsontag)='ias_port'];
+    uint32 gateway_type = 4[(gogoproto.jsontag)='gatewayType'];
+    string device_ip = 5;
+    uint32 device_port = 6;
+    uint32 update_time = 7;
+}
+
+//获取设备实时路由信息
+message GetDeviceRouterReq
+{
+   //设备id和imei
+   mapgoo.paas.base.DeviceId device_id = 1;
+}
+
+message GetDeviceRouterResp
+{
+	//返回信息
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+	//路由信息
+    RouterInfo router = 2;
+}

@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.socol.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.socol.estimate.api;
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+service SocolEstimateService {
+    //接受轨迹推送数据
+    rpc PushDeviceTrack(TrackPushReq) returns (TrackPushRsp)  {
+        option (google.api.http) = {
+            post : "/mg/estimate/pushtracks"
+        };
+    }
+
+    //图商标准轨迹推送接口实现
+    rpc TrackReport(TrackReportReq) returns (TrackReportRsp) {
+        option (google.api.http) = {
+            post : "/mg/estimate/trackreport"
+        };
+    }
+}
+
+message TrackPushReq {
+    int32 holdid = 1;
+    int32 objectid = 2;
+    string imei = 3;
+    repeated mapgoo.paas.socol.data.SocolTrackRecord tracks = 4;
+}
+
+message TrackPushRsp {
+    int32 error = 1; //返回码，0-成功
+    string errmsg = 2; //返回信息
+}
+
+message TrackItem {
+    //设备号
+    string device_no = 1;
+    //经度，double(-180.0, +180.0)
+    double latitude = 2;
+    //纬度，double(-90.0, +90.0)
+    double longitude = 3;
+    //系统的时间戳，而不是GPS自带时间戳。
+    int64 loc_time = 4;
+    //坐标类型，wgs84：GPS 坐标
+    string coord_type_input = 5;
+    //速度，单位：km/h
+    double speed = 6;
+    //方向，取值规则：范围为[0,359]，0度为正北方向，顺时针
+    int32 direction = 7;
+    //高度，单位：米
+    double height = 8;
+    //定位精度，单位：米
+    double radius = 9;
+    //GPS定位时间，13位时间戳，下发的指令对应的时间段 单位：毫秒
+    int64 locT = 10;
+    //设备时间，13位时间戳，安卓系统的时间 单位：毫秒
+    int64 sysT = 11;
+    //GPS状态信息，格式: "total:1;snr:1;used:1", total 搜到的卫星总数，snr: 信噪比不为0的个数，used: 对应usedInFix参数，表示轨迹用到的卫星数目。缺省字段值用0代替
+    string gps_info = 12;
+    //渠道ID
+    int32 holdid = 13;
+    //objectid
+    int32 objectid = 14;
+    //imei
+    string imei = 15;
+}
+
+message TrackReportReq {
+    //轨迹列表
+    repeated  TrackItem tracks = 1;
+}
+
+message TrackReportRsp {
+    //状态码，0-为成功 其他为错误
+    int32 status = 1;
+    //状态码描述
+    string message = 2;
+    //轨迹上报成功条数
+    int32 success_num = 3;
+}

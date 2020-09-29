@@ -1,0 +1,12 @@
+stages:
+  - build
+
+swagger-build:
+  stage: build
+  script: 
+    - /bin/sh build.sh
+    - mkdir -p /data/interface/api
+    - cp -f api/* /data/interface/api/
+
+  only:
+    - master

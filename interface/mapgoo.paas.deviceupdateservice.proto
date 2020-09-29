@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package mapgoo.paas.deviceupdateservice;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+
+
+import "mapgoo.paas.deviceupdateservice.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+service DeviceUpdateService{
+
+    //设备更新检测接口
+    rpc GetDeviceUpgrade(mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeReq) returns (mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeResp) {
+        option (google.api.http) = {
+        post : "/deviceupdateservice/GetDeviceUpgrade"
+      };
+    }
+
+    //设备下载状态上报
+    rpc GetDeviceUpgradeDownload(mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeDownloadReq) returns (mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeDownloadResp) {
+        option (google.api.http) = {
+        post : "/deviceupdateservice/GetDeviceUpgradeDownload"
+      };
+    }
+
+    //设备升级状态上报
+    rpc GetDeviceUpgradeUpdate(mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeUpdateReq) returns (mapgoo.paas.deviceupdateservice.data.GetDeviceUpgradeUpdateResp) {
+        option (google.api.http) = {
+        post : "/deviceupdateservice/GetDeviceUpgradeUpdate"
+      };
+    }
+
+}

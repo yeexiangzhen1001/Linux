@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package mapgoo.paas.mfs.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.baseex.proto";
+
+//轨迹信息
+message GpsData
+{
+    //
+    uint64 gps_time = 1;
+
+    //
+    uint64 rcv_time = 2;
+
+    //
+    int32 lon = 3;
+
+    //
+    int32 lat = 4;
+
+    //
+    uint32 mileage = 5;
+
+    //
+    uint32 speed = 6;
+
+    //
+    uint32 direct = 7;
+
+    //
+    uint32 altitude = 8;
+
+    //
+    uint32 battery = 9;
+
+    //
+    uint32 message_type = 10;
+
+    //
+    uint32 gsm_strength = 11;
+
+    //
+    uint32 satellite_num = 12;
+
+    //
+    uint32 gps_accuracy_type = 13;
+
+    //
+    bytes mdt_status = 14;
+}
+
+//轨迹记录信息
+message GpsRecord
+{
+    //
+    uint32 object_id = 1;
+
+    //
+    GpsData gps_data = 2;
+}
+
+//获取历史轨迹
+message GetHisTrackReq
+{
+	//设备id
+	uint32 object_id = 1;
+
+	//开始时间
+	uint32 begin_time = 2;
+
+	//结束时间
+	uint32 end_time = 3;
+}
+
+message GetHisTrackResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+
+	//轨迹信息
+	repeated GpsData gps_list = 2;
+}
+
+//保存历史轨迹
+message SaveHisTrackReq
+{
+	//轨迹信息
+	repeated GpsRecord gps_list = 1;
+}
+
+message SaveHisTrackResp
+{
+	//返回信息
+	mapgoo.paas.baseex.BaseRespInfoEx base = 1;
+}

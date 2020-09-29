@@ -1,0 +1,1296 @@
+syntax = "proto3";
+
+package mapgoo.paas.simcache.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//渠道
+message HoldEntity {
+    //渠道名
+    string hold_name = 1 [(gogoproto.jsontag) = "holdName"];
+    //API签名校验key，固定不变
+    string key = 2 [(gogoproto.jsontag) = "key"];
+    //所有上级用户id集合，用户移动后会变化
+    string hold_tree_path = 3 [(gogoproto.jsontag) = "holdTreePath"];
+    //是否为全网查询，1是，0否
+    uint32 is_all_network = 4 [(gogoproto.jsontag) = "isAllNetwork"];
+    //实名认证的有效期限(小时) 判断0
+    string real_name_term = 5 [(gogoproto.jsontag) = "realNameTerm"];
+    //是否提醒实名，0不提醒，1倒计时提醒，2通用提醒
+    string real_name_remind = 6 [(gogoproto.jsontag) = "realNameRemind"];
+    //未实名是否运行续费，0不允许，1允许
+    string no_real_name_renewals = 7 [(gogoproto.jsontag) = "noRealNameRenewals"];
+    //APK提醒样式：1全屏，0缩略
+    string apk_remind_sreen = 8 [(gogoproto.jsontag) = "apkRemindSreen"];
+    //用户资料更新时间
+    string update_time = 9 [(gogoproto.jsontag) = "updateTime"];
+    //实名赠送套餐id
+    uint32 real_name_active_pg = 10 [(gogoproto.jsontag) = "realNameActivePg"];
+    //版本号
+    uint64 ver = 11 [(gogoproto.jsontag) = "ver"];
+    //渠道ID
+    uint32 hold_id = 12 [(gogoproto.jsontag) = "holdId"];
+    //api权限
+    string api_auth = 13 [(gogoproto.jsontag) = "apiAuth"];
+    //api参数权限
+    string api_param_auth = 14 [(gogoproto.jsontag) = "apiParamAuth"];
+    //是否删除
+    bool is_deleted = 15 [(gogoproto.jsontag) = "isDeleted"];
+}
+
+message GetHoldCacheReq {
+    uint32 hold_id = 1;
+}
+message RemoveHoldCacheReq {
+    uint32 hold_id = 1;
+}
+message GetHoldCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    HoldEntity hold_info = 2; //渠道信息
+}
+
+//批量设置渠道缓存
+message SetHoldCacheReq {
+    repeated HoldEntity hold_info = 1; //渠道信息
+}
+
+message SetHoldCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//移除渠道缓存
+message RemoveHoldCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+message GetHoldMaxVerCacheReq {
+
+}
+message GetHoldMaxVerCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    uint64 max_ver = 2; //最大版本号
+}
+
+
+message SetHoldMaxVerCacheReq {
+    uint64 max_ver = 1; //最大版本号
+}
+message SetHoldMaxVerCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+//获取数据库更新列表
+message GetHoldInfoListDBReq {
+    uint64 ver = 1;
+}
+message GetHoldInfoListDBResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //渠道信息列表
+    repeated HoldEntity hold_info_list = 2;
+}
+
+//获取数据库渠道信息
+message GetHoldInfoByHoldIdDBReq {
+    uint32 hold_id = 1;
+}
+
+message GetHoldInfoByHoldIdDBResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //渠道信息列表
+    HoldEntity holdinfo = 2;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+//卡类型
+message GetSimCardTypeCacheReq {
+    string iccid = 1;
+}
+
+message GetSimCardTypeCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    uint32 card_type = 2 [(gogoproto.jsontag) = "cardType"];
+}
+
+message SetSimCardTypeCacheReq {
+    string iccid = 1;
+    uint32 card_type = 2 [(gogoproto.jsontag) = "cardType"];
+}
+
+message SetSimCardTypeCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message RemoveSimCardTypeCacheReq {
+    string iccid = 1;
+}
+
+message RemoveSimCardTypeCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取卡类型最大版本号
+message GetSimCardTypeMaxVerCacheReq {
+    uint32 fortype = 1;
+}
+
+message GetSimCardTypeMaxVerCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    uint64 max_ver = 2; //最大版本号
+}
+
+//设置卡类型最大版本号
+message SetSimCardTypeMaxVerCacheReq {
+    uint32 fortype = 1;
+    uint64 max_ver = 2; //最大版本号
+}
+
+message SetSimCardTypeMaxVerCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message RemoveSimCardTypeMaxVerCacheReq {
+    uint32 fortype = 1;
+}
+
+message RemoveSimCardTypeMaxVerCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message GetBatchSimCardTypeCacheReq {
+    //iccid 列表
+    repeated string iccid = 1;
+}
+
+message GetBatchSimCardTypeCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+    //卡类型列表
+    repeated BatchSimCardType card_type_list = 2;
+}
+
+message BatchSimCardType {
+    string iccid = 1 [(gogoproto.jsontag) = "iccid"];
+    uint32 card_type = 2 [(gogoproto.jsontag) = "cardType"];
+}
+
+message SetSimCardTypeMaxVerReq {
+    uint64 ver = 1;
+}
+
+message SetSimCardTypeMaxVerResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+
+}
+
+////////////////////卡套餐//////////////////////////////////////////
+//卡套餐内容
+message SimPackageEntity {
+    //套餐名
+    string package_name = 1 [(gogoproto.jsontag) = "packageName"];
+    //付费类型，share后付，advance预付
+    string contract_type = 2 [(gogoproto.jsontag) = "contractType"];
+    //清零规则，1清零，0不清零
+    uint32 is_usage_reset = 3 [(gogoproto.jsontag) = "isUsageReset"];
+    //套餐服务周期（天）
+    uint32 period_days = 4 [(gogoproto.jsontag) = "periodDays"];
+    //套餐服务周期（月）
+    uint32 period_months = 5 [(gogoproto.jsontag) = "periodMonths"];
+    //套餐用量周期(KB)
+    double usage_to_period = 6 [(gogoproto.jsontag) = "usageToPeriod"];
+    //套餐ID
+    uint32 package_id = 7 [(gogoproto.jsontag) = "packageId"];
+    //无限流量套餐
+    uint32 is_limitless_usage = 8 [(gogoproto.jsontag) = "isLimitlessUsage"];
+    //套餐信息
+    string package_info = 9 [(gogoproto.jsontag) = "packageInfo"];
+    //套餐序列号
+    uint32 package_sn = 10 [(gogoproto.jsontag) = "packageSn"];
+    //版本
+    uint64 ver = 11 [(gogoproto.jsontag) = "ver"];
+    //是否删除
+    bool is_deleted = 12 [(gogoproto.jsontag) = "isDeleted"];
+    //是否分离计费套餐，1是，0不是
+    uint32 control_type = 13 [(gogoproto.jsontag) = "controlType"];
+
+}
+//获取卡套餐缓存
+message GetSimPackageCacheReq {
+    //套餐ID
+    uint32 package_id = 1;
+}
+
+message GetSimPackageCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //套餐信息
+    SimPackageEntity sim_package_info = 2;
+}
+//设置卡套餐缓存
+message SetSimPackageCacheReq {
+    //套餐ID
+    uint32 package_id = 1;
+    //套餐信息
+    repeated SimPackageEntity sim_package_info = 2;
+}
+
+message SetSimPackageCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+//移除卡套餐缓存
+message RemoveSimPackageCacheReq {
+    //套餐ID
+    uint32 package_id = 1;
+}
+
+message RemoveSimPackageCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取卡套餐最大版本号
+message GetSimPackageMaxVerCacheReq {
+}
+
+message GetSimPackageMaxVerCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    uint64 max_ver = 2; //最大版本号
+}
+
+//设置卡套餐最大版本号
+message SetSimPackageMaxVerCacheReq {
+    uint64 max_ver = 2; //最大版本号
+}
+
+message SetSimPackageMaxVerCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//获取套餐列表
+message GetSimPackageListDBReq {
+    uint64 ver = 1;
+}
+message GetSimPackageListDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    repeated SimPackageEntity sim_package_info = 2;
+}
+//请求套餐信息
+message GetSimPackageByIDDBReq {
+    uint32 package_id = 1;
+}
+message GetSimPackageByIDDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    SimPackageEntity package_info = 2;
+}
+
+////////////////////////////////卡基础信息/////////////////////////////////
+
+//卡基础信息
+message SimCardBaseInfoEntity {
+    //卡id
+    uint32 sim_id = 1 [(gogoproto.jsontag) = "simId"];
+    //卡类型，0移动，1联通，2电信
+    uint32 sim_from_type = 2 [(gogoproto.jsontag) = "simFromType"];
+    //ICCID号
+    string iccid = 3 [(gogoproto.jsontag) = "iccid"];
+    //SIM卡号
+    string sim = 4 [(gogoproto.jsontag) = "sim"];
+    //IMSI号
+    string imsi = 5 [(gogoproto.jsontag) = "imsi"];
+    //IMEI号
+    string imei = 6 [(gogoproto.jsontag) = "imei"];
+    //所属渠道用户ID
+    uint32 hold_id = 7 [(gogoproto.jsontag) = "holdId"];
+    //套餐ID
+    uint32 package_id = 8 [(gogoproto.jsontag) = "packageId"];
+    //对应OMS套餐类型
+    uint32 oms_package_id = 9 [(gogoproto.jsontag) = "omsPackageId"];
+    //卡源ID
+    string source_type = 10 [(gogoproto.jsontag) = "sourceType"];
+    //周期用量，单位KB
+    double amount_usage = 11 [(gogoproto.jsontag) = "amountUsage"];
+    //历史月用量，单位KB
+    double total_month_usage = 12 [(gogoproto.jsontag) = "totalMonthUsage"];
+    //最近一笔续费时间
+    string renewals_time = 13 [(gogoproto.jsontag) = "renewalsTime"];
+    //首次激活时间
+    string first_active = 14 [(gogoproto.jsontag) = "firstActive"];
+    //到期时间
+    string expire_time = 15 [(gogoproto.jsontag) = "expireTime"];
+    //当前系统时间
+    string system_time = 16 [(gogoproto.jsontag) = "systemTime"];
+    //更新时间
+    string updatetime = 17 [(gogoproto.jsontag) = "updatetime"];
+    //套餐周期 siminfo表
+    uint32 surplus_period = 18 [(gogoproto.jsontag) = "SurplusPeriod"];
+    //账号名称
+    string api_account = 19 [(gogoproto.jsontag) = "apiAccount"];
+    //网速
+    uint32 net_work_speed = 20 [(gogoproto.jsontag) = "netWorkSpeed"];
+    //续费金额
+    double renewal_amount = 21 [(gogoproto.jsontag) = "renewalAmount"];
+    //OMS套餐名称
+    string o_m_s_package_name = 22 [(gogoproto.jsontag) = "OMSPackageName"];
+    //OMS套餐描述
+    string o_m_s_package_info = 23 [(gogoproto.jsontag) = "OMSPackageInfo"];
+    //队列套餐ID
+    uint32 task_package_i_d = 24 [(gogoproto.jsontag) = "taskPackageID"];
+    //队列套餐周期
+    uint32 task_period_days = 25 [(gogoproto.jsontag) = "taskPeriodDays"];
+    //卡类型
+    string card_type = 26 [(gogoproto.jsontag) = "cardType"];
+    //最近激活
+    string last_active_time = 27 [(gogoproto.jsontag) = "lastActiveTime"];
+    //预付卡用量
+    double usage_data_flow = 28 [(gogoproto.jsontag) = "usageDataFlow"];
+}
+
+//获取卡基础信息
+message GetSimCardBaseInfoDBReq {
+    repeated string iccid = 1;
+}
+
+message GetSimCardBaseInfoDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡基础信息
+    repeated SimCardBaseInfoEntity sim_card_base_info = 2;
+}
+
+message GetSimCardBaseInfoReq {
+    string iccid = 1;
+}
+
+message GetSimCardBaseInfoResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_card_base_info = 2;
+}
+
+//设置卡基础信息缓存
+message SetSimCardBaseInfoCacheReq {
+    //iccid
+    string iccid = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_card_base_info = 2;
+    //剩余过期时间
+    uint32 ttl = 3;
+}
+
+message SetSimCardBaseInfoCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//移除卡基础信息（缓存）
+message RemoveSimCardBaseInfoCacheReq {
+    string iccid = 1;
+}
+message RemoveSimCardBaseInfoCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+message GetSimCardBaseInfoCacheReq {
+    //iccid
+    string iccid = 1;
+}
+
+//获取卡基础信息缓存
+message GetSimCardBaseInfoCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_card_base_info = 2;
+}
+
+//cms 删除卡基础
+message DelSimCardBaseInfoCacheReq {
+    repeated string iccid = 1;
+}
+
+message DelSimCardBaseInfoCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+/////////////////////////////////////////////////////////////
+//卡用量信息
+message SimCardUsageInfoEntity {
+    //用量更新时间
+    string flow_left_time = 1 [(gogoproto.jsontag) = "flowLeftTime"];
+    //卡状态
+    uint32 status = 2 [(gogoproto.jsontag) = "status"];
+    //当月用量（KB）
+    double month_usage = 3 [(gogoproto.jsontag) = "monthUsage"];
+    //周期总用量(KB)
+    double total_primary_included = 4 [(gogoproto.jsontag) = "totalPrimaryIncluded"];
+    //剩余周期用量(KB)
+    double surplus_usage = 5 [(gogoproto.jsontag) = "surplusUsage"];
+    //分组
+    string customer = 6 [(gogoproto.jsontag) = "customer"];
+    //资费
+    string rate = 7 [(gogoproto.jsontag) = "rate"];
+    //发货日期
+    string shipped_date = 8 [(gogoproto.jsontag) = "shippedDate"];
+    //服务到期日期，只有预付卡用到
+    string term_end_date = 9 [(gogoproto.jsontag) = "termEndDate"];
+    //历史总用量
+    double total_month_usage_flow = 10 [(gogoproto.jsontag) = "TotalMonthUsageFlow"];
+    //缓存字符串
+    string app_content = 11 [(gogoproto.jsontag) = "appContent"];
+    //高德月用量
+    double gd_month_usage = 12 [(gogoproto.jsontag) = "gdMonthUsage"];
+    //高德总用量
+    double gd_total_usage = 13 [(gogoproto.jsontag) = "gdTotalUsage"];
+    //非续费高德叠加包
+    double gd_usage_not_pkg = 14 [(gogoproto.jsontag) = "gdUsageNotPkg"];
+    //内容套餐信息集合，内容见下面代码区域
+    repeated SimControlInfoEntity control_list = 15 [(gogoproto.jsontag) = "controlList"];
+
+
+}
+
+
+message SimControlInfoEntity {
+    //应用ID
+    uint32 app_id = 1 [(gogoproto.jsontag) = "appId"];
+    //应用组名称
+    string app_name = 2 [(gogoproto.jsontag) = "appName"];
+    //周期流量（KB）
+    double amount_usage = 3 [(gogoproto.jsontag) = "amountUsage"];
+    //剩余用量
+    double flow_left_value = 4 [(gogoproto.jsontag) = "flowLeftValue"];
+    //剩余天数
+    uint32 surplus_period = 5 [(gogoproto.jsontag) = "surplusPeriod"];
+    //周期开始
+    string period_start_time = 6 [(gogoproto.jsontag) = "periodStartTime"];
+    //周期结束
+    string period_end_time = 7 [(gogoproto.jsontag) = "periodEndTime"];
+    //到期日期
+    string expire_time = 8 [(gogoproto.jsontag) = "expireTime"];
+    uint32 is_display = 9 [(gogoproto.jsontag) = "isDisplay"];
+    //周期天数
+    uint32 period_days = 10 [(gogoproto.jsontag) = "periodDays"];
+    //剩余用量oms
+    double oms_flow_left_value = 11 [(gogoproto.jsontag) = "OMSflowLeftValue"];
+    //应用组描述
+    string app_description = 12 [(gogoproto.jsontag) = "appDescription"];
+}
+
+//获取卡用量信息
+message GetSimCardusageInfoReq {
+    string iccid = 1;
+}
+
+message GetSimCardusageInfoResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 2;
+}
+
+//获取卡用量信息
+message GetSimCardusageInfoDBReq {
+    string iccid = 1;
+    uint32 simid = 2;
+}
+
+message GetSimCardusageInfoDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 2;
+}
+
+
+message SetSimCardusageInfoCacheReq {
+    uint32 simid = 1;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 2;
+    //剩余过期时间 （秒）
+    uint32 ttl = 3;
+}
+
+
+message SetSimCardusageInfoCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message RemoveSimCardusageInfoCacheReq {
+    uint32 simid = 1;
+}
+
+message RemoveSimCardusageInfoCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+//获取卡用量信息
+message GetSimCardusageInfoCacheReq {
+    uint32 simid = 1;
+}
+message GetSimCardusageInfoCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 2;
+}
+
+//cms 删除卡用量信息缓存
+message DelSimCardUsageInfoCacheReq {
+    repeated uint32 sim_id = 1 [(gogoproto.jsontag) = "SimId"];
+}
+
+message DelSimCardUsageInfoCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//////////////////////////////卡类型//////////////////////////////////////////
+
+//请求卡类型的数据
+message GetSimCardTypeDBReq {
+    //最小标记
+    uint64 ver = 1;
+    //每次请求处理数量
+    uint32 page_count = 2;
+}
+message GetSimCardTypeDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡类型列表
+    repeated SimCardTypeEntity car_type_list = 2;
+}
+
+//删除的
+message GetSimCardTypeDelDBReq {
+    //最小标记
+    uint64 ver = 1;
+    //每次请求处理数量
+    uint32 page_count = 2;
+}
+message GetSimCardTypeDelDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡类型列表
+    repeated SimCardTypeEntity car_type_list = 2;
+}
+
+
+message SimCardTypeEntity {
+    //卡ICCID
+    string iccid19 = 1;
+    //卡类型
+    uint32 car_type = 2;
+    //版本号
+    uint64 ver = 3;
+    //是否删除
+    bool is_deleted = 4;
+}
+
+
+message GetPlaformSimCardTypeReq {
+    //卡号列表
+    repeated string num = 1 [(gogoproto.jsontag) = "num"];
+    //卡类型
+    string num_type = 2 [(gogoproto.jsontag) = "num_type"];
+    //用户ID
+    uint64 user_id = 3 [(gogoproto.jsontag) = "userId"];
+    //时间戳
+    uint64 timestamp = 4 [(gogoproto.jsontag) = "timestamp"];
+    //签名
+    string sign = 5 [(gogoproto.jsontag) = "sign"];
+
+
+}
+message cardTypeListEntity {
+    string num = 1 [(gogoproto.jsontag) = "num"];
+    uint32 card_type = 2 [(gogoproto.jsontag) = "cardType"];
+}
+message GetPlaformSimCardTypeResp {
+    //公共结构
+    BaseApiRespInfo base = 1;
+    repeated cardTypeListEntity car_type_list = 2 [(gogoproto.jsontag) = "carTypeList"];
+}
+
+message SetSimCardTypeListCacheReq {
+    uint64 ver = 1;
+    uint32 fortype = 2;
+    repeated SimCardTypeEntity car_type_list = 3;
+}
+
+message SetSimCardTypeListCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//查询卡类型
+message GetPlaformSimCardTypeDBReq {
+    //卡号
+    repeated string nums = 1;
+    //卡类型
+    string num_type = 2;
+    //hold
+    uint32 hold_id = 3;
+    //level
+    uint32 hold_level = 4;
+
+}
+//查询卡返回
+message GetPlaformSimCardTypeDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //返回列表GetPlaformSimCardTypeDB
+    repeated PlaformSimCardTypeEntity card_type_list = 2;
+}
+
+message PlaformSimCardTypeEntity {
+    //卡号 sim  iccid imei imsi
+    string num = 1 [(gogoproto.jsontag) = "num"];
+    //iccid19
+    string iccid19 = 2 [(gogoproto.jsontag) = "iccid19"];
+    //卡类型
+    uint32 card_type = 3 [(gogoproto.jsontag) = "cardType"];
+    //holdId
+    uint32 hold_id = 4 [(gogoproto.jsontag) = "holdId"];
+}
+
+//获取卡详情
+message GetPlaformSimDetailReq {
+    //卡号
+    string num = 1 [(gogoproto.jsontag) = "num"];
+    //卡类型
+    string num_type = 2 [(gogoproto.jsontag) = "num_type"];
+    //用户ID
+    uint64 user_id = 3 [(gogoproto.jsontag) = "userId"];
+    //时间戳
+    uint64 timestamp = 4 [(gogoproto.jsontag) = "timestamp"];
+    //签名
+    string sign = 5 [(gogoproto.jsontag) = "sign"];
+    //是否显示扩展
+    bool is_extend = 6 [(gogoproto.jsontag) = "isExtend"];
+
+}
+
+message GetPlaformSimDetailMResp {
+    //公共结构
+    BaseApiRespInfo base = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_base_info = 2;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 3;
+    //实名信息
+    RealNameEntity realname_info = 4;
+}
+
+message GetPlaformSimDetailResp {
+    //公共结构
+    BaseApiRespInfo base = 1;
+    //卡基础信息
+    SimCardDetailEntity sim_card_detail = 2 [(gogoproto.jsontag) = "SimCardDetail"];
+
+    //卡基础信息
+    SimCardBaseInfoEntity sim_base_info = 3;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 4;
+    //实名信息
+    RealNameEntity realname_info = 5;
+    //渠道
+    HoldEntity hold_info = 6;
+    //套餐信息
+    SimPackageEntity package_info = 7;
+}
+
+message GetPlaformSimDetailAllReq {
+    //卡号
+    string num = 1;
+    //卡类型
+    string num_type = 2;
+}
+
+message GetPlaformSimDetailAllResp {
+    //公共结构
+    BaseApiRespInfo base = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_base_info = 2;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 3;
+    //实名信息
+    RealNameEntity realname_info = 4;
+    //渠道
+    HoldEntity hold_info = 5;
+    //套餐信息
+    SimPackageEntity package_info = 6;
+}
+
+message SimCardDetailEntity {
+    //ICCID
+    string iccid = 1 [(gogoproto.jsontag) = "iccid"];
+    //SIM
+    string sim = 2 [(gogoproto.jsontag) = "sim"];
+    //IMSI
+    string imsi = 3 [(gogoproto.jsontag) = "imsi"];
+    //IMEI
+    string imei = 4 [(gogoproto.jsontag) = "imei"];
+    //卡状态
+    uint32 status = 5 [(gogoproto.jsontag) = "status"];
+    //卡状态描述
+    string status_desc = 6 [(gogoproto.jsontag) = "status_desc"];
+    //套餐
+    string package = 7 [(gogoproto.jsontag) = "package"];
+    //套餐信息
+    string package_info = 8 [(gogoproto.jsontag) = "package_info"];
+    //套餐周期
+    uint32 package_period = 9 [(gogoproto.jsontag) = "package_period"];
+    //套餐用量
+    double package_usage = 10 [(gogoproto.jsontag) = "package_usage"];
+    //周期流量
+    double amount_usage = 11 [(gogoproto.jsontag) = "amount_usage"];
+    //当月用量
+    double month_usage = 12 [(gogoproto.jsontag) = "month_usage"];
+    //历史用量
+    double total_usage = 13 [(gogoproto.jsontag) = "total_usage"];
+    //剩余流量
+    double surplus_usage = 14 [(gogoproto.jsontag) = "surplus_usage"];
+    //剩余天数
+    uint32 surplus_period = 15 [(gogoproto.jsontag) = "surplus_period"];
+    //到期时间
+    string expire_date = 16 [(gogoproto.jsontag) = "expire_date"];
+    //首次激活
+    string first_active = 17 [(gogoproto.jsontag) = "first_active"];
+    //最近激活
+    string last_active = 18 [(gogoproto.jsontag) = "last_active"];
+    //是否清零
+    uint32 is_reset = 19 [(gogoproto.jsontag) = "is_reset"];
+    //套餐序号
+    uint32 packagesn = 20 [(gogoproto.jsontag) = "packagesn"];
+    //实名状态
+    int32 realname_status = 21 [(gogoproto.jsontag) = "realname_status"];
+    //实名
+    string realname_term = 22 [(gogoproto.jsontag) = "realname_term"];
+    uint32 realname_remind = 23 [(gogoproto.jsontag) = "realname_remind"];
+    uint32 norealname_renewals = 24 [(gogoproto.jsontag) = "norealname_renewals"];
+    //系统时间
+    string system_time = 25 [(gogoproto.jsontag) = "system_time"];
+    uint32 apk_remindsreen = 26 [(gogoproto.jsontag) = "apk_remindsreen"];
+    //用户id
+    uint64 userId = 27 [(gogoproto.jsontag) = "userId"];
+    uint32 period_months = 28 [(gogoproto.jsontag) = "period_months"];
+    //总剩余流量
+    double total_surplus_usage = 29 [(gogoproto.jsontag) = "total_surplus_usage"];
+    //套餐更新时间
+    string packageupdate_time = 30 [(gogoproto.jsontag) = "packageupdate_time"];
+    //同步时间
+    string flowleft_time = 31 [(gogoproto.jsontag) = "flowleft_time"];
+    //网速
+    string network_speed = 32 [(gogoproto.jsontag) = "network_speed"];
+    //套餐类型
+    string package_type = 33 [(gogoproto.jsontag) = "package_type"];
+    //卡源
+    string source_name = 34 [(gogoproto.jsontag) = "source_name"];
+    //卡类型
+    string card_type = 35 [(gogoproto.jsontag) = "card_type"];
+    //赠送套餐实名状态
+    uint32 active_pg_status = 36 [(gogoproto.jsontag) = "active_pg_status"];
+    //套餐名称
+    string active_pg_name = 37 [(gogoproto.jsontag) = "active_pg_name"];
+    //赠送套餐方式 1个人 2手机
+    uint32 active_pg_way = 38 [(gogoproto.jsontag) = "active_pg_way"];
+    //套餐流量
+    double active_pg_usage = 39 [(gogoproto.jsontag) = "active_pg_usage"];
+    //赠送套餐id
+    uint32 active_pg_id = 40 [(gogoproto.jsontag) = "active_pg_id"];
+    //活体实名状态
+    uint32 living_realname = 41 [(gogoproto.jsontag) = "living_realname"];
+
+    repeated string authParam = 42 [(gogoproto.jsontag) = "authParam"];
+    //应用列表
+    repeated SimControlInfoEntity app_package_list = 43 [(gogoproto.jsontag) = "app_package_list"];
+
+}
+
+//////////////////////////实名///////////////////////////////////////
+
+message RealNameEntity {
+    //实名状态
+    int32 real_state = 1 [(gogoproto.jsontag) = "realState"];
+    //实名等级
+    uint32 real_name_level = 2 [(gogoproto.jsontag) = "realNameLevel"];
+    //
+    uint32 real_industry_id = 3 [(gogoproto.jsontag) = "realIndustryId"];
+    //实名赠送套餐状态
+    uint32 real_name_active_pg_status = 4 [(gogoproto.jsontag) = "realNameActivePgStatus"];
+    //真实姓名
+    string true_name = 5 [(gogoproto.jsontag) = "trueName"];
+    //身份证号码
+    string id_card = 6 [(gogoproto.jsontag) = "idCard"];
+    //阿里实名
+    uint32 real_state_by_ali = 7 [(gogoproto.jsontag) = "realStateByAli"];
+    //实名手机号
+    string real_mobile = 8 [(gogoproto.jsontag) = "realMobile"];
+    //是否活体实名
+    uint32 is_living = 9 [(gogoproto.jsontag) = "isLiving"];
+    //联通接口查询到的实名
+    uint32 lt_realname = 10 [(gogoproto.jsontag) = "ltRealname"];
+}
+
+//实名信息请求
+message GetSimCardRealNameDBReq {
+    string iccid = 1;
+    uint32 simid = 2;
+}
+message GetSimCardRealNameDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //实名信息
+    RealNameEntity real_name_info = 2;
+}
+
+//cms 删除卡实名信息缓存
+message DelSimCardRealNameCacheReq {
+    repeated uint32 sim_id = 1 [(gogoproto.jsontag) = "SimId"];
+}
+
+message DelSimCardRealNameCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+//cap 删除卡实名信息缓存
+message RemoveSimCardRealNameCacheReq {
+    uint32 sim_id = 1;
+}
+
+message RemoveSimCardRealNameCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//设置实名
+message SetSimCardRealNameCacheReq {
+    uint32 sim_id = 1;
+    //实名信息
+    RealNameEntity real_name_info = 2;
+    //剩余过期时间
+    uint32 ttl = 3;
+}
+
+message SetSimCardRealNameCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+message GetSimCardRealNameCacheReq {
+    uint32 sim_id = 1;
+}
+
+message GetSimCardRealNameCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    RealNameEntity real_name_info = 2;
+}
+
+////////////////////////////////////////////////////卡转换////////////////////////////////////////////////////
+message GetSimIdByIccidDBReq {
+    string iccid = 1;
+
+}
+message GetSimIdByIccidDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    uint32 sim_id = 2;
+    uint32 IMEI = 3;
+    uint32 IMSI = 4;
+    uint32 SIM = 5;
+}
+
+////////////////////////////////////////////////////全局映射 SIM IMEI IMSI ICCID///////////////////////////////
+//CMS请求全局映射
+message GetICCIDByGrobalMappingReq {
+    //卡号
+    string num = 1;
+    //类型 sim imei imsi
+    string num_type = 2;
+}
+
+message GetICCIDByGrobalMappingResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡号
+    string iccid = 2 [(gogoproto.jsontag) = "iccid"];
+}
+
+//从数据库获取数据
+message GetICCIDByGrobalMappingDBReq {
+    //卡号
+    repeated string num = 1;
+    //类型 sim imei imsi
+    string num_type = 2;
+}
+
+message GetICCIDByGrobalMappingDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡iccid列表
+    repeated NumIccIDEntity num_list = 2 [(gogoproto.jsontag) = "numList"];
+}
+
+//从缓存拿数据
+message GetICCIDByGrobalMappingCacheReq {
+    //卡号
+    string num = 1;
+    //类型 sim imei imsi
+    string num_type = 2;
+}
+
+message GetICCIDByGrobalMappingCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡号
+    string iccid = 2 [(gogoproto.jsontag) = "iccid"];
+}
+
+//设置缓存数据
+message SetICCIDByGrobalMappingCacheReq {
+    //卡号
+    string num = 1;
+    //类型 sim imei imsi
+    string num_type = 2;
+    //ICCID
+    string iccid = 3;
+}
+
+message SetICCIDByGrobalMappingCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//请求高德用量数据
+message GetGDDTUsageValueKBDBReq {
+    uint32 simid = 1;
+}
+
+//高德数据返回
+message GetGDDTUsageValueKBDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //月用量
+    double GDDT_month_usage = 2;
+    //总用量
+    double GDDT_total_usage = 3;
+}
+
+//取得sim卡当月叠加包流量Kb
+message GetPackageExpUsageNotGDDTDBReq {
+    uint32 simid = 1;
+}
+
+message GetPackageExpUsageNotGDDTDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //套装总流量
+    double package_exp_usage = 2;
+}
+
+//更新时间刷新
+message SetSimCardUpdatetimeDBReq {
+    uint32 simid = 1;
+    //更新时间
+    string update_time = 2;
+}
+
+message SetSimCardUpdatetimeDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//根据imei imsi sim 获取 iccid
+message GetICCIDByNumReq {
+    //卡号
+    repeated string num = 1;
+    //类型 sim imei imsi
+    string num_type = 2;
+}
+
+message GetICCIDByNumResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡iccid列表
+    repeated NumIccIDEntity num_list = 2 [(gogoproto.jsontag) = "numList"];
+}
+message NumIccIDEntity {
+    //卡号
+    string num = 1;
+    //ICCID
+    string iccid = 2;
+}
+
+///////////////////////////////////////////////////////
+//基础响应
+message BaseApiRespInfo {
+    //错误码
+    OPEN_API_STATUS error = 1 [(gogoproto.jsontag) = 'error'];
+    //错误原因
+    string reason = 2 [(gogoproto.jsontag) = 'reason'];
+}
+
+//定义接口返回错误码
+enum OPEN_API_STATUS {
+    //成功
+    OPEN_API_STATUS_SUCCESS = 0;
+    //卡号格式错误
+    OPEN_API_STATUS_SUCCESS_CARD_FORMTE_ERROR = 100001;
+    //卡号不存在
+    OPEN_API_STATUS_NOT_EXIST_CARD = 100002;
+    //userId不存在
+    OPEN_API_STATUS_NOT_EXIST_USER = 200001;
+    //无该接口权限
+    OPEN_API_STATUS_NOT_API_AUTH = 100008;
+    //签名失败
+    OPEN_API_STATUS_INVALID_SIGN = 200002;
+}
+
+//////////////////////////////////////////////////kafka/////////////////////////////////////////////////////////////
+
+message SyncSimInfoEntity {
+    //月用量
+    double month_usage = 1 [(gogoproto.jsontag) = "monthUsage"];
+    //iccid
+    string iccid = 2 [(gogoproto.jsontag) = "iccid"];
+    //分组
+    string customer = 3 [(gogoproto.jsontag) = "customer"];
+    //资费名称
+    string rate_plan = 4 [(gogoproto.jsontag) = "ratePlan"];
+    //卡状态
+    uint32 sim_state = 5 [(gogoproto.jsontag) = "simState"];
+    //资费ID
+    uint32 far_info_id = 6 [(gogoproto.jsontag) = "farInfoId"];
+}
+
+//请求写kafka
+message SyncSimInfoReq {
+    repeated SyncSimInfoEntity siminfo_list = 1 [(gogoproto.jsontag) = 'siminfoList'];
+}
+
+message SyncSimInfoResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除卡
+message DelSimCardByICCIDReq {
+    //卡号
+    repeated string iccid = 1;
+}
+
+message DelSimCardByICCIDResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//新增卡
+message AddSimCardByICCIDReq {
+    //卡号
+    repeated string iccid = 1;
+}
+
+
+message AddSimCardByICCIDResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+message SaveSimCardChacheReq {
+    RefreshSimCardEntity simcache_info = 1 [(gogoproto.jsontag) = "simcacheInfo"];
+}
+
+message SaveSimCardChacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//删除卡所有缓存
+message DelSimCardAllCacheReq {
+    repeated string iccid = 1;
+}
+
+message DelSimCardAllCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//设置缓存
+message RefreshSimCardEntity {
+    //卡状态
+    uint32 status = 1 [(gogoproto.jsontag) = "status"];
+    //当月用量（KB）
+    double month_usage = 2 [(gogoproto.jsontag) = "monthUsage"];
+    //分组
+    string customer = 3 [(gogoproto.jsontag) = "customer"];
+    //首次激活时间
+    string first_active = 4 [(gogoproto.jsontag) = "firstActive"];
+    //到期时间
+    string expire_time = 5 [(gogoproto.jsontag) = "expireTime"];
+    //网速
+    uint32 net_work_speed = 6 [(gogoproto.jsontag) = "NetWorkSpeed"];
+    //最近一笔续费时间
+    string renewals_time = 7 [(gogoproto.jsontag) = "renewalsTime"];
+    //续费金额
+    double renewal_amount = 8 [(gogoproto.jsontag) = "RenewalAmount"];
+    //最近激活
+    string last_active_time = 9 [(gogoproto.jsontag) = "LastActiveTime"];
+    //预付卡用量（KB）
+    double usage_data_flow = 10 [(gogoproto.jsontag) = "UsageDataFlow"];
+    //用量更新时间
+    string flow_left_time = 11 [(gogoproto.jsontag) = "flowLeftTime"];
+    //历史总用量（KB）
+    double total_month_usage_flow = 12 [(gogoproto.jsontag) = "TotalMonthUsageFlow"];
+    //iccid
+    string iccid = 13 [(gogoproto.jsontag) = "iccid"];
+    //simid
+    uint32 simid = 14 [(gogoproto.jsontag) = "simid"];
+    //版本号
+    uint64 ver = 15 [(gogoproto.jsontag) = "ver"];
+
+}
+
+//获取最新变动卡
+message RefreshSimCardAllCacheDBReq {
+    //开始版本号
+    uint64 ver = 1;
+    //每次处理数量
+    uint32 page_size = 2;
+}
+
+message RefreshSimCardAllCacheDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //列表
+    repeated RefreshSimCardEntity carlist = 2;
+}
+
+//设置最大版本号
+message SetPlaformSimMaxVerReq {
+    string ver_type = 1;
+    uint64 ver = 2;
+}
+
+//设置最大版本号返回
+message SetPlaformSimMaxVerResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//任务锁
+message SetTaskTryLockCacheReq {
+    //redis key
+    string lock_key = 1;
+    string lock_token = 2;
+    uint32 lock_ttl = 3;
+}
+
+//任务锁
+message SetTaskTryLockCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//任务锁解锁
+message SetTaskTryUnLockCacheReq {
+    string lock_key = 1;
+    string lock_token = 2;
+}
+
+//任务锁解锁
+message SetTaskTryUnLockCacheResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//缓存汇总
+message GetSimCardDetailCacheReq {
+    //iccid
+    string iccid = 1;
+    //1 所有汇总 2 渠道,套餐，实名赠送套餐
+    uint32 get_type = 2;
+    //gettype =2时候传参
+    SubSimCacheReq sub_req = 3;
+
+}
+
+message SubSimCacheReq {
+    //渠道id
+    uint32 hold_id = 1;
+    //套餐id
+    uint32 package_id = 2;
+}
+
+//缓存汇总
+message GetSimCardDetailCacheResp {
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_card_base_info = 2;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 3;
+    //实名信息
+    RealNameEntity real_name_info = 4;
+    //渠道
+    HoldEntity hold_info = 5; //渠道信息
+    //套餐信息
+    SimPackageEntity sim_package_info = 6;
+    //实名赠送套餐信息
+    SimPackageEntity sim_realname_package_info = 7;
+}
+
+message GetSimCardDetailDBReq {
+    //iccid
+    string iccid = 1;
+}
+message GetSimCardDetailDBResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //卡基础信息
+    SimCardBaseInfoEntity sim_card_base_info = 2;
+    //卡用量信息
+    SimCardUsageInfoEntity sim_usage_info = 3;
+    //实名信息
+    RealNameEntity real_name_info = 4;
+}
+
+//获取内容套餐的剩余用量
+message GetSurplusUsageDBReq{
+    string iccid =1;
+}
+
+message GetSurplusUsageDBResp{
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //应用剩余用量
+    repeated SurplusUsageEntity group_surplus_usage_list=2;
+}
+message SurplusUsageEntity{
+    //应用ID
+    uint32 group_id =1;
+    //描述
+    string description =2;
+    //剩余用量
+    double surplus_usage=3;
+}
+
+//"groupId":"8","description":"白名单应用组","surplus_usage":"1048576.00"

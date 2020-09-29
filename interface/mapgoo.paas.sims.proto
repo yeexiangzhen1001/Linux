@@ -1,0 +1,335 @@
+syntax = "proto3";
+
+package mapgoo.pass.sims;
+
+option go_package = "api";
+
+import "google/api/annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import public "mapgoo.paas.base.proto";
+import public "mapgoo.paas.simcard.proto";
+
+service simsProxy {
+    // 获取卡类型
+    rpc getSimCardType(GetSimCardTypeReq) returns (GetSimCardTypeResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getSimCardType"
+        };
+    };
+
+    // 获取卡基本信息
+    rpc getSimBaseInfo(SimBaseInfoReq) returns (SimBaseInfoResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getSimBaseInfo"
+        };
+    };
+
+    // 批量查卡信息
+    rpc getBatchSimInfo(BatchBatchSimInfoReq) returns (BatchBatchSimInfoResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getBatchSimInfo"
+        };
+    };
+
+    // 获取续费套餐列表
+    rpc getRenewPackageList(GetRenewPackageListReq) returns (GetRenewPackageListResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getRenewPackageList"
+        };
+    };
+
+    // 获取用户续费套餐列表
+    rpc getUserRenewPackageList(UserRenewPackageListReq) returns (UserRenewPackageListResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getUserRenewPackageList"
+        };
+    };
+
+    // 续费订单状态查询
+    rpc renewalsOrderStatus(RenewalsOrderStatusReq) returns (RenewalsOrderStatusResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/renewalsOrderStatus"
+        };
+    };
+
+    // 查询卡续费记录
+    rpc renewalRecords(RenewalRecordsReq) returns (RenewalRecordsResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/renewalRecords"
+        };
+    };
+
+    // 同步卡用量信息
+    rpc synchTerminalUsages(SynchTerminalUsagesReq) returns (SynchTerminalUsagesResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/synchTerminalUsages"
+        };
+    };
+
+    // 历史月用量查询
+    rpc historyMonthUsage(HistoryMonthUsageReq) returns (HistoryMonthUsageResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/historyMonthUsage"
+        };
+    };
+
+    // 获取用户下首次激活的卡
+    rpc getUserActivatedTerminals(UserActivatedTerminalsReq) returns (UserActivatedTerminalsResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getUserActivatedTerminals"
+        };
+    };
+
+    // 获取用户下首次出库的卡
+    rpc getUserOutStockTerminals(UserOutStockTerminalsReq) returns (UserOutStockTerminalsResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getUserOutStockTerminals"
+        };
+    };
+
+    // 获取查询续费二维码
+    rpc getTerminalFollowQrcode(GetTerminalFollowQrcodeReq) returns (GetTerminalFollowQrcodeResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getTerminalFollowQrcode"
+        };
+    };
+
+    // 获取微信端查卡初步信息
+    rpc GetWxCardStartInfo(GetWxCardStartInfoReq) returns (GetWxCardStartInfoResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getWxCardStartInfo"
+        };
+    }
+
+    // 导入联通卡账单
+    rpc UploadLtMonthBill(UploadLtMonthBillReq) returns (UploadLtMonthBillResp) {
+        option (google.api.http) = {
+            post:"/cms/sims/uploadLtMonthBill"
+        };
+    };
+
+    // 查询联通卡账单
+    rpc GetLtMonthBill(GetLtMonthBillReq) returns (GetLtMonthBillResp) {
+        option (google.api.http) = {
+            get:"/cms/sims/getLtMonthBill"
+        };
+    };
+}
+
+// 获取卡id接口
+message GetSimCardTypeReq
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+}
+message GetSimCardTypeResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡ID
+    uint32 simid = 2;       
+    // 卡类型
+    mapgoo.paas.simcard.SimCardType card_type = 3;
+}
+
+// 卡基础信息请求
+message SimBaseInfoReq
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+}
+message SimBaseInfoResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡基础信息实体
+    mapgoo.paas.simcard.SimBaseInfo baseInfo = 2;        
+}
+
+// 批量查卡信息请求
+message BatchBatchSimInfoReq 
+{
+    repeated mapgoo.paas.base.SimcardId list = 1;
+}
+message BatchBatchSimInfoResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡信息列表
+    repeated mapgoo.paas.simcard.BatchSimInfo list = 2;                  
+}
+
+// 套餐列表请求
+message GetRenewPackageListReq
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+}
+message GetRenewPackageListResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 套餐信息实体
+    repeated mapgoo.paas.simcard.RenewPackageInfo package_list = 2;
+}
+
+// 用户可续费套餐列表请求
+message UserRenewPackageListReq
+{
+    // 用户/渠道ID
+    uint32 hold_id = 1;
+}
+message UserRenewPackageListResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 用户可续套餐列表结果
+    repeated mapgoo.paas.simcard.UserPackageList list = 2;
+}
+
+// 续费订单记录查询请求
+message RenewalsOrderStatusReq
+{
+    // 订单编号,可选,两项必填一项
+    string ordersn = 1;
+    // 用户订单编号,可选
+    string user_ordersn = 2;
+}
+message RenewalsOrderStatusResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 续费状态,1代表成功,0代表失败
+    uint32 renewals_status = 2;             
+    // 续费时间,格式yyyy-MM-dd HH:mm:ss
+    uint64 renewals_time = 3;
+}
+
+// 同步卡用量信息请求
+message SynchTerminalUsagesReq
+{
+    repeated mapgoo.paas.base.SimcardId simcards = 1;
+}
+message SynchTerminalUsagesResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 调用同步卡用量实体列表
+    repeated mapgoo.paas.simcard.SynchTerminalUsages terminals = 2;
+}
+
+// 查卡续费记录请求
+message RenewalRecordsReq 
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+    // 查询月份，格式：201605，不填默认当月
+    string query_month = 2;
+}
+message RenewalRecordsResp 
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 续费记录信息
+    repeated mapgoo.paas.simcard.RenewalRecordsInfo renewal_records = 2;
+}
+
+// 历史月用量接口请求
+message HistoryMonthUsageReq
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+    // 查询开始月份,格式yyyyMM
+    string month_start = 2;
+    // 查询结束月份,格式yyyyMM
+    string month_end = 3;
+}
+message HistoryMonthUsageResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 月账单用量信息
+    repeated mapgoo.paas.simcard.MonthBillUsageInfo bills = 2;
+}
+
+// 用户下首次激活的卡请求
+message UserActivatedTerminalsReq
+{
+    // 用户id
+    uint32 hold_id = 1;
+    // 查询开始时间,格式yyyy-MM-dd
+    string start_day = 2;
+    // 查询结束时间,格式yyyy-MM-dd
+    string end_day = 3;
+}
+message UserActivatedTerminalsResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 渠道下激活的设备列表
+    repeated mapgoo.paas.simcard.ActivatedTerminalInfo list = 2;
+}
+
+// 获取用户下首次出库的卡请求
+message UserOutStockTerminalsReq
+{
+    // 用户id
+    uint32 hold_id = 1;
+    // 查询开始时间,格式yyyy-MM-dd
+    string start_day = 2;
+    // 查询结束时间,格式yyyy-MM-dd
+    string end_day = 3;
+}
+message UserOutStockTerminalsResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 渠道下出库的卡列表
+    repeated mapgoo.paas.simcard.OutStockTerminalInfo list = 2;
+}
+
+// 获取查询续费二维码请求
+message GetTerminalFollowQrcodeReq
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+}
+message GetTerminalFollowQrcodeResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 二维码地址
+    string qrcode_url = 2;
+}
+
+// 微信端查卡初步信息接口
+message GetWxCardStartInfoReq 
+{
+    // 关键词，可以是ICCID，Sim，IMEI or IMSI等
+    string key = 1;
+}
+message GetWxCardStartInfoResp 
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 卡ID
+    uint32 simid = 2;
+    // 卡类型
+    mapgoo.paas.simcard.SimCardType card_type = 3;
+    string iccid = 4;
+    string sim = 5;
+    string api_code = 6;
+    uint32 active_state = 7;
+    bool is_init_package = 8;
+    bool is_personal_realname = 9;
+    bool is_active_realname = 10;
+    // 实名等级
+    uint32 realname_level = 11;
+    string realname_mobile = 12;
+    uint32 source_type = 13;
+    string alibind_imei = 14;
+}
+
+// 导入联通卡账单请求参数
+message UploadLtMonthBillReq
+{
+    // 账单表导入数组
+    repeated mapgoo.paas.simcard.BillLtMonth_Table bills = 1;
+}
+message UploadLtMonthBillResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+// 查询联通卡账单请求
+message GetLtMonthBillReq
+{
+    mapgoo.paas.base.SimcardId simcard = 1;
+}
+message GetLtMonthBillResp
+{
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    // 账单数组
+    repeated mapgoo.paas.simcard.BillLtMonth_Table bills = 2;
+}

@@ -1,0 +1,376 @@
+syntax = "proto3";
+
+package mapgoo.pass.dcs.data;
+option go_package = "api";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+//数据包类型
+enum MessageType {
+    MSG_TYPE_NONE = 0;
+    MSG_TYPE_LOGIN = 0x0001;
+    MSG_TYPE_LOCATION = 0x0002;
+    MSG_TYPE_HEARTBEAT = 0x0004;
+    MSG_TYPE_OBD_PID = 0x0008;
+
+    MSG_TYPE_OBD_TRAVEL_START_EVENT = 0x0010;
+    MSG_TYPE_OBD_TRAVEL_STOP_EVENT = 0x0020;
+    MSG_TYPE_ODB_TRAVEL = 0x0040;
+    MSG_TYPE_ALARM = 0x0080;
+
+    MSG_TYPE_STATUS = 0x0100;
+    MSG_TYPE_REPLY = 0x0200;
+    MSG_TYPE_ARGS = 0x0400;
+    MSG_TYPE_REQ_INFO = 0x0800;
+
+    MSG_TYPE_MEDIA_EVENT = 0x1000;
+    MSG_TYPE_DRIVE_EVENT = 0x2000;
+    MSG_TYPE_DEVICE_SELF_REG = 0x4000;
+    MSG_TYPE_SSVINFO_REPORT = 0x8000;
+
+    MSG_TYPE_DEVICE_CACPCITY = 0x10000;
+	MSG_TYPE_BS_DATA = 0x20000;
+	MSG_TYPE_WIFI_DATA = 0x40000;
+	MSG_TYPE_CMD_ACK = 0x80000;
+}
+
+enum CaptureType {
+  CAPTURE_TYPE_VERY_OLD = 0;        //最老的方案，麦谷智云下发通道，抓拍保存到七牛，然后上传到后台
+  CAPTURE_TYPE_SS = 1;              //塞尚方案
+  CAPTURE_TYPE_VIDEO3 = 2;          //视频3.0方案
+  CAPTURE_TYPE_NONE = -1;
+}
+
+//定位类型
+enum LocationaType {
+	EM_ACCURATEGPS_TYPE = 0;
+	EM_NOACCURATEGPS_TYPE = 1;
+	EM_BS_TYPE = 2;
+	EM_WIFI_TYPE = 3;
+	EM_MIXED_TYPE = 4;
+    EM_NONE_TYPE = -1;
+}
+
+enum DeviceReqType {
+	REQ_TYPE_GPS_ADDR_PARSE = 0;
+	REQ_TYPE_LBS_ADDR_PARSE = 1;
+    REQ_TYPE_UNKNONW = -1;
+}
+
+//事件类型
+enum MediaEventType
+{
+    MED_EVENT_TYPE_UNKNOWN = 0;
+	MED_EVENT_TYPE_ACC_ON = 1;
+	MED_EVENT_TYPE_ACC_OFF = 2;
+	MED_EVENT_TYPE_BRAKE = 3;
+	MED_EVENT_TYPE_LOCK_SHADOW = 4;
+	MED_EVENT_TYPE_OVER_SPEED = 5;
+	MED_EVENT_TYPE_IDLE_SPEED = 6;
+	MED_EVENT_TYPE_NORMAL = 7;
+	MED_EVENT_TYPE_REMOTE_PHOTO = 101;
+	MED_EVENT_TYPE_SHAKE_ALARM_PHOTO = 102;
+	MED_EVENT_TYPE_REMOTE_VEDIO = 103;
+	MED_EVENT_TYPE_CAR_ABNORMAL_PHOTO = 104;
+	MED_EVENT_TYPE_SHAKE_ALARM_VEDIO = 105;
+	MED_EVENT_TYPE_CAR_ABNORMAL_VEDIO = 106;
+	MED_EVENT_TYPE_SOS_ALARM = 107;
+	MED_EVENT_TYPE_FACE_RECOGNITION = 120;
+	MED_EVENT_TYPE_DRIVE_BEHAVIOR = 150;
+	MED_EVENT_TYPE_SAISHANG_TAKE = 160;
+}
+
+//视频图片文件类型
+enum MediaFileType
+{
+    MED_FILE_TYPE_UNKNOWN = 0;      //未知类型
+	MED_FILE_TYPE_PHOTO = 1;		//图片
+	MED_FILE_TYPE_VEDIO = 2;		//视频
+	MED_FILE_TYPE_AUDIO = 3;		//音频
+}
+
+enum CoordType 
+{
+	COORD_TYPE_WGS84 = 0;			//地理坐标
+	COORD_TYPE_GCJ02 = 1;			//国测局加密坐标
+	COORD_TYPE_BD09LL = 2;			//百度坐标
+	COORD_TYPE_SOUGO = 3;			//搜狗坐标
+	COORD_TYPE_TUBA = 4;			//图吧坐标
+}
+
+enum GATEWAY_TYPE
+{
+	GATEWAY_IAS = 0;				//IAS网关
+	GATEWAY_SSVP = 1;				//塞尚SSVP
+	GATEWAY_HUAWEI_OC = 2;			//华为Ocean Connect
+	GATEWAY_BLACKHOLE = 3;			//Blackhole网关
+	GATEWAY_SOCOL_EXPIRED = 4;	    //数据平台-过期路由
+    GATEWAY_SOCOL_PERSIST = 5;	    //数据平台-永久路由
+    GATEWAY_ALI_IOTHUB = 6;			//阿里IoTHub
+}
+
+//设备信息
+message ReportDeviceInfo
+{
+    string imei = 1;           //设备IMEI
+    uint32 objId = 2;          //设备ID
+    uint32 holdId = 3;         //HoldId
+    uint32 mdtTypeId = 4;      //设备类型ID
+    string iccid = 5;          //卡ICCID
+    string sim = 6;            //SIM卡号
+    string factory = 7;        //厂商
+    string brand = 8;          //品牌
+    string ssvid= 9;           //塞尚平台的设备ID
+    uint32 ssvcount = 10;      //塞尚平台设备摄像头个数
+	string protocol = 11;
+}
+
+//定位信号强
+message GPSSignal {
+	uint32 gps_satelite_num = 1;       //GPS卫星颗数
+    uint32 beidou_satelite_num = 2;    //北斗卫星颗数
+}
+
+//位置数据
+message PosInfo {
+	
+	uint64 gps_time = 1;           //定位时间(单位：毫秒）
+	int32 lat = 2;                //纬度(十进制) * 1000000
+	int32 lng = 3;                //经度(十进制) * 1000000
+	uint32 speed = 4;              //速度
+	uint32 direct = 5;             //方向
+	LocationaType gps_flag = 6;    //定位类型
+	uint32 mileage = 7;            //里程（单位：m）
+    int32 altitude = 8;             //海拔
+	GPSSignal signal = 9;          //GPS(北斗)卫星颗数
+	CoordType coord_type = 10;		//位置坐标系
+	uint64 system_time = 11;		//设备定位时的系统时间
+	uint32 pos_data_size = 12;		//单个轨迹点的大小
+}
+
+//状态数据
+message StatusInfo {
+	uint32 gsm_signal = 1;             //GSM信号强度
+	uint32 battery = 2;                //电池电量
+	bool invalidBatteryForG9A = 3;     //G9A设备是否带电量
+	bool powerOn = 4;                  //是否断电
+	bool accOn = 5;                    //ACC状态
+}
+
+//单个基站数据
+message CellInfo {
+	uint32 lac = 1;                    //小区号
+	uint32 cell_id = 2;                //基站号
+	uint32 signal = 3;                 //信号强度
+}
+
+//基站数据
+message BSInfo {
+	uint32 mcc = 1;                    //国家代码
+	uint32 mnc = 2;                    //运营商代码
+	repeated CellInfo bsInfos = 3;              //基站数据
+}
+
+//WIFI数据
+message WIFIData {
+	string mac = 1;                    //mac地址
+	uint32 signal = 2;                 //信号强度
+}
+
+message WIFIInfo {
+	uint32 timingadvanceValu = 1;
+	BSInfo bsInfo = 2;
+	repeated WIFIData wifiDataList = 3;
+}
+
+//报警数据
+message AlarmInfo {
+	repeated uint32 alarmList = 1;              //告警标志位
+}
+
+message OBDPID 
+{
+	 string pid = 1;
+	 string value = 2;
+}
+
+//OBD行程数据
+message OBDTravelInfo
+{
+    int32 travel_flag = 1;				// 行程类型
+    string seq_fault_code = 2; 		//OBD fault code
+    int32 travel_mileage = 3;			// 行程里程
+    int32 travel_oil = 4;              //Travel oil
+    int32 over_speed_count = 5;        //Over speed count
+    int32 celerate_count = 6;          //Celerate count
+    int32 decelerate_count = 7;        //Decelerate count
+    int32 travel_period = 8;          //Travel period, uint: second
+    int32 drive_period = 9;           //Drive period, uint: second
+    int32 stop_accon_count = 10;      //Stop but ACC ON count
+    int32 start_lng = 11;             //Travels start longitude
+    int32 start_lat = 12;             //Travels start latitude
+    int32 start_time = 13;            //Travels start time
+}
+
+message DeviceReqInfo {
+	DeviceReqType req_type = 1;
+	PosInfo gps_info = 2;
+	BSInfo lbs_info = 3;
+}
+
+message DeviceParamReq {
+	string paramKey = 1;		// 设备参数key
+	string paramValue = 2;		// 设备参数value
+}
+
+message CarRate {
+	//uint32 objectId = 1;
+	uint32 beginTime = 1;		// 开始时间
+	uint32 endTime = 2;		// 结束时间 
+	repeated uint32 speed = 3;			// 期间的速率列表
+	repeated uint32 direct = 4;			// 期间的方向列表
+}
+
+message MediaInfo
+{
+	MediaFileType type = 1;		//类型： 1 - 图片 2 - 视频
+	string url = 2;				//url
+	bool has_watermark = 4;		//是否有水印
+	PosInfo position = 6;			//位置信息
+}
+
+message MediaEventInfo
+{
+	MediaEventType eventType = 1;
+	repeated MediaInfo mediaInfoList = 2;
+	uint32 eventTime = 3;			//触发时间
+	uint32 snapSeq = 4; 			//抓拍流水号
+	uint32 snapRes = 5;			//抓拍结果
+}
+
+message KafkaDriveEventInfo
+{
+	uint32 driveEventType = 1;		// 驾驶行为事件类型
+	string startTime = 2;			// 开始时间
+	string stopTime = 3;			// 结束时间
+	PosInfo startPos = 4;			// 开始位置
+	PosInfo stopPos = 5;			// 结束位置
+}
+
+message DeviceRegister
+{
+	string lincese = 1;		//渠道标识改为软件版本号
+	uint32 isModify = 2;		//是否为修改：1-修改 0-新增
+	string appKey = 3;
+}
+
+message SSVInfo
+{
+  string ssvid = 1;
+  string ssvidCount = 2;
+}
+
+message DeviceCapacity
+{
+  CaptureType captureType = 1;     //抓拍支持模式
+  uint32 cameraStatus = 2;         //摄像头状态
+  bool isDrivingBehavior = 3;      //是否支持驾驶行为上传
+  string cameraType = 4;           //摄像头
+}
+
+message CmdAck
+{
+	string seq = 1;
+	string source = 2;
+}
+
+message RouterInfoReq
+{
+	string gateway_ip = 1;				//网关IP
+	uint32 gateway_device_port = 2;	//网关长连接监听端口
+	uint32 gateway_cmd_port = 3;		//网关指令发送监听端口
+	GATEWAY_TYPE gateway_type = 4;	//网关类型
+	string device_ip = 5;				//设备端IP
+	uint32 device_port = 6;			//设备端Port
+}
+
+message ActiveSafetyReq
+{
+	uint32 event_type = 1;		// 事件类型
+	uint32 event_time = 2;		// 事件时间
+	string annex_id = 3;		// 附件标识码
+	string annex_number = 4;	// 附件编号
+	uint32 speed = 5;			// 速度
+	int32 lng = 6;			// 经度
+	int32 lat = 7;			// 维度
+}
+
+message VideoInfo
+{
+	uint32 channel = 1;		// 通道
+	string begin_time = 2;		// 开始时间
+	string end_time = 3;		// 结束时间
+	uint64 alarm_type = 4;		// 告警类型
+	uint32 resource_type = 5;	// 音视频资源类型
+	uint32 stream_type = 6;		// 码流类型
+	uint32 storage_type = 7;	// 存储器类型
+	uint32 fileSize = 8;		// 文件大小
+}
+
+message VideoResponseInfo
+{
+	uint32 seq = 1;			// 流水号
+	int32 result = 2;			// 录像上传结果
+	repeated VideoInfo lists = 3;		// 录像列表
+}
+
+message DeviceReportData
+{
+    uint64 seq = 1;						//上报流水号
+	ReportDeviceInfo deviceInfo = 2;			//设备信息
+	uint64 msgType = 3;					//消息类型
+	uint32 rcvTime = 4;					//接受时间
+	string statusDesc = 5;					//状态描述
+	repeated PosInfo posInfoList = 6;				//位置数据
+	repeated DeviceParamReq devParamList = 7;		//设备参数数据
+	BSInfo bsInfo = 8;						//基站数据
+	WIFIInfo wifiInfo = 9;					//wifi数据
+	StatusInfo statusInfo = 10;			//状态数据
+	AlarmInfo alarmInfo = 11;				//报警数据
+	OBDTravelInfo obdTravelInfo = 12;		//OBD行程数据
+	DeviceReqInfo devReqInfo = 13;		//设备请求数据
+	CarRate carRate = 14;					//车率数据
+	MediaEventInfo mediaEventInfo = 15;	//多媒体事件数据
+	KafkaDriveEventInfo driveEventInfo = 16;	//驾驶行为数据
+	DeviceRegister deviceSelfRef = 17;	//设备自注册
+    SSVInfo ssvInfo = 18;                 //SSVID上报
+    DeviceCapacity DeviceCapacity = 19;  //设备能力上报
+	repeated OBDPID obdPids = 20;					//OBD PID上报
+	CmdAck cmdAck = 21;					//指令回复
+	RouterInfoReq routerInfo = 22;			//设备路由信息
+	ActiveSafetyReq asInfo = 23;			//主动安全信息
+	VideoResponseInfo videoInfo = 24;		//部标远程调阅信息
+}
+
+message DeviceReportDataACK
+{
+  	uint32 error_code = 1;                        //上报数据处理结果错误码(0-成功，非0为错误)
+  	string error_msg = 2;						   //上报数据处理结果错误信息
+  	string wechatbind_qrcode = 3;					//任车行公众号绑定二维码
+	string recharge_url = 4;						//充值续费地址
+}
+
+message ServerPushData
+{
+	uint64 seq = 1;  							//流水号(如果是回应上报流水号，则需要跟上报流水号对应)
+	DeviceReportDataACK reportDataACK = 2;		//上报数据的回应
+}
+
+message KafkaDeviceTrace{
+    string imei = 1;
+    uint32 trace_type = 2; //日志类型,0-跟踪
+    string from_service = 3;//日志来源服务器
+	string trace_span = 4; //跟踪日志标题
+    string trace_text = 5; //跟踪日志内容
+    uint32 create_time = 6; //创建时间
+}

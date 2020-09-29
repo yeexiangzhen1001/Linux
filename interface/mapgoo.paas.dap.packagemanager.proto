@@ -1,0 +1,201 @@
+syntax = "proto3";
+package mapgoo.paas.dap.packagemanager;
+
+import "mapgoo.paas.packagemanager.data.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+service DapPackageManageService {
+  //获取运营套餐云记录仪配置
+  rpc GetRecorderConfig(mapgoo.paas.packagemanager.data.GetRecorderConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetRecorderConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetRecorderConfig"
+    };
+  }
+
+  //添加运营套餐云记录仪配置
+  rpc AddRecorderConfig(mapgoo.paas.packagemanager.data.AddRecorderConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.AddRecorderConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/AddRecorderConfig"
+    };
+  }
+
+  //添加用户套餐
+  rpc AddUserPackage(mapgoo.paas.packagemanager.data.AddUserPackageDBReq)
+      returns (mapgoo.paas.packagemanager.data.AddUserPackageDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/AddUserPackage"
+    };
+  }
+
+  //修改用户套餐
+  rpc UpdateUserPackage(mapgoo.paas.packagemanager.data.UpdateUserPackageDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateUserPackageDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdateUserPackage"
+    };
+  }
+
+  //获取用户套餐
+  rpc GetUserPackage(mapgoo.paas.packagemanager.data.GetUserPackageDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetUserPackageDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetUserPackage"
+    };
+  }
+
+  //获取记录仪结算明细
+  rpc GetRecorderStatement(
+      mapgoo.paas.packagemanager.data.GetRecorderStatementDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetRecorderStatementDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetRecorderStatement"
+    };
+  }
+
+  //添加记录仪结算明细
+  rpc AddRecorderStatement(
+      mapgoo.paas.packagemanager.data.AddRecorderStatementDBReq)
+      returns (mapgoo.paas.packagemanager.data.AddRecorderStatementDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/AddRecorderStatement"
+    };
+  }
+
+  //修改记录仪结算明细
+  rpc UpdateRecorderStatement(
+      mapgoo.paas.packagemanager.data.UpdateRecorderStatementDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateRecorderStatementDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdateRecorderStatement"
+    };
+  }
+
+  //获取运营套餐列表
+  rpc GetPackageConfig(mapgoo.paas.packagemanager.data.GetPackageConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetPackageConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetPackageConfig"
+    };
+  }
+
+  //添加运营套餐
+  rpc AddPackageConfig(mapgoo.paas.packagemanager.data.AddPackageConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.AddPackageConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/AddPackageConfig"
+    };
+  }
+
+  //修改运营套餐
+  rpc UpdatePackageConfig(
+      mapgoo.paas.packagemanager.data.UpdatePackageConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdatePackageConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdatePackageConfig"
+    };
+  }
+
+  //修改运营套餐云记录仪配置
+  rpc UpdateRecorderConfig(
+      mapgoo.paas.packagemanager.data.UpdateRecorderConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateRecorderConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdateRecorderConfig"
+    };
+  }
+
+  //获取用户已经购买的套餐列表
+  rpc GetUserBoughtPackage(
+      mapgoo.paas.packagemanager.data.GetUserBoughtPackageDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetUserBoughtPackageDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetUserBoughtPackage"
+    };
+  }
+
+  //更新里程耗尽的结算记录套餐状态
+  rpc UpdateStatememntState(
+      mapgoo.paas.packagemanager.data.UpdateStatememntStateDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateStatememntStateDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdateStatememntState"
+    };
+  }
+
+  //获取套餐结算设备列表
+  rpc GetStatementObjects(
+      mapgoo.paas.packagemanager.data.GetStatementObjectsDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetStatementObjectsDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetStatementObjects"
+    };
+  }
+
+  //添加某iccid的直播套餐
+  rpc AddLiveStatement(mapgoo.paas.packagemanager.data.AddLiveStatementDBReq)
+      returns (mapgoo.paas.packagemanager.data.AddLiveStatementDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/AddLiveStatement"
+    };
+  }
+
+  
+  //获取某iccid的直播套餐
+  rpc GetLiveStatement(mapgoo.paas.packagemanager.data.GetLiveStatementDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetLiveStatementDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetLiveStatement"
+    };
+  }
+
+  //修改某iccid的直播套餐
+  rpc UpdateLiveStatement(
+      mapgoo.paas.packagemanager.data.UpdateLiveStatementDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateLiveStatementDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdateLiveStatement"
+    };
+  }
+
+  //添加直播套餐的配置
+  rpc AddLiveConfig(mapgoo.paas.packagemanager.data.AddLiveConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.AddLiveConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/AddLiveConfig"
+    };
+  }
+
+  //获取直播套餐的配置
+  rpc GetLiveConfig(mapgoo.paas.packagemanager.data.GetLiveConfigDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetLiveConfigDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetLiveConfig"
+    };
+  }
+
+  //修改所有到期的直播套餐状态
+  rpc UpdateLivePackageState(
+      mapgoo.paas.packagemanager.data.UpdateLivePackageStateDBReq)
+      returns (mapgoo.paas.packagemanager.data.UpdateLivePackageStateDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/UpdateLivePackageState"
+    };
+  }
+
+  //获取用户已经购买的直播套餐列表
+  rpc GetUserLivePackage(
+      mapgoo.paas.packagemanager.data.GetUserLivePackageDBReq)
+      returns (mapgoo.paas.packagemanager.data.GetUserLivePackageDBResp) {
+    option (google.api.http) = {
+      post : "/dap/api/GetUserLivePackage"
+    };
+  }
+
+} // end

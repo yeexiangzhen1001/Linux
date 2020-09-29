@@ -1,0 +1,271 @@
+syntax = "proto3";
+package mapgoo.jtt808.cmd;
+
+enum Version {
+	JTT808_DEFAULT = 0;
+    JTT808_VERSION = 1;
+}
+
+//消息类型
+enum MessageType {
+	JTT808_CMD_DEFAULT = 0x0000;
+    JTT808_CMD_BA0B = 0x0001;
+    JTT808_CMD_BA06 = 0x0002;
+    JTT808_CMD_PZ = 0x0003;
+    JTT808_CMD_GG = 0x0004;
+    JTT808_CMD_CG = 0x0005;
+    JTT808_CMD_HX = 0x0006;
+    JTT808_CMD_AGPS = 0x0007;
+    JTT808_CMD_LIVE = 0x0008;
+    JTT808_CMD_SLEEP_WM = 0x0009;
+    JTT808_CMD_SLEEP_BI = 0x000A;
+    JTT808_CMD_MODIFY_PARAM = 0x000B;
+    JTT808_CMD_FILE_DOWN = 0x000C;
+    JTT808_CMD_SYNC = 0x000D;
+    JTT808_CMD_SF = 0x000E;
+    JTT808_CMD_ACC = 0x0010;
+    JTT808_CMD_AJ = 0x0011;
+    JTT808_CMD_CLOSE = 0x0012;
+    JTT808_CMD_DH = 0x0013;
+    JTT808_CMD_TC = 0x0014;
+    JTT808_CMD_AS = 0x0015;
+    JTT808_CMD_DD = 0x0016;
+    JTT808_CMD_WM = 0x0017;
+    JTT808_CMD_BA05 = 0x0018;
+    JTT808_CMD_BA0A = 0x0019;
+    JTT808_CMD_MULTITIME = 0x001A;
+    JTT808_CMD_SP = 0x001B;
+    JTT808_CMD_SWITCH = 0x001C;
+    JTT808_CMD_CA = 0x001D;
+    JTT808_CMD_CB = 0x001E;
+    JTT808_CMD_CH = 0x001F;
+    JTT808_CMD_CD = 0x0020;
+    JTT808_CMD_REMOTE_ACCESS = 0x0021;
+    JTT808_CMD_CAPTURE = 0x0022;
+    JTT808_CMD_FORMAT = 0x0023;
+    JTT808_CMD_RESTART = 0x0024;
+    JTT808_CMD_FACTORY_SET = 0x0025;
+    JTT808_CMD_MODIFY_PWD = 0x0026;
+    JTT808_CMD_CHARGE_PUSH = 0x0027;
+    JTT808_CMD_VIDEO_EX = 0x0028;
+    JTT808_CMD_RED_PUSH = 0x0029;
+    JTT808_CMD_IMAGE_EX = 0x002A;
+	JTT808_CMD_VEDIO = 0x002B;
+}
+
+
+//message BA0B {//设置防抢
+//}
+
+message BA06 {//远程启动车辆 BA6
+	int32 min = 1;//时间（单位分钟）
+}
+
+message PZ {//碰撞报警开关 AI
+	bool isOn = 1;
+}
+
+message GG {//光感报警开关 BD
+	bool isOn = 1;
+}
+
+message CG {//磁感报警开关 BD
+	bool isOn = 1;
+}
+
+message HX {//智能唤醒功能开关 AI
+	bool isOn = 1;
+}
+
+message AGPS {//AGPS辅助定位开关 AI
+	bool isOn = 1;
+}
+
+message Live {//直播指令下发 BAF
+	string imei = 1;
+	string seq = 2;//流水号
+	bool flag = 3;//开始或结束
+	int32 channel = 4;//通道号
+	string url = 5;
+	int32 rate = 6;
+	string resolution = 7;
+}
+
+message SleepWM {//潜伏模式设置 AH
+	bool isOn = 1;
+}
+
+message SleepBI {//潜伏模式下定时回传间隔设置 AH
+	int32 sec = 1;//时间（单位秒）
+}
+
+message ModifyParam {//参数修改提醒下发 BAH
+	string seq = 1;
+}
+ 
+message FileDown {//文件提取 BAI
+	string seq = 1;
+	int32 count = 2;
+	string filePath = 3;
+}
+
+message Sync {//目录树同步 BAJ
+	string seq = 1;
+}
+
+message SF {//原地设防功能
+	uint32 num = 1;//NUM(Num:表示数字，0～255)
+}
+
+message ACC {//设置ACC休眠开关  AI
+	bool isOn = 1;
+}
+
+message AJ {//终端参数查询 AX AJ
+	int32 num = 1;//NUM(Num:表示数字，0～255)
+}
+
+message Close {//设置短信通知开关 AI
+	bool isOn = 1;
+}
+
+message DH {//设置电话通知开关 AI
+	bool isOn = 1;
+}
+
+message TC {//设置推车报警开关 AI
+	bool isOn = 1;
+}
+
+message AS {//设置暗锁报警开关 AI
+	bool isOn = 1;
+}
+
+message DD {//设置断电报警（拔出报警）开关 AI
+	bool isOn = 1;
+}
+
+
+message WM {//唤醒与休眠设置 AH
+	int32 mode = 1;//工作模式：0：休眠，1唤醒；
+	int32 sec = 2;//唤醒间隔
+}
+
+//message BA05 {//寻车指令
+//}
+
+//message BA0A {//远程开后尾箱
+//}
+
+message DayTime {
+	int32 hour = 1;
+	int32 min = 2;
+}
+
+message MultiTime {//多点回传参数设置 AH
+	repeated DayTime dayTime = 1;
+}
+
+message SP {//省电模式下固定时间点及发送次数设置 GB
+	DayTime dayTime = 1;
+	int32 count = 2;
+}
+
+message Switch {//开关集设置 AH
+	bool modeSwitch = 1;//模式开关
+	bool method = 2;//方式(0:分钟方式,1:时刻方式)
+	DayTime dayTime = 3;//如果是分钟格式,就代表分钟数,比如12,代表12分钟;如果是时刻格式,就代表时刻点,比如1234,代表12:34
+}
+
+
+message CA {//公共信息  微信绑定 解绑通知 语音播报 CA
+	string src = 1;
+}
+
+message CB {//抢答信息 CB
+	string src = 1;
+}
+
+message CH {//位置信息 日志提取 下发导航指令、微信接人  版本升级通知  CH
+	string src = 1;
+	string lon = 2;
+	string lat = 3;
+}
+
+message CD {//预超速告警提示信息 CD
+	string src = 1;
+}
+
+message RemoteAccess {//远程调阅 RA
+	string imei = 1;
+	string seq = 2;
+	int32 sourceType = 3;
+	int32 channel = 4;
+	string beginTime = 5;
+	string endTime = 6;
+	string playId = 7;
+	string url = 8;
+	bool flag = 9;//ture为远程调阅开始，false为结束
+}
+
+message Capture {//百度图片抓拍 FRAME
+	string imei = 1;
+	int32 type = 2;
+	int32 action = 3;
+	string seq = 4;
+	int64 beginTime = 5;
+	int64 endTime = 6;
+	int64 rrt = 7;
+	string source = 8;
+	string gpstimes = 9;
+}
+
+message ModifyPWD {//修改密码
+	string password = 1;
+}
+
+
+message ChargePush {//充值推送
+	string feild = 1;
+	string iccid = 2;
+	string imei = 3;
+	string imsi = 4;
+	string payTime = 5;
+	int32 renewalsPackageSN  = 6;
+	int32 status = 7;
+	string renewalsTime = 8;
+	string sign = 9;
+	string sim = 10;
+	int32 timestamp = 11;
+	float totalFee = 12;
+	string tradeNo = 13;
+	string tradeType = 14;
+}
+
+message RedPush {//流量红包领取后推送
+    string activeId = 1;
+    string status = 2;
+}
+
+message VideoEx {//视频抓拍指令
+    string Seq = 1;
+    string max = 2;
+    int32 userid = 3;
+    int32 channel = 4;
+}
+
+message ImageEx {//图片抓拍指令
+    string Seq = 1;
+    string resolution = 2;
+    int32 userid = 3;
+    int32 channel = 4;
+    int32 count = 5;
+    int32 interval = 6;
+}
+
+
+message Vedio {//视频录像
+    bool isOn = 1;
+}
+
+

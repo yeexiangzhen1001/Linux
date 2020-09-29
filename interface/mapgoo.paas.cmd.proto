@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package mapgoo.paas.cmd;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+
+//ias设备指令请求
+message PushIasCmdReq 
+{
+	//流水号
+	uint32 sequence_no = 1;
+
+	//设备imei
+	string imei = 2;
+
+	//指令内容
+	string content = 3;
+
+	//签名字符串
+	string digest = 4;
+}
+
+message PushIasCmdResp 
+{
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+//华为设备指令请求
+message PushHuaweiCmdReq 
+{
+	//设备imei
+	string imei = 1;
+
+	//指令内容
+	string content = 2;
+}
+
+message PushHuaweiCmdResp 
+{
+	//返回信息
+	mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+//指令
+service CmdProxy
+{
+	//IAS设备指令下发
+    rpc pushIasCmd(PushIasCmdReq) returns (PushIasCmdResp) { };   
+	
+	//华为设备指令下发
+    rpc pushHuaweiCmd(PushHuaweiCmdReq) returns (PushHuaweiCmdResp) { };  
+}

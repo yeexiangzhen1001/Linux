@@ -1,0 +1,358 @@
+syntax = "proto3";
+
+import "mapgoo.paas.user.data.proto";
+// import "mapgoo.device.proto";
+// import "mapgoo.vehicle.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.ums;
+option (gogoproto.goproto_getters_all) = false;
+option go_package = "api";
+
+service UMS {
+  //！！1用户注册
+  // 1.1用户自注册
+  rpc UserRegisterByMobileOrEmail(mapgoo.paas.user.data.UserRegisterInfoReq)
+      returns (mapgoo.paas.user.data.UserRegisterInfoResp) {
+    option (google.api.http) = {
+      post : "/ums/userRegisterByMobileOrEmail"
+    };
+  }
+
+  // 1.2公众号取关
+  rpc UnsubscribeWechat(mapgoo.paas.user.data.UnsubscribeWechatReq)
+      returns (mapgoo.paas.user.data.UnsubscribeWechatResp) {
+    option (google.api.http) = {
+      get : "/ums/unsubscribeWechat"
+    };
+  }
+
+  // 1.3公众号关注
+  rpc UserRegisterByWechat(mapgoo.paas.user.data.UserRegisterInfoWechatReq)
+      returns (mapgoo.paas.user.data.UserRegisterInfoWechatResp) {
+    option (google.api.http) = {
+      post : "/ums/userRegisterByWechat"
+    };
+  }
+
+  //！！2用户登录？
+  // 2.1 C端帐号登录
+  rpc UserLoginByAccount(mapgoo.paas.user.data.UserLoginByAccountReq)
+      returns (mapgoo.paas.user.data.UserLoginResp) {
+    option (google.api.http) = {
+      post : "/ums/userLoginByAccount"
+    };
+  }
+
+  // 2.2第三方登录
+  rpc UserLoginByThirdPartyPlatform(
+      mapgoo.paas.user.data.UserLoginByThirdPartyAccountReq)
+      returns (mapgoo.paas.user.data.UserLoginResp) {
+    option (google.api.http) = {
+      post : "/ums/userLogyByThirdPatyPlatform"
+    };
+  }
+
+  //！！3用户信息更新和查询
+  // 3.1基本信息更新
+  rpc SaveUserInfo(mapgoo.paas.user.data.SaveUserInfoReq)
+      returns (mapgoo.paas.user.data.SaveUserInfoResp) {
+    option (google.api.http) = {
+      post : "/ums/saveUserInfo"
+    };
+  }
+
+  // 3.2用户基本信息查询
+  rpc GetUserInfo(mapgoo.paas.user.data.UserQueryReq)
+      returns (mapgoo.paas.user.data.UserQueryResp) {
+    option (google.api.http) = {
+      get : "/ums/getUserInfo"
+    };
+  }
+
+  // 3.3找回密码
+  rpc ResetUserPassword(mapgoo.paas.user.data.ResetUserPasswordReq)
+      returns (mapgoo.paas.user.data.ResetUserPasswordResp) {
+    option (google.api.http) = {
+      post : "/ums/resetUserPassword"
+    };
+  }
+
+  // 3.4修改密码
+  rpc ChangeUserPassword(mapgoo.paas.user.data.ChangeUserPasswordReq)
+      returns (mapgoo.paas.user.data.ChangeUserPasswordResp) {
+    option (google.api.http) = {
+      post : "/ums/changeUserPassword"
+    };
+  }
+
+  // 3.5修改或绑定用户手机号
+  rpc UpdateUserMobile(mapgoo.paas.user.data.UpdateUserMobileReq)
+      returns (mapgoo.paas.user.data.UpdateUserMobileResp) {
+    option (google.api.http) = {
+      post : "/ums/updateUserMobile"
+    };
+  }
+
+  // 3.6 验证指定手机号、邮箱是否已注册
+  rpc VerifyUserMobileOrEmail(mapgoo.paas.user.data.VerifyUserMobileOrEmailReq)
+      returns (mapgoo.paas.user.data.VerfiyUserMobileOrEmailResp) {
+    option (google.api.http) = {
+      post : "/ums/verifyUserMobileOrEmail"
+    };
+  }
+
+  // 3.7获取旧版会员信息
+  rpc GetOldCarMemberInfo(mapgoo.paas.user.data.GetOldCarMemberInfoReq)
+      returns (mapgoo.paas.user.data.GetOldCarMemberInfoResp) {
+    option (google.api.http) = {
+      get : "/ums/getOldCarMemberInfo"
+    };
+  }
+
+  // 3.8获取新版会员信息
+  rpc GetNewCarMemberInfo(mapgoo.paas.user.data.GetNewCarMemberInfoReq)
+      returns (mapgoo.paas.user.data.GetNewCarMemberInfoResp) {
+    option (google.api.http) = {
+      get : "/ums/getNewCarMemberInfo"
+    };
+  }
+
+  //！！4用户设备绑定
+  // 4.1添加用户的设备绑定（设备管理需要增加一个公共方法给此处调用）
+  rpc UserBindDevice(mapgoo.paas.user.data.UserBindDeviceReq)
+      returns (mapgoo.paas.user.data.UserBindDeviceResp) {
+    option (google.api.http) = {
+      post : "/ums/userBindDevice"
+    };
+  }
+
+  // 4.2解除某个用户指定应用的绑定
+  rpc UserUnbindDevice(mapgoo.paas.user.data.UserUnbindDeviceReq)
+      returns (mapgoo.paas.user.data.UserUnbindDeviceResp) {
+    option (google.api.http) = {
+      post : "/ums/userUnbindDevice"
+    };
+  }
+
+  // 4.3查询用户绑定的车辆列表
+  rpc GetUserBindVehicleList(mapgoo.paas.user.data.GetUserBindVehicleListReq)
+      returns (mapgoo.paas.user.data.GetUserBindVehicleListResp) {
+    option (google.api.http) = {
+      post : "/ums/getUserBindVehicleList"
+    };
+  }
+
+  //！！4.4 绑定申请及审核
+  // 4.4.1 获取用户是否绑定设备
+  rpc CheckUserBindDeviceState(
+      mapgoo.paas.user.data.CheckUserBindObjectStateReq)
+      returns (mapgoo.paas.user.data.CheckUserbindObjectStateResp) {
+    option (google.api.http) = {
+      post : "/ums/checkUserBindDeviceState"
+    };
+  }
+
+  // 4.4.2审核绑定申请
+  rpc AuditBindApply(mapgoo.paas.user.data.AuditBindApplyReq)
+      returns (mapgoo.paas.user.data.AuditBindApplyResp) {
+    option (google.api.http) = {
+      post : "/ums/auditBindApply"
+    };
+  }
+
+  // 4.4.3发送绑定申请
+  rpc SendBindApply(mapgoo.paas.user.data.SendBindApplyReq)
+      returns (mapgoo.paas.user.data.SendBindApplyResp) {
+    option (google.api.http) = {
+      post : "/ums/sendBindApply"
+    };
+  }
+
+  // 4.4.4获取用户申请绑定的列表
+  rpc GetApplyList(mapgoo.paas.user.data.GetApplyListReq)
+      returns (mapgoo.paas.user.data.GetApplyListResp) {
+    option (google.api.http) = {
+      get : "/ums/getApplyList"
+    };
+  }
+
+  // 4.4.5获取我已经邀请的列表
+  rpc GetInvitedList(mapgoo.paas.user.data.GetInvitedListReq)
+      returns (mapgoo.paas.user.data.GetInvitedListResp) {
+    option (google.api.http) = {
+      get : "/ums/getInvitedList"
+    };
+  }
+
+  // 4.4.6获取当前登录用户能解除的用户绑定列表
+  rpc GetCanUnbindList(mapgoo.paas.user.data.GetCanUnbindListReq)
+      returns (mapgoo.paas.user.data.GetCanUnbindListResp) {
+    option (google.api.http) = {
+      post : "/ums/getCanUnbindList"
+    };
+  }
+
+  //！！4.5绑定邀请
+  // 4.5.1发送邀请
+  rpc SendBindInvite(mapgoo.paas.user.data.SendBindInviteReq)
+      returns (mapgoo.paas.user.data.SendBindInviteResp) {
+    option (google.api.http) = {
+      post : "/ums/sendBindInvite"
+    };
+  }
+
+  // 4.5.2 获取邀请详情
+  rpc GetInviteInfo(mapgoo.paas.user.data.GetInviteInfoReq)
+      returns (mapgoo.paas.user.data.GetInviteInfoResp) {
+    option (google.api.http) = {
+      get : "/ums/getInviteInfo"
+    };
+  }
+
+  // 4.5.3 确认邀请
+  rpc ConfirmInvite(mapgoo.paas.user.data.ConfirmInviteReq)
+      returns (mapgoo.paas.user.data.ConfirmInviteResp) {
+    option (google.api.http) = {
+      get : "/ums/confirmInvite"
+    };
+  }
+
+  // 4.5.4 刷新邀请时效
+  rpc ResetInvitedTime(mapgoo.paas.user.data.ResetInvitedTimeReq)
+      returns (mapgoo.paas.user.data.ResetInvitedTimeResp) {
+    option (google.api.http) = {
+      get : "/ums/resetInvitedTime"
+    };
+  }
+
+  // 4.5.5 取消邀请
+  rpc CancelInvite(mapgoo.paas.user.data.CancelInviteReq)
+      returns (mapgoo.paas.user.data.CancelInviteResp) {
+    option (google.api.http) = {
+      get : "/ums/cancelInvite"
+    };
+  }
+
+  //获取绑定设备相关的用户
+  rpc GetBindUserList(mapgoo.paas.user.data.GetBindUserListReq)
+      returns (mapgoo.paas.user.data.GetBindUserListResp) {
+    option (google.api.http) = {
+      get : "/ums/getBindUserList"
+    };
+  }
+
+    //获取微信帐号绑定的设备个数
+  rpc GetWechatBindObjectCount(
+      mapgoo.paas.user.data.GetWechatBindObjectCountReq)
+      returns (mapgoo.paas.user.data.GetWechatBindObjectCountResp){
+option(google.api.http)={
+get:"/ums/getWechatBindObjectCount"
+};
+      }
+
+  //！！5用户和车绑定
+
+  //！！6用户消息
+  // 6.1 用户订阅消息
+  rpc SubAppMsg(mapgoo.paas.user.data.SubAppMsgReq)
+      returns (mapgoo.paas.user.data.SubAppMsgResp) {
+    option (google.api.http) = {
+      post : "/ums/subAppMsg"
+    };
+  }
+
+  // 6.2用户取消订阅消息
+  rpc UnsubAppMsg(mapgoo.paas.user.data.UnsubAppMsgReq)
+      returns (mapgoo.paas.user.data.UnsubAppMsgResp) {
+    option (google.api.http) = {
+      post : "/ums/unsubAppMsg"
+    };
+  }
+
+  //！！6.3消息箱操作
+  // 6.3.1设置消息为已读
+  rpc ReadMessage(mapgoo.paas.user.data.ReadMessageReq)
+      returns (mapgoo.paas.user.data.ReadMessageResp) {
+    option (google.api.http) = {
+      post : "/ums/readMessage"
+    };
+  }
+
+  // 6.3.2逻辑删除用户消息
+  rpc DeleteMessage(mapgoo.paas.user.data.DeleteMessageReq)
+      returns (mapgoo.paas.user.data.DeleteMessageResp) {
+    option (google.api.http) = {
+      get : "/ums/deleteMessage"
+    };
+  }
+
+  // 6.3.3获取用户的消息箱列表
+  rpc GetMessageList(mapgoo.paas.user.data.GetMessageListReq)
+      returns (mapgoo.paas.user.data.GetMessageListResp) {
+    option (google.api.http) = {
+      post : "/ums/getMessageList"
+    };
+  }
+
+  // 6.3.4获取消息箱未读消息数量
+  rpc GetUnreadCount(mapgoo.paas.user.data.GetUnreadCountReq)
+      returns (mapgoo.paas.user.data.GetUnreadCountResp) {
+    option (google.api.http) = {
+      get : "/ums/getUnreadCount"
+    };
+  }
+
+  //！！6.4消息配置
+  // 6.4.1 设置用户某类报警报警开关
+  rpc SetUserSetting(mapgoo.paas.user.data.SetUserSettingReq)
+      returns (mapgoo.paas.user.data.SetUserSettingResp) {
+    option (google.api.http) = {
+      post : "/ums/setUserSetting"
+    };
+  }
+
+  // 6.4.2 获取用户报警订阅开关设置信息
+  rpc GetUserSetting(mapgoo.paas.user.data.GetUserSettingReq)
+      returns (mapgoo.paas.user.data.GetUserSettingResp) {
+    option (google.api.http) = {
+      get : "/ums/getUserSetting"
+    };
+  }
+
+  //！！7用户常用地址
+  // 7.1保存用户常用地址
+  rpc SaveCommonlyUsedAddress(mapgoo.paas.user.data.POIEntityReq)
+      returns (mapgoo.paas.user.data.POIEntityResp) {
+    option (google.api.http) = {
+      post : "/ums/saveCommonlyUsedAddress"
+    };
+  }
+
+  // 7.2获取用户常用地址列表
+  rpc GetCommonlyUsedAddressList(
+      mapgoo.paas.user.data.GetCommonlyUsedAddressListReq)
+      returns (mapgoo.paas.user.data.POIEntityListResp) {
+    option (google.api.http) = {
+      get : "/ums/getCommonlyUsedAddressList"
+    };
+  }
+
+  //！！8用户的绑定
+  // 8.1获取微信绑定状态
+  rpc GetUserBindWechatState(mapgoo.paas.user.data.GetUserBindWechatStateReq)
+      returns (mapgoo.paas.user.data.GetUserBindWechatStateResp) {
+    option (google.api.http) = {
+      get : "/ums/getUserBindWechatState"
+    };
+  }
+
+  // 8.2手机号和微信账号绑定
+  rpc BindUserWechat(mapgoo.paas.user.data.BindUserWechatReq)
+      returns (mapgoo.paas.user.data.BindUserWechatResp) {
+    option (google.api.http) = {
+      post : "/ums/bindUserWechat"
+    };
+  }
+}

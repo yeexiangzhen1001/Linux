@@ -1,0 +1,2013 @@
+syntax = "proto3";
+
+import "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+package mapgoo.paas.user.data;
+option go_package = "api";
+option (gogoproto.goproto_getters_all) = false;
+
+//帐号自注册参数
+message UserRegisterInfoReq {
+  //邮箱手机号
+  string mobile = 1;
+
+  //邮箱
+  string email = 2;
+
+  //密码
+  string password = 3;
+
+  //验证码
+  string verify_code = 4;
+
+  //应用类型
+  uint32 app_type = 5;
+}
+
+////帐号自注册结果
+message UserRegisterInfoResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//公众号取消关注结果
+message UnsubscribeWechatResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//公众号取消关注参数
+message UnsubscribeWechatReq {
+  //微信公众号wechatid
+  string open_id = 1;
+
+  //微信帐号唯一ID
+  string union_id = 2;
+}
+
+//第三方帐号登录
+message UserLoginByThirdPartyAccountReq {
+  //帐号名
+  string account_name = 1;
+
+  //昵称
+  string alias_name = 2;
+
+  //包名
+  string package_name = 3;
+
+  //版本号
+  string verion = 4;
+
+  //平台
+  string platform = 5;
+
+  //头像
+  string avatar = 6;
+
+  //应用类型
+  uint32 app_type = 7;
+}
+
+//修改密码参数
+message ChangeUserPasswordReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //用户名称
+  string user_name = 2;
+
+  //新密码
+  string new_password = 3;
+
+  //旧密码
+  string old_password = 4;
+}
+
+//修改密码结果
+message ChangeUserPasswordResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//修改帐号密码参数
+message UpdateUserCommonInfoReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //用户名称
+  string user_name = 2;
+
+  //新密码
+  string password = 3;
+
+  //手机号
+  string mobile = 4;
+
+  //邮箱
+  string email = 5;
+
+  //微信唯一ID
+  string union_id = 6;
+
+  //指定更新字段索引
+  repeated uint32 update_colunm_ids = 7;
+
+  //更新条件字段索引
+  repeated uint32 condition_column_ids = 8;
+}
+
+//修改帐号密码结果
+message UpdateUserCommonInfoResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//修改手机号类型
+enum EnumUpdateMobileType {
+  //修改手机号
+  UPDATE_MOBILE = 0;
+
+  //绑定手机号
+  BIND_MOBILE = 1;
+}
+
+//修改手机号参数
+message UpdateUserMobileReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //手机号
+  string mobile = 2;
+
+  //验证码
+  string verify_code = 3;
+
+  //操作类型
+  EnumUpdateMobileType update_type = 4;
+}
+
+//修改手机号结果
+message UpdateUserMobileResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//用户绑定设备
+message UserBindDeviceReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId object_info = 2;
+
+  //车辆类型信息
+  mapgoo.paas.base.VehicleTypeBaseInfo vehicle_type_info = 3;
+
+  //流量卡cc
+  mapgoo.paas.base.SimcardId sim_card_id = 4;
+
+  //购买时间
+  string buy_time = 5;
+
+  //应用类型
+  uint32 app_type = 6;
+
+  //操作者
+  uint32 operator_id = 7;
+}
+
+// DAP用户绑定设备结果
+message UserBindObjectResp { mapgoo.paas.base.BaseRespInfo base = 1; }
+
+//取消邀请参数
+message CancelInviteReq {
+  //记录ID
+  uint32 rec_id = 1;
+}
+
+// dap用户绑定设备
+message UserBindObjectReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId object_info = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+
+  //操作者
+  uint32 operator_id = 4;
+}
+
+//用户绑定设备结果
+message UserBindDeviceResp { mapgoo.paas.base.BaseRespInfo base = 1; }
+
+//获取当前登录用户能解除的用户绑定列表
+message GetCanUnbindListInfo {
+  //登录名
+  string user_name = 1 [ (gogoproto.jsontag) = 'user_name' ];
+
+  //昵称
+  string nick_name = 2 [ (gogoproto.jsontag) = 'nick_name' ];
+
+  //帐号头像链接
+  string avatar = 3 [ (gogoproto.jsontag) = 'avatar' ];
+
+  //设备ID、目标ID
+  uint32 object_id = 4 [ (gogoproto.jsontag) = 'object_id' ];
+
+  //目标设备名称(如:车牌号码)
+  string object_name = 5 [ (gogoproto.jsontag) = 'object_name' ];
+
+  // ICCID号
+  string iccid = 6 [ (gogoproto.jsontag) = 'iccid' ];
+
+  //帐号ID
+  uint32 user_id = 7 [ (gogoproto.jsontag) = 'user_id' ];
+
+  //车辆设备的IMEI
+  string imei = 8 [ (gogoproto.jsontag) = 'imei' ];
+
+  //是否管理员
+  bool is_admin = 9 [ (gogoproto.jsontag) = 'is_admin' ];
+
+  //邮箱
+  string email = 10 [ (gogoproto.jsontag) = 'email' ];
+}
+
+//获取能解绑定的
+message GetCanUnbindListResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //记录列表
+  repeated GetCanUnbindListInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//找回密码
+enum EnumVerifyType {
+  //手机号
+  MOBILE = 0;
+
+  //邮箱
+  EMAIL = 1;
+}
+
+//关注公众号参数
+message UserRegisterInfoWechatReq {
+
+  //微信公众号服务ID
+  uint32 service_id = 1;
+
+  //公众号wechatid
+  string open_id = 2;
+
+  //昵称
+  string nick_name = 3;
+
+  //性别
+  uint32 sex = 4;
+
+  //头像路径
+  string headimgurl = 5;
+
+  //语言
+  string language = 6;
+
+  //城市
+  string city = 7;
+
+  //省份
+  string province = 8;
+
+  //国家
+  string country = 9;
+
+  //关注时间
+  uint32 subscribe_time = 10;
+
+  //微信唯一ID
+  string union_id = 11;
+
+  //备注
+  string remark = 12;
+
+  //虚拟用户id
+  uint32 user_id = 13;
+
+  //应用类型
+  uint32 app_type = 14;
+
+  //微信帐号ID
+  uint32 wx_id = 15;
+
+  //虚拟用户报警设置
+  repeated mapgoo.paas.base.UserSettingInfo user_set_list = 25;
+}
+
+//获取微信用户信息参数
+message GetWechatUserInfoReq {
+  //微信公众号服务ID
+  uint32 service_id = 1;
+
+  //公众号wechatid
+  string open_id = 2;
+
+  //微信唯一ID
+  string union_id = 3;
+
+  //微信帐号ID
+  uint32 wx_id = 4;
+
+  //虚拟用户id
+  uint32 user_id = 5;
+
+  //应用类型
+  uint32 app_type = 6;
+}
+
+//微信用户信息
+message WxUserInfo {
+  //用户ID
+  uint32 wx_id = 1 [ (gogoproto.jsontag) = 'wx_id' ];
+
+  //虚拟用户ID
+  uint32 user_id = 2 [ (gogoproto.jsontag) = 'user_id' ];
+
+  //绑定时间
+  uint32 bind_date = 3 [ (gogoproto.jsontag) = 'bind_date' ];
+
+  //昵称
+  string wx_name = 4 [ (gogoproto.jsontag) = 'wx_name' ];
+
+  //备注
+  string remark = 5 [ (gogoproto.jsontag) = 'remark' ];
+
+  //头像
+  string wx_avatar = 6 [ (gogoproto.jsontag) = 'wx_avatar' ];
+
+  //性别
+  uint32 wx_sex = 7 [ (gogoproto.jsontag) = 'wx_sex' ];
+
+  //区域
+  string wx_area = 8 [ (gogoproto.jsontag) = 'wx_area' ];
+
+  //电话
+  string mobile = 9 [ (gogoproto.jsontag) = 'mobile' ];
+
+  //微信唯一ID
+  string union_id = 10 [ (gogoproto.jsontag) = 'union_id' ];
+}
+
+//用户公众号信息
+message ServiceWechatInfo {
+
+  //记录ID
+  uint32 rec_id = 1;
+
+  //公众号服务ID
+  uint32 service_id = 2;
+
+  //公众号Wechatid
+  string opne_id = 3;
+
+  //公众号默认设备ID
+  uint32 bind_object_id = 4;
+}
+
+//获取微信用户信息结果
+message GetWechatUserInfoResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //微信用户信息
+  WxUserInfo wx_user_info = 2 [ (gogoproto.jsontag) = 'wx_user_info' ];
+
+  //微信公众号信息
+  repeated ServiceWechatInfo wechat_info = 3
+      [ (gogoproto.jsontag) = 'wechat_info' ];
+}
+
+//用户基本资料保存参数
+message SaveUserInfoResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//用户基本资料保存参数
+message SaveUserInfoReq {
+
+  //用户基本信息
+  mapgoo.paas.base.UserAndSettingInfo user_and_set = 1;
+}
+
+//公众号关注返回结果
+message UserRegisterInfoWechatResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //虚拟用户id
+  uint32 user_id = 2 [ (gogoproto.jsontag) = 'user_id' ];
+
+  //微信帐号ID
+  uint32 wx_id = 3 [ (gogoproto.jsontag) = 'wx_id' ];
+}
+
+//常用地址参数
+message POIEntityReq {
+  //记录ID
+  uint64 rec_id = 1 [ (gogoproto.jsontag) = 'rec_id' ];
+
+  //名称
+  string poi_name = 2 [ (gogoproto.jsontag) = 'poi_name' ];
+
+  //经度
+  sint32 poi_lng = 3 [ (gogoproto.jsontag) = 'poi_lng' ];
+
+  //纬度
+  sint32 poi_lat = 4 [ (gogoproto.jsontag) = 'poi_lat' ];
+
+  //地址
+  string poi_location = 5 [ (gogoproto.jsontag) = 'poi_location' ];
+
+  //用户ID
+  uint32 user_id = 6 [ (gogoproto.jsontag) = 'user_id' ];
+}
+
+//常用地址结果
+message POIEntityResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  //解析位置
+  string location=2[(gogoproto.jsontag)='location'];
+}
+
+//常用地址列表
+message POIEntityListResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //地址列表
+  repeated POIEntityReq record_list = 2 [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//获取常用地址列表参数
+message GetCommonlyUsedAddressListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //名称
+  string poi_name = 2;
+}
+
+//自有帐号登录
+message UserLoginByAccountReq {
+  //手机号
+  string mobile = 1;
+
+  //密码
+  string password = 2;
+
+  //包名
+  string package_name = 3;
+
+  //版本号
+  string verion = 4;
+
+  //平台
+  string platform = 5;
+
+  //别名
+  string alias_name = 6;
+
+  //头像
+  string avatar = 7;
+
+  //验证码
+  string verify_code = 8;
+
+  //邮箱
+  string email = 9;
+
+  //应用类型
+  uint32 app_type = 10;
+}
+
+//登录返回结构
+message UserLoginResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户基本信息
+  mapgoo.paas.base.UserBaseInfo user_info = 2
+      [ (gogoproto.jsontag) = 'user_info' ];
+
+  //登录次数
+  uint32 login_count = 3 [ (gogoproto.jsontag) = 'login_count' ];
+
+  //登录C端公用的token
+  string auth_token = 4 [ (gogoproto.jsontag) = 'auth_token' ];
+
+  //密码找回信息
+  string password_tip = 5 [ (gogoproto.jsontag) = 'password_tip' ];
+}
+
+//获取帐号信息结果
+message UserQueryResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户基本信息及设置
+  mapgoo.paas.base.UserAndSettingInfo user_and_set = 2
+      [ (gogoproto.jsontag) = 'user_and_set' ];
+}
+
+//获取帐号信息参数
+message UserQueryReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //手机号
+  string mobile = 2;
+
+  //邮箱
+  string email = 3;
+
+  //用户名称
+  string user_name = 4;
+
+  //应用类型
+  repeated uint32 app_type = 5;
+
+  //微信唯一ID
+  string union_id = 6;
+}
+
+//获取帐号基本信息参数
+message GetUserBaseInfoReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //手机号
+  string mobile = 2;
+
+  //邮箱
+  string email = 3;
+
+  //用户名称
+  string user_name = 4;
+
+  //应用类型
+  repeated uint32 app_type = 5;
+
+  //微信唯一ID
+  string union_id = 6;
+
+  //密码
+  string password = 7;
+}
+
+//获取帐号基本信息结果
+message GetUserBaseInfoResp {
+
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户基本信息
+  mapgoo.paas.base.UserBaseInfo user_info = 2
+      [ (gogoproto.jsontag) = 'user_base_info' ];
+}
+
+//找回密码
+message ResetUserPasswordReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //手机号
+  string mobile = 2;
+
+  //邮箱
+  string email = 3;
+
+  //验证码,
+  string verify_code = 4;
+
+  //验证类型
+  EnumVerifyType verify_type = 5;
+
+  //新密码
+  string password = 6;
+}
+
+//找回密码结果
+message ResetUserPasswordResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//验证手机号或邮箱
+message VerifyUserMobileOrEmailReq {
+  //手机号
+  string mobile = 1;
+
+  //邮箱
+  string email = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+}
+
+//验证手机号或邮箱
+message GetVerifyInfoReq {
+  //手机号
+  string mobile = 1;
+
+  //邮箱
+  string email = 2;
+}
+
+message VerifyInfo {
+  //手机号
+  string mobile = 1 [ (gogoproto.jsontag) = 'mobile' ];
+
+  //验证码
+  string verify_code = 2 [ (gogoproto.jsontag) = 'verify_code' ];
+
+  //有效时间
+  uint32 valid_time = 3 [ (gogoproto.jsontag) = 'valid_time' ];
+
+  //邮箱
+  string email = 4 [ (gogoproto.jsontag) = 'email' ];
+}
+
+//验证手机或邮箱验证码
+message GetVerifyInfoResp {
+  //公共返回结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //验证信息
+  VerifyInfo verify_info = 2 [ (gogoproto.jsontag) = 'verify_info' ];
+}
+
+//验证手机号或邮箱
+message VerfiyUserMobileOrEmailResp {
+  //公共返回结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //是否存在
+  bool exist = 2 [ (gogoproto.jsontag) = 'exist' ];
+
+  //是否有密码找回设置
+  bool has_password_tip = 3 [ (gogoproto.jsontag) = 'has_password_tip' ];
+
+  //
+}
+
+//用户解除某个用户某个设备绑定参数
+message UserUnbindDeviceReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //操作用户
+  uint32 operator_id = 3;
+
+  //指定时只解除某个，为0时解除所有。
+  uint32 app_type = 4;
+}
+//用户解除某个用户某个设备绑定结果
+message UserUnbindDeviceResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+// DAP用户解除某个用户某个设备绑定参数
+message UserUnbindObjectReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //操作用户
+  uint32 operator_id = 3;
+
+  //指定时只解除某个，为0时解除所有。
+  uint32 app_type = 4;
+}
+// DAP用户解除某个用户某个设备绑定结果
+message UserUnbindObjectResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //微信绑定设备数
+  uint32 wechat_bind_count = 2 [ (gogoproto.jsontag) = 'wechat_bind_count' ];
+}
+
+//获取用户绑定的车辆列表
+message GetUserBindVehicleListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //应用信息
+  uint32 app_type = 2;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 3;
+}
+
+//获取用户车辆结构
+message GetUserBindVehicleListInfo {
+  //设备ID、目标ID
+  uint32 object_id = 1 [ (gogoproto.jsontag) = 'object_id' ];
+
+  //车牌号码
+  string vehicle_num = 2 [ (gogoproto.jsontag) = 'vehicle_num' ];
+
+  //设备SIM卡
+  string device_sim = 3 [ (gogoproto.jsontag) = 'device_sim' ];
+
+  //设备imei
+  string device_imei = 4 [ (gogoproto.jsontag) = 'device_imei' ];
+
+  //车辆类型信息、
+  mapgoo.paas.base.VehicleTypeBaseInfo vehicle_type_info = 5
+      [ (gogoproto.jsontag) = 'vehicle_type_info' ];
+
+  //目标设备名称(如:车牌号码)
+  string object_name = 6 [ (gogoproto.jsontag) = 'object_name' ];
+
+  //是否管理员
+  bool is_admin = 7 [ (gogoproto.jsontag) = 'is_admin' ];
+
+  //购买日期
+  string buy_date = 11 [ (gogoproto.jsontag) = 'buy_date' ];
+
+  //发动机号
+  string engion_no = 12 [ (gogoproto.jsontag) = 'engion_no' ];
+
+  //车架号
+  string vin_no = 13 [ (gogoproto.jsontag) = 'vin_no' ];
+
+  //运营状态
+  string state = 14 [ (gogoproto.jsontag) = 'state' ];
+
+  //是否是测试
+  string is_test = 15 [ (gogoproto.jsontag) = 'is_test' ];
+
+  //视频ID
+  uint32 ssvid = 16 [ (gogoproto.jsontag) = 'ssvid' ];
+
+  //平台设备在线状态
+  uint32 transtype = 17 [ (gogoproto.jsontag) = 'transtype' ];
+
+  //组织ID
+  string hold_id = 18 [ (gogoproto.jsontag) = 'hold_id' ];
+
+  //登录URL
+  string logo_url = 19 [ (gogoproto.jsontag) = 'logo_url' ];
+}
+
+//获取用户车辆列表
+message GetUserBindVehicleListResp {
+  //公共返回
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //记录列表
+  repeated GetUserBindVehicleListInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//用户是否绑定设备参数
+message CheckUserBindObjectStateReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+}
+
+//用户是否绑定设备结果
+message CheckUserbindObjectStateResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //是否绑定
+  bool bind_flag = 2 [ (gogoproto.jsontag) = 'bind_flag' ];
+}
+
+//获取邀请详情参数
+message GetInviteInfoReq {
+  //记录ID
+  uint64 rec_id = 1;
+}
+
+//刷新邀请时间参数
+message ResetInvitedTimeReq {
+  //记录ID
+  uint64 rec_id = 1;
+}
+
+//取消邀请
+message CancelInviteResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//刷新邀请时间参数
+message ResetInvitedTimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//获取邀请详情结果
+message GetInviteInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //邀请信息
+  GetInvitedInfo invited_info = 2 [ (gogoproto.jsontag) = 'invited_info' ];
+}
+
+//发送绑定设备申请
+message SendBindApplyReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+
+  //绑定申请的来源
+  uint32 source = 4;
+}
+
+//发送绑定设备申请结果
+message SendBindApplyResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//审核绑定申请参数
+message AuditBindApplyReq {
+  //操作用户
+  uint32 operator_id = 1;
+
+  //状态
+  EnumProcessState state = 2;
+
+  //申请记录ID
+  uint64 apply_id = 3;
+}
+////审核绑定申请结果
+message AuditBindApplyResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//获取申请绑定的列表
+message GetApplyListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //应用类型
+  uint32 app_type = 2;
+
+  //获取记录数
+  uint32 count = 3;
+}
+
+//申请记录结构
+enum EnumProcessState {
+  TO_BE_PROCESSED = 0;
+  ACCEPT = 1;
+  REFUSED = 2;
+}
+
+message GetApplyInfo {
+  //设备ID、目标ID
+  uint32 object_id = 1;
+
+  //应用类型
+  uint32 app_type = 2;
+
+  //来源
+  uint32 source = 3;
+
+  // 0待接受，1接受，2拒绝
+  EnumProcessState state = 4;
+
+  //帐号对应手机号码
+  string mobile = 5;
+
+  //创建时间
+  string create_time = 6;
+
+  //修改时间
+  string update_time = 7;
+
+  //登录名
+  string user_name = 8;
+
+  //昵称
+  string nick_name = 9;
+
+  //第三方帐号头像链接
+  string avatar = 10;
+
+  //帐号ID
+  uint32 user_id = 11;
+
+  //记录ID
+  string record_id = 12;
+}
+
+//获取申请列表结果
+message GetApplyListResp {
+
+  //公共返回
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //申请列表
+  repeated GetApplyInfo record_list = 2 [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//获取我已经邀请的列表
+message GetInvitedListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //应用类型
+  uint32 app_type = 2;
+
+  //获取个数
+  uint32 top_count = 3;
+}
+
+//获取当前登录用户能解除的用户绑定列表
+message GetCanUnbindListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+}
+
+//邀请详情
+message GetInvitedInfo {
+  //设备ID、目标ID
+  uint32 object_id = 3;
+
+  //应用类型
+  uint32 app_type = 4;
+
+  //来源
+  uint32 source = 5;
+
+  // 0待处理，1审核通过，2审核不通过
+  uint32 state = 6;
+
+  //帐号对应手机号码
+  string mobile = 7;
+
+  //创建时间
+  string create_time = 8;
+
+  //修改时间
+  string update_time = 9;
+
+  //登录名
+  string user_name = 10;
+
+  //昵称
+  string nick_name = 11;
+
+  //第三方帐号头像链接
+  string avatar = 12;
+
+  //帐号编号
+  uint32 user_id = 13;
+
+  //记录编号
+  string record_id = 14;
+
+  //车辆设备的IMEI
+  string imei = 15;
+
+  //目标设备名称(如:车牌号码)
+  string object_name = 16;
+}
+
+//获取邀请列表结果
+message GetInvitedListResp {
+  //公共返回
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //邀请列表
+  repeated GetInvitedInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//发送邀请参数
+message SendBindInviteReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+
+  //绑定申请的来源
+  uint32 source = 4;
+
+  //手机帐号列表
+  repeated string mobile_list = 5;
+}
+
+//发送邀请返回
+message SendBindInviteResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //邀请码
+  uint64 rec_id = 2 [ (gogoproto.jsontag) = 'rec_id' ];
+}
+
+//确认邀请参数
+message ConfirmInviteReq {
+  //邀请记录ID
+  uint64 invite_id = 1;
+
+  //操作者
+  uint32 operator_id = 2;
+
+  //状态
+  EnumProcessState state = 3;
+}
+
+//确认邀请结果
+message ConfirmInviteResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//极光订阅参数
+message SubAppMsgReq {
+  //登录名
+  string user_name = 1;
+
+  //登录密码
+  string paasword = 2;
+
+  //帐号登录类型 0-自有平台帐号登录 1-QQ帐号登录
+  uint32 login_type = 3;
+
+  // 2-微信帐号登录 3-新浪微博登录
+
+  //包名
+  string channel = 4;
+
+  // APP平台
+  string app_platform = 5;
+
+  // APP版本
+  string appver = 6;
+
+  //别名
+  string alias = 7;
+
+  //标签
+  string tag = 8;
+
+  //帐号ID、用户ID
+  uint32 user_id = 9;
+}
+
+//极光订阅结果
+message SubAppMsgResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//取消极光订阅
+message UnsubAppMsgReq {
+  // app包名
+  string channel = 1;
+
+  // APP平台
+  string app_platform = 2;
+
+  //帐号ID、用户ID
+  uint32 user_id = 3;
+
+  //别名
+  string alias = 4;
+}
+
+//取消极光订阅
+message UnsubAppMsgResp {
+  //公共结果
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//设置消息为已读
+message ReadMessageReq {
+  //标签分类
+  repeated uint32 lable_type = 1;
+
+  //车辆设备的IMEI
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //帐号ID、用户ID
+  uint32 user_id = 3;
+
+  //记录ID
+  string rec_id = 4;
+
+  //消息类型
+  repeated uint32 message_type = 5;
+}
+
+//设置消息为已读
+message ReadMessageResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//删除消息参数
+message DeleteMessageReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //消息ID
+  uint32 rec_id = 2;
+}
+
+//删除消息结果
+message DeleteMessageResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//获取用户分页消息列表
+message GetMessageListInfo {
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 1;
+
+  //设备ID、目标ID
+  uint32 object_id = 2;
+
+  //记录ID
+  string rec_id = 3;
+
+  //消息标题
+  string message_title = 4;
+
+  //消息内容
+  string event_desc = 5;
+
+  //消息类型
+  uint32 message_type = 6;
+
+  //标签分类
+  uint32 lable_type = 7;
+
+  //需要跳转的H5链接
+  string message_url = 8;
+
+  //附加的URL图片
+  string append_image_url = 9;
+
+  //创建时间
+  string create_time = 10;
+
+  //已读状态
+  bool is_read = 11;
+
+  //详细信息ID
+  string detail_id = 12;
+
+  //车牌
+  string vehicle_name = 13;
+}
+
+//消息箱列表参数
+message GetMessageListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 2;
+
+  //消息类型
+  repeated uint32 message_type = 3;
+
+  //标签分类
+  repeated uint32 lable_type = 4;
+
+  //车辆设备的IMEI
+  mapgoo.paas.base.DeviceId device_id = 5;
+}
+
+//消息箱列表结果
+message GetMessageListResp {
+  //公共返回结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //消息列表
+  repeated GetMessageListInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 3
+      [ (gogoproto.jsontag) = 'page_info' ];
+}
+
+//获取未读消息数统计
+message GetUnreadCountReq {
+  //帐号ID、用户ID
+  uint32 user_id = 1;
+
+  //消息类型
+  repeated uint32 message_type = 2;
+
+  //标签分类
+  repeated uint32 lable_type = 3;
+
+  //车辆设备的IMEI
+  mapgoo.paas.base.DeviceId device_id = 4;
+}
+
+//消息箱未读消息数量
+message GetUnreadCountInfo {
+  //消息类型
+  uint32 message_type = 1[(gogoproto.jsontag)='messageType'];
+
+  //未读数
+  uint32 unread = 2[(gogoproto.jsontag)='unread'];
+}
+
+//获取消息箱未读消息数量
+message GetUnreadCountResp {
+  //公共返回结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //统计列表
+  repeated GetUnreadCountInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//保存用户报警开关设置
+message SetUserSettingReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  repeated mapgoo.paas.base.UserSettingInfo user_setting = 2;
+}
+
+//获取用户报警开关设置
+message SetUserSettingResp {
+  //公共返回结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//获取用户报警开关
+message GetUserSettingReq {
+  //用户ID
+  uint32 user_id = 1;
+}
+
+//获取用户报警订阅开关设置信息结果
+message GetUserSettingResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户开关设置信息
+  repeated mapgoo.paas.base.UserSettingInfo user_set_info = 2
+      [ (gogoproto.jsontag) = 'user_set_info' ];
+}
+
+//获取帐号绑定微信的状态
+message GetUserBindWechatStateReq {
+  //微信帐号ID
+  string union_id = 1;
+
+  //应用类型
+  uint32 app_type = 2;
+}
+
+//获取帐号绑定微信的状态结果
+message GetUserBindWechatStateResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //状态结果
+  uint32 state_code = 2 [ (gogoproto.jsontag) = 'state_code' ];
+}
+
+//手机帐号绑定微信
+enum EnumBindType {
+  //用户绑定微信
+  BIND = 0;
+
+  //用户解除微信
+  UNBIND = 1;
+}
+
+//帐号绑定微信
+message BindUserWechatReq {
+  //手机号的用户名称
+  string mobile = 1;
+
+  //微信ID
+  string union_id = 2;
+
+  //操作类型
+  EnumBindType bind_type = 3;
+
+  //验证码
+  string verify_code = 4;
+
+  //应用类型
+  uint32 app_type = 5;
+
+  //邮箱
+  string email = 6;
+}
+
+//帐号绑定微信结果
+message BindUserWechatResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户ID
+  uint32 new_user_id = 2 [ (gogoproto.jsontag) = 'new_user_id' ];
+}
+
+/*****************************************dap相关***********************************/
+//用户管理相关的结构及方法定义
+message AddUserInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户信息
+  mapgoo.paas.base.UserAndSettingInfo user_info = 2
+      [ (gogoproto.jsontag) = 'user_info' ];
+}
+
+//验证信息
+message VerifyInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //是否有效
+  bool is_valid = 2 [ (gogoproto.jsontag) = 'is_valid' ];
+
+  //有效时间
+  string valid_time = 3 [ (gogoproto.jsontag) = 'valid_time' ];
+}
+
+//添加用户基本信息参数
+message AddUserInfoReq {
+  //用户基本信息
+  mapgoo.paas.base.UserAndSettingInfo user_info = 1;
+
+  //是否返回用户基本信息
+  bool need_user_detail = 2;
+}
+
+//修改用户基本信息参数
+message UpdateUserInfoReq {
+  //用户基本信息
+  mapgoo.paas.base.UserAndSettingInfo user_info = 1;
+}
+
+//修改用户基本信息结果
+message UpdateUserInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//设备绑定参数
+message BindDeviceReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //设备信息
+  mapgoo.paas.base.DeviceId object_info = 2;
+
+  //应用类型
+  uint32 app_type = 6;
+}
+
+//获取一批设备管理员列表
+message GetDeviceAdminListReq {
+  //设备列表
+  repeated mapgoo.paas.base.DeviceId object_info = 1;
+}
+
+//设备管理员信息
+message GetDeviceAdminListInfo {
+  //设备信息
+  mapgoo.paas.base.DeviceId object_info = 1;
+
+  //管理员用户ID
+  uint32 admin_user_id = 2;
+}
+
+//获取管理员列表
+message GetDeviceAdminListResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //记录列表
+  repeated GetDeviceAdminListInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+
+  map<uint32, uint32> admin_map = 3 [ (gogoproto.jsontag) = 'admin_map' ];
+}
+
+//查询用户绑定的设备列表结果
+message GetUserBindObjectInfoResp {
+
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //设备绑定列表
+  repeated UserObjInfo record_list = 2 [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//用户设备绑定关系信息
+message UserObjInfo {
+  //设备ID
+  mapgoo.paas.base.DeviceId deviceId = 2 [ (gogoproto.jsontag) = 'deviceid' ];
+
+  //是否管理员
+  bool is_admin = 3 [ (gogoproto.jsontag) = 'is_admin' ];
+
+  //绑定时间
+  string bind_time = 4 [ (gogoproto.jsontag) = 'bind_time' ];
+
+  //应用类型ID
+  uint32 app_type = 5 [ (gogoproto.jsontag) = 'app_type' ];
+}
+
+//获取用户绑定的设备列表
+message GetUserBindObjectInfoReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //应用信息
+  uint32 app_type = 2;
+
+  //分页信息
+  mapgoo.paas.base.PageBaseInfo page_info = 3;
+}
+
+//是否管理员参数
+message IsDeviceAdminReq {
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 1;
+
+  //用户ID
+  uint32 user_id = 2;
+}
+
+//是否管理员结果
+message IsDeviceAdminResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //是否是管理员
+  bool is_admin = 2 [ (gogoproto.jsontag) = 'is_admin' ];
+}
+
+//获取绑定申请记录参数
+message GetBindObjectListReq {
+  //用户ID
+  uint32 user_id = 1;
+
+  //操作类型
+  int32 operate_type = 2;
+
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 3;
+
+  //应用类型
+  uint32 app_type = 4;
+
+  //是否初始状态
+  bool is_init_state = 5;
+
+  //记录ID
+  uint64 rec_id = 6;
+}
+
+//绑定申请记录信息详情
+message BindObjectInfo {
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 1;
+
+  //应用类型
+  uint32 app_type = 2;
+
+  //申请来源
+  uint32 source = 3;
+
+  //状态
+  EnumProcessState state = 4;
+
+  //操作类型
+  int32 operation_type = 5;
+
+  //手机号
+  string mobile = 6;
+
+  //创建时间
+  string create_time = 7;
+
+  //更新时间
+  string update_time = 8;
+
+  //用户名称
+  string user_name = 9;
+
+  //昵称
+  string nick_name = 10;
+
+  //头像
+  string avatar = 11;
+
+  //邮箱
+  string email = 12;
+
+  //记录ID
+  uint64 rec_id = 13;
+
+  //用户ID
+  uint32 user_id = 14;
+}
+
+//获取绑定申请记录结果
+message GetBindObjectListResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //记录列表
+  repeated BindObjectInfo record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//添加绑定申请记录参数
+message AddApplyRecordReq {
+  //记录详情
+  repeated BindObjectInfo entity = 1;
+}
+
+//添加绑定申请记录结果
+message AddApplyRecordResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //变更记录数
+  int64 count = 2 [ (gogoproto.jsontag) = 'count' ];
+
+  //最后记录ID
+  uint64 rec_id = 3 [ (gogoproto.jsontag) = 'rec_id' ];
+}
+
+//更新绑定申请记录参数
+message UpdateApplyRecordReq {
+  //记录详情
+  BindObjectInfo entity = 1;
+
+  //更新列常量
+  repeated int32 update_columns = 2;
+
+  //条件列常量
+  repeated int32 condition_columns = 3;
+}
+
+//更新绑定申请记录结果
+message UpdateApplyRecordResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //变更记录数
+  int64 count = 2 [ (gogoproto.jsontag) = 'count' ];
+}
+
+//获取已经用户某设备已经绑定的手机列表参数
+message GetBindedMobilesReq {
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 1;
+
+  //应用类型
+  uint32 app_type = 2;
+}
+
+//获取已经用户某设备已经绑定的手机列表结果
+message GetBindedMobilesResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //手机号列表
+  repeated string mobiles = 2 [ (gogoproto.jsontag) = 'mobiles' ];
+}
+
+//获取用户已被邀请的手机号列表参数
+message GetInvitedMobilesReq {
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 1;
+
+  //用户ID
+  uint32 user_id = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+}
+
+//获取用户已被邀请的手机号列表结果
+message GetInvitedMobilesResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //手机号列表
+  repeated string mobiles = 2 [ (gogoproto.jsontag) = 'mobiles' ];
+}
+
+//批量更新邀请时间参数
+message BatchUpdateInviteTimeReq {
+  //手机号列表
+  repeated string mobiles = 1;
+
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+}
+
+//批量更新邀请时间结果
+message BatchUpdateInviteTimeResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //变更记录数
+  int64 count = 2 [ (gogoproto.jsontag) = 'count' ];
+}
+
+//重置某设备管理员参数
+message ResetDeviceAdminReq {
+  //设备参数
+  mapgoo.paas.base.DeviceId device_id = 1;
+}
+
+//重置某设备管理员结果
+message ResetDeviceAdminResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //变更记录数
+  int64 count = 2 [ (gogoproto.jsontag) = 'count' ];
+}
+
+//获取微信帐号绑定的设备个数参数
+message GetWechatBindObjectCountReq {
+  //设备ID列表
+  repeated string object_id_list = 1;
+
+  // openID
+  string open_id = 2;
+
+  // unionID
+  string union_id = 3;
+
+  //应用类型
+  uint32 app_type = 4;
+}
+
+//获取微信帐号绑定的设备个数结果
+message GetWechatBindObjectCountResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //个数统计
+  map<uint32, uint32> object_count = 2 [ (gogoproto.jsontag) = 'object_count' ];
+}
+
+//用户基本信息查询参数
+message GetUserBaseInfoCacheReq {
+  //帐号ID
+  uint32 user_id = 1;
+}
+
+//用户基本信息查询结果
+message GetUserBaseInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+
+  //用户基本信息
+  mapgoo.paas.base.UserBaseInfo user_base_info = 2
+      [ (gogoproto.jsontag) = 'user_base_info' ];
+}
+
+//修改普通用户参数
+message UpdateUserInfoCacheReq {
+  //用户基本信息
+  mapgoo.paas.base.UserBaseInfo user_base_info = 1;
+}
+
+//修改普通用户结果
+message UpdateUserInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//微信缓存信息
+message WechatUserInfo {
+  //用户ID
+  uint32 wx_id = 1 [ (gogoproto.jsontag) = 'wx_id' ];
+
+  //虚拟用户ID
+  uint32 user_id = 2 [ (gogoproto.jsontag) = 'user_id' ];
+
+  //公众号用户唯一ID
+  string open_id = 3 [ (gogoproto.jsontag) = 'open_id' ];
+
+  //微信唯一ID
+  string union_id = 4 [ (gogoproto.jsontag) = 'union_id' ];
+
+  //当前绑定设备ID
+  uint32 bind_object_id = 5 [ (gogoproto.jsontag) = 'bind_object_id' ];
+}
+
+//修改微信用户参数
+message UpdateWechatUserInfoCacheReq {
+  //微信用户信息
+  WechatUserInfo wechat_user_info = 1;
+}
+
+//修改微信用户结果
+message UpdateWechatUserInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+}
+
+//获取微信用户信息参数
+message GetWechatUserInfoCacheReq {
+  //微信公众号帐号ID
+  string open_id = 1;
+}
+
+//获取微信用户信息结果
+message GetWechatUserInfoCacheResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  //微信用户信息
+  WechatUserInfo wechat_user_info = 2
+      [ (gogoproto.jsontag) = 'wechat_user_info' ];
+}
+
+//获取绑定设备相关的用户参数
+message GetBindUserListReq {
+  //设备信息
+  mapgoo.paas.base.DeviceId device_id = 1;
+  //应用类型
+  uint32 app_type = 2;
+}
+
+//绑定设备的用户信息
+message BindUserInfoEntity {
+  //微信帐号ID
+  uint32 wx_id = 1 [ (gogoproto.jsontag) = 'wxID' ];
+
+  //微信openID
+  string wx_chat_id = 2 [ (gogoproto.jsontag) = 'wxChatID' ];
+
+  // WX帐户
+  string wx_account = 3 [ (gogoproto.jsontag) = 'wxAccount' ];
+
+  //性别
+  uint32 wx_sex = 4 [ (gogoproto.jsontag) = 'wxSex' ];
+
+  //微信名称
+  string wx_name = 5 [ (gogoproto.jsontag) = 'wxName' ];
+
+  //微信头像
+  string wx_head_image = 6 [ (gogoproto.jsontag) = 'wxHeadImage' ];
+
+  //微信区域
+  string wx_area = 7 [ (gogoproto.jsontag) = 'wxArea' ];
+
+  //当前绑定默认设备ID
+  uint32 cur_bind_object_id = 8 [ (gogoproto.jsontag) = 'curBindObjectID' ];
+
+  //帐号ID、用户ID
+  uint32 user_id = 9 [ (gogoproto.jsontag) = 'userID' ];
+
+  //帐号对应手机号码
+  string mobile = 10 [ (gogoproto.jsontag) = 'mobile' ];
+
+  //绑定日期
+  string bind_date = 11 [ (gogoproto.jsontag) = 'bind_date' ];
+
+  //用户图像
+  string user_image = 12 [ (gogoproto.jsontag) = 'userImage' ];
+
+  //用户图像URL
+  string user_image_url = 13 [ (gogoproto.jsontag) = 'userImageUrl' ];
+
+  //微信公众号服务ID
+  string service_id = 14 [ (gogoproto.jsontag) = 'serviceID' ];
+
+  //是否管理员
+  bool is_relation_ship = 15 [ (gogoproto.jsontag) = 'isRelationShip' ];
+
+  //来源
+  string source = 16 [ (gogoproto.jsontag) = 'source' ];
+}
+
+//获取绑定设备相关的用户结果
+message GetBindUserListResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  repeated BindUserInfoEntity record_list = 2
+      [ (gogoproto.jsontag) = 'record_list' ];
+}
+
+//获取会员信息参数
+message GetMemberInfoReq {
+  //车辆设备的IMEI
+  mapgoo.paas.base.DeviceId device_id = 1;
+  //是否只获取微信的用户
+  bool only_wechat = 2;
+
+  //应用类型
+  uint32 app_type = 3;
+
+  //用户id
+  uint32 user_id = 4;
+}
+
+//获取会员信息结果
+message GetMemberInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  //普通用户
+  NormalUserEntity normal_user = 2;
+
+  //微信用户
+  WechatUserEntity wechat_user = 3;
+}
+
+//获取会员信息普通用户结构
+message NormalUserEntity {
+  //用户ID
+  uint32 user_id = 1;
+
+  //用户名称
+  string user_name = 2;
+
+  //用户昵称
+  string nick_name = 3;
+
+  //手机号
+  string mobile = 4;
+
+  //头像
+  string avatar = 5;
+}
+
+//获取会员信息微信用户结构
+message WechatUserEntity {
+  //用户ID
+  uint32 user_id = 1;
+
+  //微信帐号
+  string wx_account = 2;
+
+  //微信昵称
+  string wx_name = 3;
+
+  //手机号
+  string mobile = 4;
+
+  //头像
+  string avatar = 5;
+}
+
+// 3.7获取旧版会员信息参数
+message GetOldCarMemberInfoReq {
+
+  //车辆设备的IMEI
+  mapgoo.paas.base.DeviceId device_id = 1;
+    //应用类型
+  uint32 app_type = 2[(gogoproto.moretags)='form:"app_type"'];
+}
+
+//旧版会员信息实体!!最终由UMS整体返回!!
+message CarMemberInfoEntity {
+  //行程油耗
+  uint32 travle_fuel = 1 [ (gogoproto.jsontag) = 'travle_fuel' ];
+
+  //下一个日期
+  string nextinspec_date = 2 [ (gogoproto.jsontag) = 'nextinspec_date' ];
+
+  //行程\计数
+  uint32 travel_count = 3 [ (gogoproto.jsontag) = 'travel_count' ];
+
+  //行驶里程
+  float travel_mileage = 4 [ (gogoproto.jsontag) = 'travel_mileage' ];
+
+  //用户图像
+  string user_image = 5 [ (gogoproto.jsontag) = 'user_image' ];
+
+  //昵称
+  string nickname = 6 [ (gogoproto.jsontag) = 'nickname' ];
+
+  //支付到期时间
+  uint32 payexpire_time = 7 [ (gogoproto.jsontag) = 'payexpire_time' ];
+
+  //剩余流量
+  float surplus_usage = 8 [ (gogoproto.jsontag) = 'surplus_usage' ];
+
+  //帐号ID、用户ID
+  string user_id = 9 [ (gogoproto.jsontag) = 'userID' ];
+}
+
+// 3.7获取旧版会员信息结果
+message GetOldCarMemberInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  //会员信息
+  CarMemberInfoEntity result = 2 [ (gogoproto.jsontag) = 'result' ];
+}
+
+// 3.8获取新版会员信息参数
+message GetNewCarMemberInfoReq {
+  //车辆设备的IMEI
+  mapgoo.paas.base.DeviceId device_id = 1;
+  //应用类型
+  uint32 app_type = 2;
+}
+
+// 3.8获取新版会员信息结果
+message GetNewCarMemberInfoResp {
+  //公共结构
+  mapgoo.paas.base.BaseRespInfo base = 1 [ (gogoproto.jsontag) = 'base' ];
+  //会员信息
+  CarMemberInfoExEntity result = 2 [ (gogoproto.jsontag) = 'result' ];
+}
+
+//新版会员信息实体!!最终由UMS整体返回!!
+message CarMemberInfoExEntity {
+  //用户图像
+  string user_image = 1 [ (gogoproto.jsontag) = 'userImage' ];
+
+  //昵称
+  string nick_name = 2 [ (gogoproto.jsontag) = 'nickName' ];
+
+  //帐号ID、用户ID
+  string user_id = 3 [ (gogoproto.jsontag) = 'userID' ];
+
+  //是否绑定车辆
+  uint32 is_bind_car = 4 [ (gogoproto.jsontag) = 'isBindCar' ];
+
+  //用户类型
+  uint32 user_type = 5 [ (gogoproto.jsontag) = 'userType' ];
+
+  //到期时间
+  string expire_time = 6 [ (gogoproto.jsontag) = 'expireTime' ];
+
+  //图标
+  repeated IconEntity icon = 7 [ (gogoproto.jsontag) = 'icon' ];
+
+  // HTML URL
+  string html_url = 8 [ (gogoproto.jsontag) = 'htmlUrl' ];
+
+  //帐号对应手机号码
+  string mobile = 9 [ (gogoproto.jsontag) = 'mobile' ];
+}
+
+message IconEntity {
+  string name = 1;
+  string url = 2;
+}

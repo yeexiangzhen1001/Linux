@@ -1,0 +1,162 @@
+syntax = "proto3";
+
+package mapgoo.paas.video.data;
+
+option go_package = "api";
+
+import public "mapgoo.paas.base.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+
+
+////////////////////////////////////视频上报
+
+//视频信息上报
+message SaveVideoInfoReq {
+    //imei
+    string imei = 1;
+    //视频信息
+    repeated SaveVideoInfoData data = 2;
+}
+
+message SaveVideoInfoData {
+    //摄像头通道
+    uint32 index =1 [(gogoproto.jsontag) = "index"];
+    //时间
+    uint64 timestamp = 2 [(gogoproto.jsontag) = "timestamp"];
+    //状态key
+    uint32 state_key = 3 [(gogoproto.jsontag) = "stateKey"];
+    //状态
+    uint64 state_value = 4 [(gogoproto.jsontag) = "stateValue"];
+
+}
+
+message SaveVideoInfoResp {
+    //错误码
+    uint32 error =1 [(gogoproto.jsontag) = "error"];
+    string reason =2 [(gogoproto.jsontag) = "reason"];
+    string result =3 [(gogoproto.jsontag) = "result"];
+}
+
+message SearchVideoInfoData {
+    //摄像头通道
+    uint32 index =1 [(gogoproto.jsontag) = "index"];
+    //时间
+    uint64 timestamp = 2 [(gogoproto.jsontag) = "timestamp"];
+    //状态key
+    uint32 state_key = 3 [(gogoproto.jsontag) = "stateKey"];
+    //状态
+    uint64 state_value = 4 [(gogoproto.jsontag) = "stateValue"];
+    //imei
+    string imei = 5 [(gogoproto.jsontag) = "imei"];
+    //文档id
+    string id = 6;
+    //索引
+    string esindex = 7;
+}
+
+
+//视频信息上报
+message SearchVideoInfoReq {
+    //描述
+    string imei = 1;
+    //当前页
+    uint32 page = 2;
+    //数量、每页
+    uint32 psize = 3;
+    //开始时间
+    string start_time = 4 [(gogoproto.jsontag) = "startTime"];
+    //结束时间
+    string end_time = 5 [(gogoproto.jsontag) = "endTime"];
+    //是否显示索引id
+    bool is_index = 6 [(gogoproto.jsontag) = "isIndex"];
+}
+
+message SearchVideoInfoResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //视频信息
+    repeated SearchVideoInfoData data_list = 2 [(gogoproto.jsontag) = "dataList"];
+
+    //分页信息
+    mapgoo.paas.base.PageBaseInfo page_Info = 3 [(gogoproto.jsontag) = "pageInfo"];
+}
+
+//视频错误信息上报
+message SaveVideoErrCodeReq {
+    //imei
+    string imei = 1;
+    //视频信息
+    repeated VideoErrData data = 2;
+}
+
+message VideoErrData {
+    //摄像头通道
+    uint32 index =1 [(gogoproto.jsontag) = "index"];
+    //时间
+    uint64 timestamp = 2 [(gogoproto.jsontag) = "timestamp"];
+    //错误码
+    uint32 error_code = 3 [(gogoproto.jsontag) = "errorCode"];
+}
+
+message SaveVideoErrCodeResp {
+    //错误码
+    uint32 error =1 [(gogoproto.jsontag) = "error"];
+    string reason =2 [(gogoproto.jsontag) = "reason"];
+    string result =3 [(gogoproto.jsontag) = "result"];
+}
+
+//删除视频信息
+message DelVideoIndexReq {
+    //文档索引
+    string index = 1;
+    //文档id
+    string id = 2;
+}
+
+message DelVideoIndexResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+}
+
+
+//视频信息上报
+message SearchVideoErrInfoReq {
+    //描述
+    string imei = 1;
+    //当前页
+    uint32 page = 2;
+    //数量、每页
+    uint32 psize = 3;
+    //开始时间
+    string start_time = 4 [(gogoproto.jsontag) = "startTime"];
+    //结束时间
+    string end_time = 5 [(gogoproto.jsontag) = "endTime"];
+    //是否显示索引id
+    bool is_index = 6 [(gogoproto.jsontag) = "isIndex"];
+}
+
+message SearchVideoErrInfoResp {
+    //公共结构
+    mapgoo.paas.base.BaseRespInfo base = 1;
+    //视频信息
+    repeated SearchVideoErrInfoData data_list = 2 [(gogoproto.jsontag) = "dataList"];
+
+    //分页信息
+    mapgoo.paas.base.PageBaseInfo page_Info = 3 [(gogoproto.jsontag) = "pageInfo"];
+}
+
+message SearchVideoErrInfoData {
+    //摄像头通道
+    uint32 index =1 [(gogoproto.jsontag) = "index"];
+    //时间
+    uint64 timestamp = 2 [(gogoproto.jsontag) = "timestamp"];
+    //错误码
+    uint32 error_code = 3 [(gogoproto.jsontag) = "errorCode"];
+    //imei
+    string imei = 4 [(gogoproto.jsontag) = "imei"];
+    //文档id
+    string id = 5;
+    //索引
+    string esindex = 6;
+}
